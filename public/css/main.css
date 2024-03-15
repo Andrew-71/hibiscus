@@ -1,0 +1,55 @@
+body {
+    color: #454545;
+    background-color: #f5f0e1; /*f6f4ee*/
+    font-size: 16px;
+    margin: 2em auto;
+    max-width: 950px;
+    padding: 1em;
+    line-height: 1.4;
+    text-align: justify;
+    font-family: serif;
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Links can be blue or look like plaintext */
+a, a:visited { color: #f85552; }
+a:hover, a:visited:hover { color: #e66868; }
+a.no-accent, a.no-accent:visited { color: #454545; }
+a.no-accent:hover, a.no-accent:visited:hover { color: #656565; }
+
+textarea, input {
+    background: #f5f2ee;
+}
+
+footer { margin-top: auto; }
+
+button {
+    background-color: #f85552;
+    border: none;
+    color: #f5f2ee;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 12px;
+    max-width: 100px;
+    cursor: pointer;
+}
+button:hover { background-color: #e66868; }
+
+
+/* Dark theme TODO*/
+/*@media (prefers-color-scheme: dark) {*/
+/*    body {*/
+/*        color: #f5f0e1;*/
+/*        background-color: #2c2825;*/
+/*    }*/
+/*    a.no-accent, a.no-accent:visited { color: #f5f0e1; }*/
+/*    a.no-accent:hover, a.no-accent:visited:hover { color: #a9a8a4; }*/
+/*    a, a:visited { color: #24a5ea; }*/
+/*    a:hover, a:visited:hover { color: #1b74cc; }*/
+/*}*/
