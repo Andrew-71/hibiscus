@@ -1,1 +1,1 @@
-curl -XPOST -d 'need to \n remove newlines \n' -u 'test:pass' 'localhost:7101/log'
+curl -XPOST -d "test" -eu 'test:pass' 'localhost:7101/api/log'

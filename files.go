@@ -11,15 +11,15 @@ import (
 	"strings"
 )
 
-var DEFAULT_EXTENSION = "txt"
-
 func GetFile(filename string, w http.ResponseWriter, r *http.Request) {
-	if _, err := os.Stat("data/" + filename + ".txt"); errors.Is(err, os.ErrNotExist) {
+	path := "data/" + filepath.Base(filename) + ".txt" // This should *theoretically* sanitize the string
+
+	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
 		NotFound(w, r)
 		return
 	}
 
-	fileContents, err := os.ReadFile("data/" + filename + ".txt")
+	fileContents, err := os.ReadFile(path)
 	if err != nil {
 		http.Error(w, "error reading file", http.StatusInternalServerError)
 		return
@@ -58,7 +58,7 @@ func PostFile(filename string, w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-// ListFiles returns JSON of filenames in a directory without extensions or path
+// ListFiles returns JSON list of filenames in a directory without extensions or path
 func ListFiles(directory string, w http.ResponseWriter, r *http.Request) {
 	filenames, err := filepath.Glob("data/" + directory + "/*.txt")
 	if err != nil {

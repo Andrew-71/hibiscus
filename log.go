@@ -5,10 +5,12 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
-func AppendLog(input string) error {
+// AppendLog adds the input string to the end of the log file with a timestamp
+func appendLog(input string) error {
 	t := time.Now().Format("02-01-2006 15:04") // dd-mm-yyyy HH:MM
 
 	f, err := os.OpenFile("./data/log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
@@ -17,6 +19,7 @@ func AppendLog(input string) error {
 		return err
 	}
 
+	input = strings.Replace(input, "\n", "", -1) // Remove newlines to maintain structure
 	if _, err := f.Write([]byte(t + " | " + input + "\n")); err != nil {
 		fmt.Println("Error appending to the file")
 		return err
@@ -35,7 +38,7 @@ func PostLog(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("error reading body"))
 		return
 	}
-	err = AppendLog(string(body))
+	err = appendLog(string(body))
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("error appending to log"))
