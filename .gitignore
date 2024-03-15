@@ -19,3 +19,5 @@ go.work
 
 # Executable
 hibiscus
+
+.idea/

@@ -1,6 +1,6 @@
 # 🌺 Hibiscus.txt
 
-Simple plaintext journaling server.
+Simple plaintext journaling server. One file a day.
 
 ## Features:
 * Lack of features. No, really.

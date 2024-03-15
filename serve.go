@@ -25,10 +25,8 @@ func Serve() {
 
 	apiRouter.Get("/readme", func(w http.ResponseWriter, r *http.Request) { GetFile("readme", w, r) })
 	apiRouter.Get("/log", func(w http.ResponseWriter, r *http.Request) { GetFile("log", w, r) })
-	apiRouter.Get("/agenda", func(w http.ResponseWriter, r *http.Request) { GetFile("agenda", w, r) })
 
 	apiRouter.Post("/readme", func(w http.ResponseWriter, r *http.Request) { PostFile("readme", w, r) })
-	apiRouter.Post("/agenda", func(w http.ResponseWriter, r *http.Request) { PostFile("agenda", w, r) })
 
 	apiRouter.Get("/day", func(w http.ResponseWriter, r *http.Request) { ListFiles("day", w, r) })
 	apiRouter.Get("/day/{day}", func(w http.ResponseWriter, r *http.Request) { GetDay(w, r) })

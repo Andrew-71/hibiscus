@@ -2,33 +2,24 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 )
 
 var DEFAULT_EXTENSION = "txt"
 
 func GetFile(filename string, w http.ResponseWriter, r *http.Request) {
-	filenames, err := filepath.Glob("data/" + filename + ".*") // .txt, .md, anything
-	if err != nil {
-		http.Error(w, "error finding file", http.StatusInternalServerError)
+	if _, err := os.Stat("data/" + filename + ".txt"); errors.Is(err, os.ErrNotExist) {
+		NotFound(w, r)
 		return
 	}
 
-	if len(filenames) == 0 {
-		http.Error(w, "no matching files found", http.StatusNotFound)
-		return
-	} else if len(filenames) > 1 {
-		http.Error(w, "several matching files found ("+strconv.Itoa(len(filenames))+")", http.StatusInternalServerError) // TODO: Better handling, duh
-		return
-	}
-
-	fileContents, err := os.ReadFile(filenames[0])
+	fileContents, err := os.ReadFile("data/" + filename + ".txt")
 	if err != nil {
 		http.Error(w, "error reading file", http.StatusInternalServerError)
 		return
@@ -49,39 +40,27 @@ func PostFile(filename string, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	filenames, err := filepath.Glob("data/" + filename + ".*") // .txt, .md, anything
+	f, err := os.OpenFile("data/"+filename+".txt", os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		http.Error(w, "error searching for file", http.StatusInternalServerError)
-		return
-	}
-
-	var filenameFinal string
-	if len(filenames) == 0 {
-		// Create new file and write
-		filenameFinal = "data/" + filename + "." + DEFAULT_EXTENSION
-	} else if len(filenames) > 1 {
-		http.Error(w, "several matching files found ("+strconv.Itoa(len(filenames))+")", http.StatusInternalServerError) // TODO: Better handling, duh
-		return
-	} else {
-		filenameFinal = filenames[0]
-		fmt.Println(filenameFinal)
-		fmt.Println(filenames)
-	}
-
-	f, err := os.OpenFile(filenameFinal, os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		fmt.Println("Error opening/making file")
+		fmt.Println("error opening/making file")
+		w.Write([]byte("error opening or creating file"))
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	if _, err := f.Write(body); err != nil {
 		fmt.Println("Error writing to the file")
+		w.Write([]byte("error writing to file"))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
+	w.Write([]byte("wrote to file"))
+	w.WriteHeader(http.StatusOK)
 }
 
 // ListFiles returns JSON of filenames in a directory without extensions or path
 func ListFiles(directory string, w http.ResponseWriter, r *http.Request) {
-	filenames, err := filepath.Glob("data/" + directory + "/*") // .txt, .md, anything
+	filenames, err := filepath.Glob("data/" + directory + "/*.txt")
 	if err != nil {
 		http.Error(w, "error searching for files", http.StatusInternalServerError)
 		return
