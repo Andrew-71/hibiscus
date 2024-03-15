@@ -12,28 +12,32 @@ func NotFound(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "./pages/error/404.html")
 }
 
-// GetDay gets... a day... page
 func GetDay(w http.ResponseWriter, r *http.Request) {
 	// TODO: This will be *very* different, `today` func will be needed
 	dayString := chi.URLParam(r, "day")
 	if dayString == "" {
-		dayString = time.Now().Format("02-01-2006") // By default, use today
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("day not specified"))
+		return
 	}
 	GetFile("day/"+dayString, w, r)
 }
 
-// GetNote gets... a day... page
 func GetNote(w http.ResponseWriter, r *http.Request) {
 	// TODO: This will be *very* different, `today` func will be needed
 	noteString := chi.URLParam(r, "note")
 	if noteString == "" {
-		w.WriteHeader(http.StatusNotFound) // TODO: maybe different status fits better?
-		w.Write([]byte("note name not given"))
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("note not specified"))
 		return
 	}
 	GetFile("notes/"+noteString, w, r)
 }
 
-func PostDayPage(w http.ResponseWriter, r *http.Request) {
+func GetToday(w http.ResponseWriter, r *http.Request) {
+	GetFile("day/"+time.Now().Format("2006-01-02"), w, r)
+}
 
+func PostToday(w http.ResponseWriter, r *http.Request) {
+	PostFile("day/"+time.Now().Format("2006-01-02"), w, r)
 }

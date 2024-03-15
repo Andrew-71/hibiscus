@@ -11,7 +11,7 @@ import (
 
 // AppendLog adds the input string to the end of the log file with a timestamp
 func appendLog(input string) error {
-	t := time.Now().Format("02-01-2006 15:04") // dd-mm-yyyy HH:MM
+	t := time.Now().Format("2006-01-02 15:04") // yyyy-mm-dd HH:MM
 
 	f, err := os.OpenFile("./data/log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {

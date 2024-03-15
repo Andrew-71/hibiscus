@@ -10,8 +10,8 @@
 </head>
 <body>
     <header class="container">
-        <h1 style="margin-bottom:0;">Hibiscus.txt</h1>
-        <p id="status" style="margin-top:0;">Today is 14/03/2024</p>
+        <h1 style="margin-bottom:0;">🌺 Hibiscus.txt</h1>
+        <p id="status" style="margin-top:0;">Today is <span id="today-date">14/03/2024</span></p>
     </header>
     <main class="container">
         <h2 style="margin-bottom:0;"><label for="day">Your day so far:</label></h2>
@@ -26,4 +26,15 @@
         <p><a href="/page/sitemap" class="no-accent"></a> v0.0.1 | PoC using <a href="https://picocss.com">PicoCSS</a></p>
     </footer>
 </body>
+
+<script defer>
+    function updateTime() {
+        let todayDate = new Date()
+        let timeField = document.getElementById("today-date")
+        timeField.innerText = todayDate.toISOString().split('T')[0]
+
+    }
+
+    updateTime()
+</script>
 </html>

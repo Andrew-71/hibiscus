@@ -24,9 +24,9 @@ func Serve() {
 	apiRouter := chi.NewRouter()
 
 	apiRouter.Get("/readme", func(w http.ResponseWriter, r *http.Request) { GetFile("readme", w, r) })
-	apiRouter.Get("/log", func(w http.ResponseWriter, r *http.Request) { GetFile("log", w, r) })
-
 	apiRouter.Post("/readme", func(w http.ResponseWriter, r *http.Request) { PostFile("readme", w, r) })
+	apiRouter.Get("/log", func(w http.ResponseWriter, r *http.Request) { GetFile("log", w, r) })
+	apiRouter.Post("/log", func(w http.ResponseWriter, r *http.Request) { PostLog(w, r) })
 
 	apiRouter.Get("/day", func(w http.ResponseWriter, r *http.Request) { ListFiles("day", w, r) })
 	apiRouter.Get("/day/{day}", func(w http.ResponseWriter, r *http.Request) { GetDay(w, r) })
@@ -34,7 +34,8 @@ func Serve() {
 	apiRouter.Get("/notes", func(w http.ResponseWriter, r *http.Request) { ListFiles("notes", w, r) })
 	apiRouter.Get("/notes/{note}", func(w http.ResponseWriter, r *http.Request) { GetNote(w, r) })
 
-	apiRouter.Post("/log", func(w http.ResponseWriter, r *http.Request) { PostLog(w, r) })
+	apiRouter.Get("/today", func(w http.ResponseWriter, r *http.Request) { GetToday(w, r) })
+	apiRouter.Post("/today", func(w http.ResponseWriter, r *http.Request) { PostToday(w, r) })
 
 	r.Mount("/api", apiRouter)
 
