@@ -21,3 +21,6 @@ go.work
 hibiscus
 
 .idea/
+
+# Because currently it's used in "prod"
+data/

@@ -12,7 +12,7 @@ import (
 )
 
 func GetFile(filename string, w http.ResponseWriter, r *http.Request) {
-	path := "data/" + filepath.Base(filename) + ".txt" // This should *theoretically* sanitize the string
+	path := "data/" + filename + ".txt" // Can we and should we sanitize this?
 
 	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
 		NotFound(w, r)

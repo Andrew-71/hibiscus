@@ -14,6 +14,7 @@ func Serve() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger, middleware.CleanPath, middleware.StripSlashes)
 	r.Use(basicAuth) // TODO: ..duh!
+	r.NotFound(NotFound)
 
 	// Home page
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
@@ -38,8 +39,6 @@ func Serve() {
 	apiRouter.Post("/today", func(w http.ResponseWriter, r *http.Request) { PostToday(w, r) })
 
 	r.Mount("/api", apiRouter)
-
-	r.NotFound(NotFound)
 
 	// Static files
 	fs := http.FileServer(http.Dir("public"))
