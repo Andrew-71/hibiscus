@@ -17,8 +17,8 @@ func basicAuth(next http.Handler) http.Handler {
 			// Calculate SHA-256 hashes for equal length in ConstantTimeCompare
 			usernameHash := sha256.Sum256([]byte(username))
 			passwordHash := sha256.Sum256([]byte(password))
-			expectedUsernameHash := sha256.Sum256([]byte("test")) // TODO: put user & pass outside
-			expectedPasswordHash := sha256.Sum256([]byte("pass"))
+			expectedUsernameHash := sha256.Sum256([]byte(Cfg.Username))
+			expectedPasswordHash := sha256.Sum256([]byte(Cfg.Password))
 
 			usernameMatch := subtle.ConstantTimeCompare(usernameHash[:], expectedUsernameHash[:]) == 1
 			passwordMatch := subtle.ConstantTimeCompare(passwordHash[:], expectedPasswordHash[:]) == 1

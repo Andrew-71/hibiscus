@@ -15,15 +15,11 @@ type Config struct {
 	Port     int
 }
 
-func CreateConfig(config Config) {
-
-}
-
 func LoadConfig() (Config, error) {
 	filename := "config/config.txt"
 
 	if _, err := os.Stat(filename); errors.Is(err, os.ErrNotExist) {
-		CreateConfig(Config{})
+		log.Fatal(err)
 		return Config{}, err
 	}
 

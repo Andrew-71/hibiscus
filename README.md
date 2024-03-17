@@ -2,12 +2,13 @@
 
 Simple plaintext diary.
 
-This project is *very* opinionated and minimal. It is designed primarily for myself.
+This project is *very* opinionated and minimal, and is designed primarily for my usage. 
+As a result of this, it is also neither secure nor idiot-proof.
 
 ## Features:
 * Each day, you get a txt file. You have until 23:59 of that very day to finalise it.
-* At any moment, you can log a single line to the log
+* At any moment, you can append a single line to log.txt
 * You can save named notes to document milestones, big events, or just a nice game you played this month
 * You can easily export everything in a zip file for backups
 
-* Everything is in plain text. No databases, encryption, OAuth, or anything fancy. Even the password is plain te- wait is this a feature?
+* Everything is plain(text) and simple. No databases, encryption, OAuth, or anything fancy. Even the password is plainte- *wait is this a feature?*

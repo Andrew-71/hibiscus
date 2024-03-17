@@ -51,7 +51,7 @@ func PostFile(filename string, w http.ResponseWriter, r *http.Request) {
 	}
 
 	if _, err := f.Write(body); err != nil {
-		fmt.Println("Error writing to the file")
+		fmt.Println("error writing to the file")
 		w.Write([]byte("error writing to file"))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
