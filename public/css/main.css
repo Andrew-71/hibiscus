@@ -1,9 +1,9 @@
 body {
     color: #454545;
-    background-color: #f5f0e1; /*f6f4ee*/
+    background-color: #f5f0e1;
     font-size: 16px;
     margin: 2em auto;
-    max-width: 950px;
+    max-width: 640px;
     padding: 1em;
     line-height: 1.4;
     text-align: justify;
@@ -13,14 +13,25 @@ body {
     flex-direction: column;
 }
 
-/* Links can be blue or look like plaintext */
+/* Red links! */
 a, a:visited { color: #f85552; }
 a:hover, a:visited:hover { color: #e66868; }
-a.no-accent, a.no-accent:visited { color: #454545; }
-a.no-accent:hover, a.no-accent:visited:hover { color: #656565; }
 
 textarea, input {
     background: #f5f2ee;
+    max-width: 640px;
+    width: 100%;
+    display: block;
+    resize: vertical;
+    outline: 0;
+    box-shadow: none;
+    border: 0.0625em solid #454545;
+    margin-bottom: 1em;
+    font-size: 18px
+}
+
+input {
+    height: 2.5em;
 }
 
 footer { margin-top: auto; }
@@ -33,23 +44,26 @@ button {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 20px;
     margin: 4px 2px;
-    border-radius: 12px;
-    max-width: 100px;
+    border-radius: 4px;
     cursor: pointer;
+
+    max-width: 640px;
+    width: 100%;
 }
 button:hover { background-color: #e66868; }
 
 
-/* Dark theme TODO*/
-/*@media (prefers-color-scheme: dark) {*/
-/*    body {*/
-/*        color: #f5f0e1;*/
-/*        background-color: #2c2825;*/
-/*    }*/
-/*    a.no-accent, a.no-accent:visited { color: #f5f0e1; }*/
-/*    a.no-accent:hover, a.no-accent:visited:hover { color: #a9a8a4; }*/
-/*    a, a:visited { color: #24a5ea; }*/
-/*    a:hover, a:visited:hover { color: #1b74cc; }*/
-/*}*/
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+    body {
+        color: #f5f0e1;
+        background-color: #2c2825;
+    }
+
+    textarea, input {
+        color: #f5f0e1;
+        background-color: #383030;
+    }
+}

@@ -2,29 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-<!--    <link rel="stylesheet" href="/public/css/main.css">-->
-    <link rel="stylesheet" href="/public/css/pico.red.min.css">
-
+    <link rel="stylesheet" href="/public/css/main.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hibiscus.txt</title>
 </head>
 <body>
-    <header class="container">
-        <h1 style="margin-bottom:0;">🌺 Hibiscus.txt</h1>
+    <header>
+        <h1 style="margin-bottom:0;margin-top:0;">🌺 Hibiscus.txt</h1>
         <p id="status" style="margin-top:0;">Today is <span id="today-date">14/03/2024</span></p>
     </header>
-    <main class="container">
+    <main>
         <h2 style="margin-bottom:0;"><label for="day">Your day so far:</label></h2>
         <textarea id="day" name="Day entry" cols="40" rows="10" style="max-width: 640px; width: 100%"></textarea>
         <div class="grid"><button onclick="saveToday()">Save</button></div>
 
         <h2><label for="log">Log</label></h2>
         <input type="text" id="log" name="log" style="max-width: 640px; width: 100%"/>
-        <div class="grid"><button onclick="saveLog()">Save</button></div>
+        <div class="grid"><button onclick="saveLog()">Send</button></div>
     </main>
-    <footer class="container">
-        <p><a href="/page/sitemap" class="no-accent"></a> v0.0.1 | PoC using <a href="https://picocss.com">PicoCSS</a></p>
-    </footer>
 </body>
 
 <script defer>
