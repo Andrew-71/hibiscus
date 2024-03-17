@@ -13,3 +13,4 @@
 * *Go* dependency-less
 * Improve logging, log to files
 * Make the CLI better
+* Timezones?

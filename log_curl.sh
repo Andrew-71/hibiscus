@@ -1,1 +1,0 @@
-curl -XPOST -d "test" -eu 'test:pass' 'localhost:7101/api/log'
