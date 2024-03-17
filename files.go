@@ -11,6 +11,7 @@ import (
 	"strings"
 )
 
+// GetFile returns raw contents of a txt file in data directory
 func GetFile(filename string, w http.ResponseWriter, r *http.Request) {
 	path := "data/" + filename + ".txt" // Can we and should we sanitize this?
 
@@ -31,7 +32,8 @@ func GetFile(filename string, w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// PostFile TODO: Save to trash to prevent malicious/accidental ovverrides?
+// PostFile Writes request's contents to a txt file in data directory
+// TODO: Save to trash to prevent malicious/accidental overrides?
 func PostFile(filename string, w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {

@@ -44,6 +44,6 @@ func Serve() {
 	fs := http.FileServer(http.Dir("public"))
 	r.Handle("/public/*", http.StripPrefix("/public/", fs))
 
-	fmt.Println("Website working on port: ", PORT)
-	_ = http.ListenAndServe(":"+strconv.Itoa(PORT), r)
+	fmt.Println("Website working on port: ", Cfg.Port)
+	_ = http.ListenAndServe(":"+strconv.Itoa(Cfg.Port), r)
 }
