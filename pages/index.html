@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/public/main.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/public/main.css">
+    <script src="/public/date.js"></script>
+    <script src="/public/requests.js"></script>
+
     <title>Hibiscus.txt</title>
 </head>
 <body>
@@ -23,73 +26,9 @@
 </body>
 
 <script defer>
-    function updateTime() {
-        let todayDate = new Date()
-        let timeField = document.getElementById("today-date")
-        timeField.innerText = todayDate.toISOString().split('T')[0]
+    updateDate()
+    beginDateUpdater()
 
-    }
-    updateTime()
-
-    async function postData(url = "", data = "") {
-        const response = await fetch(url, {
-            method: "POST",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "text/plain",
-            },
-            redirect: "follow",
-            referrerPolicy: "no-referrer",
-            body: data,
-        });
-        if (response.ok) {
-            return response.text();
-        } else {
-            return response.status
-        }
-    }
-
-    async function getData(url = "", data = "") {
-        const response = await fetch(url, {
-            method: "GET",
-            credentials: "same-origin",
-            redirect: "follow",
-            referrerPolicy: "no-referrer"
-        });
-        if (response.ok) {
-            return response.text();
-        } else {
-            console.log(response.text())
-            return response.status
-            // return "Error"
-        }
-    }
-
-    function saveLog() {
-        let logField = document.getElementById("log")
-        postData("/api/log", logField.value).then((data) => {
-            if (data !== 500) {
-                logField.value = ""
-            }
-        });
-    }
-
-    function saveToday() {
-        let logField = document.getElementById("day")
-        postData("/api/today", logField.value).then((data) => {
-            console.log(data);
-        });
-    }
-    function loadToday() {
-        let dayField = document.getElementById("day")
-        getData("/api/today", dayField.value).then((data) => {
-            if (data !== 404) {
-                dayField.value = data
-            } else {
-                dayField.value = ""
-            }
-        });
-    }
     loadToday()
 </script>
 </html>
