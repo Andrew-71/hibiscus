@@ -3,11 +3,14 @@ package main
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"log"
 	"os"
 	"strconv"
 	"strings"
 )
+
+var ConfigFile = "config/config.txt"
 
 type Config struct {
 	Username string
@@ -15,17 +18,31 @@ type Config struct {
 	Port     int
 }
 
-func LoadConfig() (Config, error) {
-	filename := "config/config.txt"
+func (c *Config) Save() error {
+	output := fmt.Sprintf("port=%d\nusername=%s\npassword=%s", c.Port, c.Username, c.Password)
 
-	if _, err := os.Stat(filename); errors.Is(err, os.ErrNotExist) {
-		log.Fatal(err)
-		return Config{}, err
+	f, err := os.OpenFile(ConfigFile, os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	if _, err := f.Write([]byte(output)); err != nil {
+		return err
+	}
+	return nil
+}
+
+func LoadConfig() (Config, error) {
+	cfg := Config{Port: 7101, Username: "admin", Password: "admin"} // Default values are declared here, I guess
+
+	if _, err := os.Stat(ConfigFile); errors.Is(err, os.ErrNotExist) {
+		err := cfg.Save()
+		if err != nil {
+			return cfg, err
+		}
+		return cfg, nil
 	}
 
-	cfg := Config{Port: 7101}
-
-	file, err := os.Open(filename)
+	file, err := os.Open(ConfigFile)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -50,7 +67,6 @@ func LoadConfig() (Config, error) {
 			}
 		}
 	}
-
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}

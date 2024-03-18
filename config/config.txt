@@ -1,3 +1,3 @@
 port=7101
-username=test
-password=pass
+username=admin
+password=admin
