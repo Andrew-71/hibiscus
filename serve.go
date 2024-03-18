@@ -8,8 +8,6 @@ import (
 	"strconv"
 )
 
-const PORT = 7101 // TODO: Obviously don't just declare port here
-
 func Serve() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger, middleware.CleanPath, middleware.StripSlashes)

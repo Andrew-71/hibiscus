@@ -55,6 +55,11 @@ button {
 button:hover { background-color: #e66868; }
 
 
+header > h1, header > p {
+    margin-bottom:0;
+    margin-top:0;
+}
+
 /* Dark theme */
 @media (prefers-color-scheme: dark) {
     body {
