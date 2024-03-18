@@ -2,6 +2,7 @@
 List of things to add to this project
 
 ## Crucial
+* Handle all the w.Write errors somehow
 * Add export feature
 * Add missing frontend pages
 

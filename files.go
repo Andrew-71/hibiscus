@@ -8,21 +8,22 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 	"time"
 )
 
 // GetFile returns raw contents of a txt file in data directory
-func GetFile(filename string, w http.ResponseWriter, r *http.Request) {
-	path := "data/" + filename + ".txt" // Can we and should we sanitize this?
+func GetFile(filename string, w http.ResponseWriter) {
+	filename = "data/" + path.Clean(filename) + ".txt" // Does this sanitize the path?
 
-	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(filename); errors.Is(err, os.ErrNotExist) {
 		http.Error(w, "file not found", http.StatusNotFound)
 		return
 	}
 
-	fileContents, err := os.ReadFile(path)
+	fileContents, err := os.ReadFile(filename)
 	if err != nil {
 		http.Error(w, "error reading file", http.StatusInternalServerError)
 		return
@@ -63,7 +64,7 @@ func PostFile(filename string, w http.ResponseWriter, r *http.Request) {
 }
 
 // ListFiles returns JSON list of filenames in a directory without extensions or path
-func ListFiles(directory string, w http.ResponseWriter, r *http.Request) {
+func ListFiles(directory string, w http.ResponseWriter) {
 	filenames, err := filepath.Glob("data/" + directory + "/*.txt")
 	if err != nil {
 		http.Error(w, "error searching for files", http.StatusInternalServerError)
@@ -77,17 +78,28 @@ func ListFiles(directory string, w http.ResponseWriter, r *http.Request) {
 	w.Write(filenamesJson)
 }
 
+// GetDay returns a day specified in URL
 func GetDay(w http.ResponseWriter, r *http.Request) {
-	// TODO: This will be different if I move away from chi
 	dayString := chi.URLParam(r, "day")
 	if dayString == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("day not specified"))
 		return
 	}
-	GetFile("day/"+dayString, w, r)
+	GetFile("day/"+dayString, w)
 }
 
+// GetToday runs GetFile with today's daily txt
+func GetToday(w http.ResponseWriter) {
+	GetFile("day/"+time.Now().Format("2006-01-02"), w)
+}
+
+// PostToday runs PostFile with today's daily txt
+func PostToday(w http.ResponseWriter, r *http.Request) {
+	PostFile("day/"+time.Now().Format("2006-01-02"), w, r)
+}
+
+// GetNote returns a note specified in URL
 func GetNote(w http.ResponseWriter, r *http.Request) {
 	noteString := chi.URLParam(r, "note")
 	if noteString == "" {
@@ -95,15 +107,16 @@ func GetNote(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("note not specified"))
 		return
 	}
-	GetFile("notes/"+noteString, w, r)
+	GetFile("notes/"+noteString, w)
 }
 
-// GetToday runs GetFile with today's daily txt
-func GetToday(w http.ResponseWriter, r *http.Request) {
-	GetFile("day/"+time.Now().Format("2006-01-02"), w, r)
-}
-
-// PostToday runs PostFile with today's daily txt
-func PostToday(w http.ResponseWriter, r *http.Request) {
-	PostFile("day/"+time.Now().Format("2006-01-02"), w, r)
+// PostNote writes request's contents to a note specified in URL
+func PostNote(w http.ResponseWriter, r *http.Request) {
+	noteString := chi.URLParam(r, "note")
+	if noteString == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("note not specified"))
+		return
+	}
+	PostFile("notes/"+noteString, w, r)
 }
