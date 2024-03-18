@@ -12,7 +12,10 @@ func Serve() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger, middleware.CleanPath, middleware.StripSlashes)
 	r.Use(basicAuth) // TODO: ..duh!
-	r.NotFound(NotFound)
+	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(404)
+		http.ServeFile(w, r, "./pages/error/404.html")
+	})
 
 	// Home page
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {

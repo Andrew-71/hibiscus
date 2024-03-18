@@ -4,11 +4,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/go-chi/chi/v5"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 // GetFile returns raw contents of a txt file in data directory
@@ -16,7 +18,7 @@ func GetFile(filename string, w http.ResponseWriter, r *http.Request) {
 	path := "data/" + filename + ".txt" // Can we and should we sanitize this?
 
 	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
-		NotFound(w, r)
+		http.Error(w, "file not found", http.StatusNotFound)
 		return
 	}
 
@@ -73,4 +75,35 @@ func ListFiles(directory string, w http.ResponseWriter, r *http.Request) {
 	}
 	filenamesJson, err := json.Marshal(filenames)
 	w.Write(filenamesJson)
+}
+
+func GetDay(w http.ResponseWriter, r *http.Request) {
+	// TODO: This will be different if I move away from chi
+	dayString := chi.URLParam(r, "day")
+	if dayString == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("day not specified"))
+		return
+	}
+	GetFile("day/"+dayString, w, r)
+}
+
+func GetNote(w http.ResponseWriter, r *http.Request) {
+	noteString := chi.URLParam(r, "note")
+	if noteString == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("note not specified"))
+		return
+	}
+	GetFile("notes/"+noteString, w, r)
+}
+
+// GetToday runs GetFile with today's daily txt
+func GetToday(w http.ResponseWriter, r *http.Request) {
+	GetFile("day/"+time.Now().Format("2006-01-02"), w, r)
+}
+
+// PostToday runs PostFile with today's daily txt
+func PostToday(w http.ResponseWriter, r *http.Request) {
+	PostFile("day/"+time.Now().Format("2006-01-02"), w, r)
 }
