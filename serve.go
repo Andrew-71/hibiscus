@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -11,7 +12,7 @@ import (
 func Serve() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger, middleware.CleanPath, middleware.StripSlashes)
-	r.Use(basicAuth) // TODO: ..duh!
+	r.Use(BasicAuth) // TODO: is this good enough?
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(404)
 		http.ServeFile(w, r, "./pages/error/404.html")
@@ -43,8 +44,8 @@ func Serve() {
 
 	// Static files
 	fs := http.FileServer(http.Dir("public"))
-	r.Handle("/public/*", http.StripPrefix("/public/", fs))
+	r.Handle("/public/", http.StripPrefix("/public/", fs))
 
 	fmt.Println("Website working on port: ", Cfg.Port)
-	_ = http.ListenAndServe(":"+strconv.Itoa(Cfg.Port), r)
+	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(Cfg.Port), r))
 }

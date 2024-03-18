@@ -26,4 +26,7 @@ data
 |       ...
 +-- log.txt
 +-- readme.txt
+
+config
++-- config.txt
 ```
