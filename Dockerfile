@@ -21,7 +21,5 @@ COPY pages pages/
 VOLUME data
 VOLUME config
 
-#USER nonroot:nonroot
-
 EXPOSE 7101
 ENTRYPOINT ["/hibiscus"]

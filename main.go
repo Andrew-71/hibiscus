@@ -1,6 +1,6 @@
 package main
 
-var Cfg, _ = LoadConfig()
+var Cfg = ConfigInit()
 
 func main() {
 	Serve()

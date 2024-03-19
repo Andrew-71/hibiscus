@@ -31,20 +31,17 @@ func (c *Config) Save() error {
 	return nil
 }
 
-func LoadConfig() (Config, error) {
-	cfg := Config{Port: 7101, Username: "admin", Password: "admin"} // Default values are declared here, I guess
-
+func (c *Config) Reload() error {
 	if _, err := os.Stat(ConfigFile); errors.Is(err, os.ErrNotExist) {
-		err := cfg.Save()
+		err := c.Save()
 		if err != nil {
-			return cfg, err
+			return err
 		}
-		return cfg, nil
+		return nil
 	}
-
 	file, err := os.Open(ConfigFile)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	defer file.Close()
 
@@ -57,19 +54,28 @@ func LoadConfig() (Config, error) {
 		key := entry[0]
 		value := entry[1]
 		if key == "username" {
-			cfg.Username = value
+			c.Username = value
 		} else if key == "password" {
-			cfg.Password = value
+			c.Password = value
 		} else if key == "port" {
 			numVal, err := strconv.Atoi(value)
 			if err == nil {
-				cfg.Port = numVal
+				c.Port = numVal
 			}
 		}
 	}
 	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
+		return err
 	}
 
-	return cfg, nil
+	return nil
+}
+
+func ConfigInit() Config {
+	cfg := Config{Port: 7101, Username: "admin", Password: "admin"} // Default values are declared here, I guess
+	err := cfg.Reload()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return cfg
 }
