@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"os"
 	"strings"
@@ -12,20 +12,27 @@ import (
 // AppendLog adds the input string to the end of the log file with a timestamp
 func appendLog(input string) error {
 	t := time.Now().Format("2006-01-02 15:04") // yyyy-mm-dd HH:MM
+	filename := "data/log.txt"
 
-	f, err := os.OpenFile("./data/log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		fmt.Println("Error opening/making file")
+		slog.Error("error opening/making file",
+			"error", err,
+			"file", filename)
 		return err
 	}
 
 	input = strings.Replace(input, "\n", "", -1) // Remove newlines to maintain structure
 	if _, err := f.Write([]byte(t + " | " + input + "\n")); err != nil {
-		fmt.Println("Error appending to the file")
+		slog.Error("error appending to file",
+			"error", err,
+			"file", filename)
 		return err
 	}
 	if err := f.Close(); err != nil {
-		fmt.Println("Error closing the file")
+		slog.Error("error closing file",
+			"error", err,
+			"file", filename)
 		return err
 	}
 	return nil

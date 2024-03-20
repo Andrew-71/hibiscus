@@ -24,3 +24,4 @@ hibiscus
 
 # Because currently it's used in "prod"
 data/
+/config/log.txt

@@ -16,10 +16,16 @@ type Config struct {
 	Username string
 	Password string
 	Port     int
+
+	TelegramToken string
+	TelegramChat  string
 }
 
 func (c *Config) Save() error {
 	output := fmt.Sprintf("port=%d\nusername=%s\npassword=%s", c.Port, c.Username, c.Password)
+	if c.TelegramToken != "" && c.TelegramChat != "" {
+		output += fmt.Sprintf("\ntg_token=%s\ntg_chat=%s", c.TelegramToken, c.TelegramChat)
+	}
 
 	f, err := os.OpenFile(ConfigFile, os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
@@ -62,6 +68,10 @@ func (c *Config) Reload() error {
 			if err == nil {
 				c.Port = numVal
 			}
+		} else if key == "tg_token" {
+			c.TelegramToken = value
+		} else if key == "tg_chat" {
+			c.TelegramChat = value
 		}
 	}
 	if err := scanner.Err(); err != nil {

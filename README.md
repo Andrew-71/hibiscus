@@ -13,6 +13,7 @@ As a result of this, it is also neither secure nor idiot-proof.
 * You can easily export everything in a zip file for backups
 
 * Everything is plain(text) and simple. No databases, encryption, OAuth, or anything fancy. Even the password is plainte- *wait is this a feature?*
+* Telegram notifications support
 
 ## Data format:
 ```

@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/go-chi/chi/v5"
 	"io"
+	"log/slog"
 	"net/http"
 	"os"
 	"path"
@@ -13,6 +13,13 @@ import (
 	"strings"
 	"time"
 )
+
+// HandleWrite checks for error in ResponseWriter.Write output
+func HandleWrite(_ int, err error) {
+	if err != nil {
+		slog.Error("error writing response", "error", err)
+	}
+}
 
 // GetFile returns raw contents of a txt file in data directory
 func GetFile(filename string, w http.ResponseWriter) {
@@ -25,6 +32,9 @@ func GetFile(filename string, w http.ResponseWriter) {
 
 	fileContents, err := os.ReadFile(filename)
 	if err != nil {
+		slog.Error("error reading file",
+			"error", err,
+			"file", filename)
 		http.Error(w, "error reading file", http.StatusInternalServerError)
 		return
 	}
@@ -41,25 +51,30 @@ func PostFile(filename string, w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("error reading body"))
+		HandleWrite(w.Write([]byte("error reading body")))
 		return
 	}
 
-	f, err := os.OpenFile("data/"+filename+".txt", os.O_CREATE|os.O_WRONLY, 0644)
+	filename = "data/" + filename + ".txt"
+	f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		fmt.Println("error opening/making file")
-		w.Write([]byte("error opening or creating file"))
+		slog.Error("error opening/making file",
+			"error", err,
+			"file", filename)
+		HandleWrite(w.Write([]byte("error opening or creating file")))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	if _, err := f.Write(body); err != nil {
-		fmt.Println("error writing to the file")
-		w.Write([]byte("error writing to file"))
+		slog.Error("error writing to file",
+			"error", err,
+			"file", filename)
+		HandleWrite(w.Write([]byte("error writing to file")))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	w.Write([]byte("wrote to file"))
+	HandleWrite(w.Write([]byte("wrote to file")))
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -75,7 +90,7 @@ func ListFiles(directory string, w http.ResponseWriter) {
 		filenames[i] = file
 	}
 	filenamesJson, err := json.Marshal(filenames)
-	w.Write(filenamesJson)
+	HandleWrite(w.Write(filenamesJson))
 }
 
 // GetDay returns a day specified in URL
@@ -83,14 +98,14 @@ func GetDay(w http.ResponseWriter, r *http.Request) {
 	dayString := chi.URLParam(r, "day")
 	if dayString == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("day not specified"))
+		HandleWrite(w.Write([]byte("day not specified")))
 		return
 	}
 	GetFile("day/"+dayString, w)
 }
 
 // GetToday runs GetFile with today's daily txt
-func GetToday(w http.ResponseWriter) {
+func GetToday(w http.ResponseWriter, _ *http.Request) {
 	GetFile("day/"+time.Now().Format("2006-01-02"), w)
 }
 
@@ -104,7 +119,7 @@ func GetNote(w http.ResponseWriter, r *http.Request) {
 	noteString := chi.URLParam(r, "note")
 	if noteString == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("note not specified"))
+		HandleWrite(w.Write([]byte("note not specified")))
 		return
 	}
 	GetFile("notes/"+noteString, w)
@@ -115,7 +130,7 @@ func PostNote(w http.ResponseWriter, r *http.Request) {
 	noteString := chi.URLParam(r, "note")
 	if noteString == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("note not specified"))
+		HandleWrite(w.Write([]byte("note not specified")))
 		return
 	}
 	PostFile("notes/"+noteString, w, r)

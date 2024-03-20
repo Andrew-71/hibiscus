@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"log"
+	"log/slog"
 	"net/http"
 	"strconv"
 )
@@ -29,17 +29,17 @@ func Serve() {
 	apiRouter.Get("/readme", func(w http.ResponseWriter, r *http.Request) { GetFile("readme", w) })
 	apiRouter.Post("/readme", func(w http.ResponseWriter, r *http.Request) { PostFile("readme", w, r) })
 	apiRouter.Get("/log", func(w http.ResponseWriter, r *http.Request) { GetFile("log", w) })
-	apiRouter.Post("/log", func(w http.ResponseWriter, r *http.Request) { PostLog(w, r) })
+	apiRouter.Post("/log", PostLog)
 
 	apiRouter.Get("/day", func(w http.ResponseWriter, r *http.Request) { ListFiles("day", w) })
-	apiRouter.Get("/day/{day}", func(w http.ResponseWriter, r *http.Request) { GetDay(w, r) })
+	apiRouter.Get("/day/{day}", GetDay)
 
 	apiRouter.Get("/notes", func(w http.ResponseWriter, r *http.Request) { ListFiles("notes", w) })
-	apiRouter.Get("/notes/{note}", func(w http.ResponseWriter, r *http.Request) { GetNote(w, r) })
-	apiRouter.Post("/notes/{note}", func(w http.ResponseWriter, r *http.Request) { PostNote(w, r) })
+	apiRouter.Get("/notes/{note}", GetNote)
+	apiRouter.Post("/notes/{note}", PostNote)
 
-	apiRouter.Get("/today", func(w http.ResponseWriter, r *http.Request) { GetToday(w) })
-	apiRouter.Post("/today", func(w http.ResponseWriter, r *http.Request) { PostToday(w, r) })
+	apiRouter.Get("/today", GetToday)
+	apiRouter.Post("/today", PostToday)
 
 	r.Mount("/api", apiRouter)
 
@@ -47,6 +47,6 @@ func Serve() {
 	fs := http.FileServer(http.Dir("public"))
 	r.Handle("/public/*", http.StripPrefix("/public/", fs))
 
-	fmt.Println("Website working on port: ", Cfg.Port)
+	slog.Info("🌺 Website working", "port", Cfg.Port)
 	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(Cfg.Port), r))
 }
