@@ -41,6 +41,8 @@ func Serve() {
 	apiRouter.Get("/today", GetToday)
 	apiRouter.Post("/today", PostToday)
 
+	apiRouter.Get("/export", GetExport)
+
 	r.Mount("/api", apiRouter)
 
 	// Static files

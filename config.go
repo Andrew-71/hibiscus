@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"reflect"
 	"strconv"
 	"strings"
 )
@@ -13,18 +14,25 @@ import (
 var ConfigFile = "config/config.txt"
 
 type Config struct {
-	Username string
-	Password string
-	Port     int
+	Username string `config:"username"`
+	Password string `config:"password"`
+	Port     int    `config:"port"`
 
-	TelegramToken string
-	TelegramChat  string
+	TelegramToken string `config:"tg_token"`
+	TelegramChat  string `config:"tg_chat"`
 }
 
 func (c *Config) Save() error {
-	output := fmt.Sprintf("port=%d\nusername=%s\npassword=%s", c.Port, c.Username, c.Password)
-	if c.TelegramToken != "" && c.TelegramChat != "" {
-		output += fmt.Sprintf("\ntg_token=%s\ntg_chat=%s", c.TelegramToken, c.TelegramChat)
+	output := ""
+
+	v := reflect.ValueOf(*c)
+	typeOfS := v.Type()
+	for i := 0; i < v.NumField(); i++ {
+		key := typeOfS.Field(i).Tag.Get("config")
+		value := v.Field(i).Interface()
+		if value != "" {
+			output += fmt.Sprintf("%s=%v\n", key, value)
+		}
 	}
 
 	f, err := os.OpenFile(ConfigFile, os.O_CREATE|os.O_WRONLY, 0644)
