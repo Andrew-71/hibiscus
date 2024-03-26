@@ -22,6 +22,9 @@ func Serve() {
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./pages/index.html")
 	})
+	r.Get("/days", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./pages/days.html")
+	})
 
 	// API =============
 	apiRouter := chi.NewRouter()

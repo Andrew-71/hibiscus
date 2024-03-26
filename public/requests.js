@@ -63,3 +63,22 @@ function loadToday() {
         }
     });
 }
+
+function loadPrevious() {
+    let daysField = document.getElementById("days")
+    daysField.innerHTML = ""
+    getData("/api/day", "").then((data) => {
+        if (data === 401) {
+            alert("Unauthorized")
+        } else if (data === 500) {
+            alert("Internal server error")
+        } else {
+            data = JSON.parse(data).reverse()  // Reverse: latest days first
+            for (let i in data) {
+                let li = document.createElement("li");
+                li.innerHTML = `<a href="/api/day/${data[i]}">${data[i]}</a>`
+                daysField.appendChild(li);
+            }
+        }
+    });
+}
