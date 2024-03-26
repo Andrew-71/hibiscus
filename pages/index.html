@@ -16,18 +16,18 @@
     </header>
     <main>
         <h2 style="margin-bottom:0;"><label for="day">Your day so far:</label></h2>
-        <textarea id="day" name="Day entry" cols="40" rows="15" style="max-width: 640px; width: 100%"></textarea>
-        <div class="grid"><button onclick="saveToday()">Save</button></div>
+        <textarea id="day" cols="40" rows="15"></textarea>
+        <button onclick="saveToday()">Save</button>
     </main>
     <footer>
         <p><a href="/">home </a> | <a href="/days">previous days</a> | <a href="/api/readme">readme.txt</a></p>
     </footer>
+
+    <script defer>
+        updateDate()
+        beginDateUpdater()
+
+        loadToday()
+    </script>
 </body>
-
-<script defer>
-    updateDate()
-    beginDateUpdater()
-
-    loadToday()
-</script>
 </html>
