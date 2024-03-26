@@ -1,7 +1,9 @@
 package main
 
 import (
+	"github.com/go-chi/chi/v5/middleware"
 	"io"
+	"log"
 	"log/slog"
 	"os"
 )
@@ -19,4 +21,7 @@ func LogInit() {
 	// No defer f.Close() because that breaks the MultiWriter
 	w := io.MultiWriter(f, os.Stdout)
 	slog.SetDefault(slog.New(slog.NewTextHandler(w, nil)))
+
+	// Make chi log to file too
+	middleware.DefaultLogger = middleware.RequestLogger(&middleware.DefaultLogFormatter{Logger: log.Default(), NoColor: true})
 }
