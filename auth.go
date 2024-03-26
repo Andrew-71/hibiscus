@@ -19,6 +19,7 @@ type failedLogin struct {
 
 var failedLogins []failedLogin
 
+// NoteLoginFail attempts to counteract bruteforce/spam attacks
 func NoteLoginFail(username string, password string, r *http.Request) {
 	slog.Warn("failed auth", "username", username, "password", password, "address", r.RemoteAddr)
 	NotifyTelegram(fmt.Sprintf("Failed auth attempt in hibiscus:\nusername=%s\npassword=%s\nremote=%s", username, password, r.RemoteAddr))

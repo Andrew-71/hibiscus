@@ -18,10 +18,10 @@
 go.work
 
 # Executable
-hibiscus
+hibiscus-txt
 
 .idea/
 
 # Because currently it's used in "prod"
 data/
-/config/log.txt
+config/log.txt

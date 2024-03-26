@@ -12,7 +12,7 @@ import (
 func Serve() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger, middleware.CleanPath, middleware.StripSlashes)
-	r.Use(BasicAuth) // TODO: is this good enough?
+	r.Use(BasicAuth) // Is this good enough? Sure hope so
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(404)
 		http.ServeFile(w, r, "./pages/error/404.html")

@@ -23,7 +23,7 @@ func Export(filename string) error {
 	defer w.Close()
 
 	walker := func(path string, info os.FileInfo, err error) error {
-		if path == filename { // Do not add export .zip itself
+		if path == filename || filepath.Ext(path) == ".zip" { //Ignore export file itself and .zip archives
 			return nil
 		}
 		slog.Debug("export crawling", "path", path)
