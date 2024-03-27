@@ -1,8 +1,17 @@
+function formatDate(date) {
+    let dateFormat = new Intl.DateTimeFormat('en', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    })
+    return dateFormat.format(Date.parse(date))
+}
+
 // Set today's date
 function updateDate() {
     let todayDate = new Date()
     let timeField = document.getElementById("today-date")
-    timeField.innerText = todayDate.toISOString().split('T')[0]
+    timeField.innerText = formatDate(todayDate.toISOString().split('T')[0])
 
 }
 
