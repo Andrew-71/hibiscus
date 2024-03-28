@@ -1,34 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
-    <link rel="stylesheet" href="/public/main.css">
-    <script src="/public/date.js"></script>
-    <script src="/public/requests.js"></script>
-
-    <title>Hibiscus.txt</title>
-</head>
-<body>
-    <header>
-        <h1>🌺 Hibiscus.txt</h1>
-        <p id="status">Today is <span id="today-date">a place</span></p>
-    </header>
-    <main>
-        <h2 style="margin-bottom:0;"><label for="day">Your day so far:</label></h2>
-        <textarea id="day" cols="40" rows="15"></textarea>
-        <button onclick="saveToday()">Save</button>
-    </main>
-    <footer>
-        <p><a href="/">home </a> | <a href="/days">previous days</a> | <a href="/api/readme">readme.txt</a></p>
-    </footer>
-
-    <script defer>
-        updateDate()
-        beginDateUpdater()
-
-        loadToday()
-    </script>
-</body>
-</html>
+{{define "main"}}
+<form method="POST">
+    <h2 style="margin-bottom:0;"><label for="day">Your day so far:</label></h2>
+    <textarea id="day" cols="40" rows="15" name="day">{{ .Day }}</textarea>
+    <button type="submit">Save</button>
+</form>
+{{end}}
