@@ -89,6 +89,7 @@ func (c *Config) Reload() error {
 	return nil
 }
 
+// ConfigInit loads config on startup
 func ConfigInit() Config {
 	cfg := Config{Port: 7101, Username: "admin", Password: "admin"} // Default values are declared here, I guess
 	err := cfg.Reload()

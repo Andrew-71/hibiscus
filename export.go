@@ -11,6 +11,7 @@ import (
 
 var ExportPath = "data/export.zip"
 
+// Export saves a .zip archive of the data folder to the passed filename
 func Export(filename string) error {
 	file, err := os.Create(filename)
 	if err != nil {

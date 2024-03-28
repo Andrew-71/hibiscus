@@ -9,6 +9,7 @@ import (
 	"strconv"
 )
 
+// Serve starts the app's web server
 func Serve() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger, middleware.CleanPath, middleware.StripSlashes)

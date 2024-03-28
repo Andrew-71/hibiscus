@@ -1,3 +1,4 @@
+// Format time in "Jan 02, 2006" format
 function formatDate(date) {
     let dateFormat = new Intl.DateTimeFormat('en', {
         year: 'numeric',
@@ -15,7 +16,7 @@ function updateDate() {
 
 }
 
-// Starts interval to update today's date every hour at 00:00
+// Start interval to update today's date every hour at 00:00
 function callEveryHour() {
     setInterval(updateDate, 1000 * 60 * 60);
 }

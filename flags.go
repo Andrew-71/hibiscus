@@ -5,6 +5,7 @@ import (
 	"log"
 )
 
+// FlagInit processes app flags
 func FlagInit() {
 	config := flag.String("config", "", "override config file")
 	username := flag.String("user", "", "override username")

@@ -37,6 +37,7 @@ func InternalError(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "./pages/error/500.html")
 }
 
+// GetToday renders HTML page for today's view
 func GetToday(w http.ResponseWriter, r *http.Request) {
 	day, err := ReadToday()
 	if err != nil {
@@ -63,6 +64,7 @@ func GetToday(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// PostToday saves today's entry from form and redirects back to GET
 func PostToday(w http.ResponseWriter, r *http.Request) {
 	err := SaveToday([]byte(r.FormValue("day")))
 	if err != nil {
@@ -71,6 +73,7 @@ func PostToday(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, r.Header.Get("Referer"), 302)
 }
 
+// GetDays renders HTML page for list of previous days
 func GetDays(w http.ResponseWriter, r *http.Request) {
 	day, err := ListFiles("day")
 	if err != nil {
@@ -104,6 +107,7 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// GetDay renders HTML page for a specific day
 func GetDay(w http.ResponseWriter, r *http.Request) {
 	dayString := chi.URLParam(r, "day")
 	if dayString == "" {
