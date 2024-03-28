@@ -82,7 +82,8 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var daysFormatted []ListEntry
-	for _, v := range day {
+	for i, _ := range day {
+		v := day[len(day)-1-i] // This is suboptimal, but reverse order is better here
 		dayString := v
 		t, err := time.Parse(time.DateOnly, v)
 		if err == nil {
