@@ -19,7 +19,7 @@ type failedLogin struct {
 
 var failedLogins []failedLogin
 
-// NoteLoginFail attempts to counteract bruteforce/spam attacks
+// NoteLoginFail attempts to log and counteract bruteforce/spam attacks
 func NoteLoginFail(username string, password string, r *http.Request) {
 	slog.Warn("failed auth", "username", username, "password", password, "address", r.RemoteAddr)
 	NotifyTelegram(fmt.Sprintf("Failed auth attempt in hibiscus:\nusername=%s\npassword=%s\nremote=%s", username, password, r.RemoteAddr))
@@ -36,7 +36,7 @@ func NoteLoginFail(username string, password string, r *http.Request) {
 	failedLogins = updatedLogins
 
 	// At least 3 failed attempts in last 100 seconds -> likely bruteforce
-	if len(failedLogins) >= 3 {
+	if len(failedLogins) >= 3 && Cfg.Scram {
 		Scram()
 	}
 }

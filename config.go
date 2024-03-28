@@ -17,6 +17,7 @@ type Config struct {
 	Username string `config:"username"`
 	Password string `config:"password"`
 	Port     int    `config:"port"`
+	Scram    bool   `config:"enable_scram"`
 
 	TelegramToken string `config:"tg_token"`
 	TelegramChat  string `config:"tg_chat"`
@@ -80,6 +81,12 @@ func (c *Config) Reload() error {
 			c.TelegramToken = value
 		} else if key == "tg_chat" {
 			c.TelegramChat = value
+		} else if key == "enable_scram" {
+			if value == "true" {
+				c.Scram = true
+			} else {
+				c.Scram = false
+			}
 		}
 	}
 	if err := scanner.Err(); err != nil {

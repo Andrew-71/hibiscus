@@ -1,3 +1,4 @@
 username=admin
 password=admin
 port=7101
+enable_scram=false
