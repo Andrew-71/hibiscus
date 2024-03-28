@@ -1,8 +1,7 @@
 # TODO
 List of things to add to this project
 
-* Make scram configurable
-* Use reflection in config loading
+* Improve config and use reflection when loading it
 * Check export function for improvements
 * Add notes to frontend?
 * More slog.Debug and a debug flag?

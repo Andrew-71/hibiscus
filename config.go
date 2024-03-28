@@ -14,10 +14,11 @@ import (
 var ConfigFile = "config/config.txt"
 
 type Config struct {
-	Username string `config:"username"`
-	Password string `config:"password"`
-	Port     int    `config:"port"`
-	Scram    bool   `config:"enable_scram"`
+	Username  string `config:"username"`
+	Password  string `config:"password"`
+	Port      int    `config:"port"`
+	LogToFile bool   `config:"log_to_file"`
+	Scram     bool   `config:"enable_scram"`
 
 	TelegramToken string `config:"tg_token"`
 	TelegramChat  string `config:"tg_chat"`
@@ -86,6 +87,12 @@ func (c *Config) Reload() error {
 				c.Scram = true
 			} else {
 				c.Scram = false
+			}
+		} else if key == "log_to_file" {
+			if value == "true" {
+				c.LogToFile = true
+			} else {
+				c.LogToFile = false
 			}
 		}
 	}
