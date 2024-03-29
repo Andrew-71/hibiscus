@@ -1,10 +1,9 @@
 {{define "header"}}
 <header>
     <h1>🌺 Hibiscus.txt</h1>
-    <p id="status">Today is <span id="today-date">a place</span></p>
+    <p>Today is <span id="today-date">a place</span></p>
 </header>
 {{end}}
-
 
 {{define "base"}}
 <!DOCTYPE html>
@@ -23,10 +22,7 @@
         {{template "main" .}}
     </main>
     {{template "footer" .}}
-    <script defer>
-        updateDate()
-        beginDateUpdater()
-    </script>
+    <script defer>updateDate();beginDateUpdater()</script>
 </body>
 </html>
 {{end}}

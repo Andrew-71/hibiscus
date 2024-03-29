@@ -1,4 +1,4 @@
 {{define "main"}}
-<h2 style="margin-bottom:0;"><label for="day">Viewing {{ .Date }}</label> | <a href="/day">Go back</a></h2>
+<h2><label for="day">{{ .Date }}</label> | <a href="/day">Go back</a></h2>
 <textarea id="day" cols="40" rows="15" readonly>{{ .Day }}</textarea>
 {{end}}

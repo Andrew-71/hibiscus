@@ -1,6 +1,6 @@
 {{define "main"}}
 <h2>{{.Title}}</h2>
-<ul id="days">
+<ul>
     {{range .Entries}}
     <li><a href="/day/{{.Link}}">{{.Name}}</a></li>
     {{end}}

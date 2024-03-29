@@ -12,8 +12,7 @@ body {
     display: flex;
     flex-direction: column;
 }
-
-/* Red links! */
+h2 { margin-bottom:12px; }
 a, a:visited { color: #f85552; }
 a:hover, a:visited:hover { color: #e66868; }
 
