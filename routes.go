@@ -89,6 +89,9 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 		if err == nil {
 			dayString = t.Format("02 Jan 2006")
 		}
+		if v == time.Now().Format(time.DateOnly) {
+			dayString = "Today"
+		}
 		daysFormatted = append(daysFormatted, ListEntry{Name: dayString, Link: v})
 	}
 
@@ -114,6 +117,10 @@ func GetDay(w http.ResponseWriter, r *http.Request) {
 	if dayString == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		HandleWrite(w.Write([]byte("day not specified")))
+		return
+	}
+	if dayString == time.Now().Format(time.DateOnly) { // today can still be edited
+		http.Redirect(w, r, "/", 302)
 		return
 	}
 	day, err := ReadFile("day/" + dayString)
