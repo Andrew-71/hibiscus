@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"errors"
 	"log/slog"
 	"os"
@@ -32,14 +33,14 @@ func ReadFile(filename string) ([]byte, error) {
 // SaveFile Writes request's contents to a file
 func SaveFile(filename string, contents []byte) error {
 	filename = "data/" + filename + ".txt"
-	f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
 	if err != nil {
 		slog.Error("error opening/making file",
 			"error", err,
 			"file", filename)
 		return err
 	}
-	if _, err := f.Write(contents); err != nil {
+	if _, err := f.Write(bytes.TrimSpace(contents)); err != nil {
 		slog.Error("error writing to file",
 			"error", err,
 			"file", filename)
