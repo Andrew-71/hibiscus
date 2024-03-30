@@ -10,19 +10,15 @@ import (
 	"time"
 )
 
-type DayData struct {
-	Day  string
-	Date string
-}
-
-type List struct {
+type EntryList struct {
 	Title   string
-	Entries []ListEntry
+	Entries []Entry
 }
 
-type ListEntry struct {
-	Name string
-	Link string
+type Entry struct {
+	Title   string
+	Content string
+	Link    string
 }
 
 // NotFound returns a user-friendly 404 error page
@@ -50,14 +46,14 @@ func GetToday(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	files := []string{"./pages/base.html", "./pages/index.html"}
+	files := []string{"./pages/base.html", "./pages/edit.html"}
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
 		InternalError(w, r)
 		return
 	}
 
-	err = ts.ExecuteTemplate(w, "base", DayData{Day: string(day)})
+	err = ts.ExecuteTemplate(w, "base", Entry{Title: "Your day so far", Content: string(day)})
 	if err != nil {
 		InternalError(w, r)
 		return
@@ -66,7 +62,7 @@ func GetToday(w http.ResponseWriter, r *http.Request) {
 
 // PostToday saves today's entry from form and redirects back to GET
 func PostToday(w http.ResponseWriter, r *http.Request) {
-	err := SaveToday([]byte(r.FormValue("day")))
+	err := SaveToday([]byte(r.FormValue("text")))
 	if err != nil {
 		slog.Error("error saving today's file", "error", err)
 	}
@@ -81,7 +77,7 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 		InternalError(w, r)
 		return
 	}
-	var daysFormatted []ListEntry
+	var daysFormatted []Entry
 	for i, _ := range day {
 		v := day[len(day)-1-i] // This is suboptimal, but reverse order is better here
 		dayString := v
@@ -92,10 +88,10 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 		if v == time.Now().Format(time.DateOnly) {
 			dayString = "Today"
 		}
-		daysFormatted = append(daysFormatted, ListEntry{Name: dayString, Link: v})
+		daysFormatted = append(daysFormatted, Entry{Title: dayString, Link: "day/" + v})
 	}
 
-	files := []string{"./pages/base.html", "./pages/days.html"}
+	files := []string{"./pages/base.html", "./pages/list.html"}
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
 		slog.Error("Error parsing template files", "error", err)
@@ -103,7 +99,7 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = ts.ExecuteTemplate(w, "base", List{Title: "Previous days", Entries: daysFormatted})
+	err = ts.ExecuteTemplate(w, "base", EntryList{Title: "Previous days", Entries: daysFormatted})
 	if err != nil {
 		slog.Error("Error executing template", "error", err)
 		InternalError(w, r)
@@ -130,7 +126,7 @@ func GetDay(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	files := []string{"./pages/base.html", "./pages/day.html"}
+	files := []string{"./pages/base.html", "./pages/entry.html"}
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
 		InternalError(w, r)
@@ -142,7 +138,7 @@ func GetDay(w http.ResponseWriter, r *http.Request) {
 		dayString = t.Format("02 Jan 2006")
 	}
 
-	err = ts.ExecuteTemplate(w, "base", DayData{Day: string(day), Date: dayString})
+	err = ts.ExecuteTemplate(w, "base", Entry{Content: string(day), Title: dayString})
 	if err != nil {
 		InternalError(w, r)
 		return
