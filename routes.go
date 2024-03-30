@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -33,7 +34,7 @@ func InternalError(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "./pages/error/500.html")
 }
 
-// GetToday renders HTML page for today's view
+// GetToday renders HTML page for today's entry
 func GetToday(w http.ResponseWriter, r *http.Request) {
 	day, err := ReadToday()
 	if err != nil {
@@ -69,16 +70,16 @@ func PostToday(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, r.Header.Get("Referer"), 302)
 }
 
-// GetDays renders HTML page for list of previous days
+// GetDays renders HTML list of previous days' entries
 func GetDays(w http.ResponseWriter, r *http.Request) {
 	day, err := ListFiles("day")
 	if err != nil {
-		slog.Error("error reading today's file", "error", err)
+		slog.Error("error reading file list", "directory", "day", "error", err)
 		InternalError(w, r)
 		return
 	}
 	var daysFormatted []Entry
-	for i, _ := range day {
+	for i := range day {
 		v := day[len(day)-1-i] // This is suboptimal, but reverse order is better here
 		dayString := v
 		t, err := time.Parse(time.DateOnly, v)
@@ -94,20 +95,20 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 	files := []string{"./pages/base.html", "./pages/list.html"}
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
-		slog.Error("Error parsing template files", "error", err)
+		slog.Error("error parsing template files", "error", err)
 		InternalError(w, r)
 		return
 	}
 
 	err = ts.ExecuteTemplate(w, "base", EntryList{Title: "Previous days", Entries: daysFormatted})
 	if err != nil {
-		slog.Error("Error executing template", "error", err)
+		slog.Error("error executing template", "error", err)
 		InternalError(w, r)
 		return
 	}
 }
 
-// GetDay renders HTML page for a specific day
+// GetDay renders HTML page for a specific day entry
 func GetDay(w http.ResponseWriter, r *http.Request) {
 	dayString := chi.URLParam(r, "day")
 	if dayString == "" {
@@ -143,4 +144,82 @@ func GetDay(w http.ResponseWriter, r *http.Request) {
 		InternalError(w, r)
 		return
 	}
+}
+
+// GetNotes renders HTML list of all notes
+func GetNotes(w http.ResponseWriter, r *http.Request) {
+	notes, err := ListFiles("notes")
+	if err != nil {
+		slog.Error("error reading file list", "directory", "notes", "error", err)
+		InternalError(w, r)
+		return
+	}
+	var notesFormatted []Entry
+	for _, v := range notes {
+		titleString := strings.Replace(v, "-", " ", -1) // FIXME: what if I need a hyphen?
+		notesFormatted = append(notesFormatted, Entry{Title: titleString, Link: "notes/" + v})
+	}
+
+	files := []string{"./pages/base.html", "./pages/list.html"}
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		slog.Error("error parsing template files", "error", err)
+		InternalError(w, r)
+		return
+	}
+
+	err = ts.ExecuteTemplate(w, "base", EntryList{Title: "Notes", Entries: notesFormatted})
+	if err != nil {
+		slog.Error("error executing template", "error", err)
+		InternalError(w, r)
+		return
+	}
+}
+
+// GetNote renders HTML page for a note
+func GetNote(w http.ResponseWriter, r *http.Request) {
+	noteString := chi.URLParam(r, "note")
+	if noteString == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		HandleWrite(w.Write([]byte("note not specified")))
+		return
+	}
+	note, err := ReadFile("notes/" + noteString)
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			note = []byte("")
+		} else {
+			slog.Error("error reading note's file", "error", err)
+			InternalError(w, r)
+			return
+		}
+	}
+
+	files := []string{"./pages/base.html", "./pages/edit.html"}
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		InternalError(w, r)
+		return
+	}
+
+	err = ts.ExecuteTemplate(w, "base", Entry{Title: noteString, Content: string(note)})
+	if err != nil {
+		InternalError(w, r)
+		return
+	}
+}
+
+// PostNote saves a note form and redirects back to GET
+func PostNote(w http.ResponseWriter, r *http.Request) {
+	noteString := chi.URLParam(r, "note")
+	if noteString == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		HandleWrite(w.Write([]byte("note not specified")))
+		return
+	}
+	err := SaveFile("notes/"+noteString, []byte(r.FormValue("text")))
+	if err != nil {
+		slog.Error("error saving a note", "note", noteString, "error", err)
+	}
+	http.Redirect(w, r, r.Header.Get("Referer"), 302)
 }

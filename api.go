@@ -86,8 +86,8 @@ func PostTodayApi(w http.ResponseWriter, r *http.Request) {
 	PostFile("day/"+time.Now().Format(time.DateOnly), w, r)
 }
 
-// GetNote returns contents of a note specified in URL
-func GetNote(w http.ResponseWriter, r *http.Request) {
+// GetNoteApi returns contents of a note specified in URL
+func GetNoteApi(w http.ResponseWriter, r *http.Request) {
 	noteString := chi.URLParam(r, "note")
 	if noteString == "" {
 		w.WriteHeader(http.StatusBadRequest)
@@ -97,8 +97,8 @@ func GetNote(w http.ResponseWriter, r *http.Request) {
 	GetFile("notes/"+noteString, w)
 }
 
-// PostNote writes request's body contents to a note specified in URL
-func PostNote(w http.ResponseWriter, r *http.Request) {
+// PostNoteApi writes request's body contents to a note specified in URL
+func PostNoteApi(w http.ResponseWriter, r *http.Request) {
 	noteString := chi.URLParam(r, "note")
 	if noteString == "" {
 		w.WriteHeader(http.StatusBadRequest)

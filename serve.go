@@ -21,6 +21,9 @@ func Serve() {
 	r.Post("/", PostToday)
 	r.Get("/day", GetDays)
 	r.Get("/day/{day}", GetDay)
+	r.Get("/notes", GetNotes)
+	r.Get("/notes/{note}", GetNote)
+	r.Post("/notes/{note}", PostNote)
 
 	// API =============
 	apiRouter := chi.NewRouter()
@@ -29,8 +32,8 @@ func Serve() {
 	apiRouter.Get("/day", func(w http.ResponseWriter, r *http.Request) { GetFileList("day", w) })
 	apiRouter.Get("/day/{day}", GetDayApi)
 	apiRouter.Get("/notes", func(w http.ResponseWriter, r *http.Request) { GetFileList("notes", w) })
-	apiRouter.Get("/notes/{note}", GetNote)
-	apiRouter.Post("/notes/{note}", PostNote)
+	apiRouter.Get("/notes/{note}", GetNoteApi)
+	apiRouter.Post("/notes/{note}", PostNoteApi)
 	apiRouter.Get("/today", GetTodayApi)
 	apiRouter.Post("/today", PostTodayApi)
 	apiRouter.Get("/export", GetExport)
