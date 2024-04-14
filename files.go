@@ -64,10 +64,10 @@ func ListFiles(directory string) ([]string, error) {
 
 // ReadToday runs ReadFile with today's date as filename
 func ReadToday() ([]byte, error) {
-	return ReadFile("day/" + time.Now().Format(time.DateOnly))
+	return ReadFile("day/" + time.Now().In(Cfg.Timezone).Format(time.DateOnly))
 }
 
 // SaveToday runs SaveFile with today's date as filename
 func SaveToday(contents []byte) error {
-	return SaveFile("day/"+time.Now().Format(time.DateOnly), contents)
+	return SaveFile("day/"+time.Now().In(Cfg.Timezone).Format(time.DateOnly), contents)
 }

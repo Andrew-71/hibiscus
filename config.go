@@ -9,16 +9,18 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var ConfigFile = "config/config.txt"
 
 type Config struct {
-	Username  string `config:"username"`
-	Password  string `config:"password"`
-	Port      int    `config:"port"`
-	LogToFile bool   `config:"log_to_file"`
-	Scram     bool   `config:"enable_scram"`
+	Username  string         `config:"username"`
+	Password  string         `config:"password"`
+	Port      int            `config:"port"`
+	Timezone  *time.Location `config:"timezone"`
+	LogToFile bool           `config:"log_to_file"`
+	Scram     bool           `config:"enable_scram"`
 
 	TelegramToken string `config:"tg_token"`
 	TelegramChat  string `config:"tg_chat"`
@@ -78,6 +80,13 @@ func (c *Config) Reload() error {
 			if err == nil {
 				c.Port = numVal
 			}
+		} else if key == "timezone" {
+			loc, err := time.LoadLocation(value)
+			if err != nil {
+				c.Timezone = time.UTC
+			} else {
+				c.Timezone = loc
+			}
 		} else if key == "tg_token" {
 			c.TelegramToken = value
 		} else if key == "tg_chat" {
@@ -105,7 +114,7 @@ func (c *Config) Reload() error {
 
 // ConfigInit loads config on startup
 func ConfigInit() Config {
-	cfg := Config{Port: 7101, Username: "admin", Password: "admin"} // Default values are declared here, I guess
+	cfg := Config{Port: 7101, Username: "admin", Password: "admin", Timezone: time.UTC} // Default values are declared here, I guess
 	err := cfg.Reload()
 	if err != nil {
 		log.Fatal(err)
