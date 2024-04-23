@@ -11,4 +11,5 @@ List of things to add to this project
 * Customise log file
 * More slog.Debug and a debug flag?
 * Consider less clunky auth method
+* Consider localisation
 * *Go* dependency-less? <-- this is a terrible idea

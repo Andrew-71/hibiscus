@@ -1,6 +1,6 @@
 username=admin
 password=admin
 port=7101
-timezone=UTC
+timezone=Local
 log_to_file=false
 enable_scram=false

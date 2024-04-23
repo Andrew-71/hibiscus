@@ -46,7 +46,7 @@ they are provided purely for demonstration only and **will break the config if p
 username=admin  # Your username
 password=admin  # Your password
 port=7101  # What port to run on (probably leave on 7101 if using docker)
-timezone=UTC    # IANA Time zone database identifier ("UTC", Local", "Europe/Moscow" etc.), Defaults to UTC if can't parse.
+timezone=Local    # IANA Time zone database identifier ("UTC", Local", "Europe/Moscow" etc.), Defaults to Local if can't parse.
 log_to_file=false   # Whether to write logs to a file (located in <config-dir>/log.txt)
 enable_scram=false  # Whether the app should shut down if there are 3 or more failed login attempts within 100 seconds
 

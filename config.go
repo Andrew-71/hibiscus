@@ -83,7 +83,7 @@ func (c *Config) Reload() error {
 		} else if key == "timezone" {
 			loc, err := time.LoadLocation(value)
 			if err != nil {
-				c.Timezone = time.UTC
+				c.Timezone = time.Local
 			} else {
 				c.Timezone = loc
 			}
@@ -114,7 +114,7 @@ func (c *Config) Reload() error {
 
 // ConfigInit loads config on startup
 func ConfigInit() Config {
-	cfg := Config{Port: 7101, Username: "admin", Password: "admin", Timezone: time.UTC} // Default values are declared here, I guess
+	cfg := Config{Port: 7101, Username: "admin", Password: "admin", Timezone: time.Local} // Default values are declared here, I guess
 	err := cfg.Reload()
 	if err != nil {
 		log.Fatal(err)
