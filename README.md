@@ -7,7 +7,7 @@ As a result, I can't guarantee that it's either secure or stable.
 
 ## Features:
 * Each day, you get a text file. You have until 23:59 of that very day to finalise it.
-* You can save named notes to document milestones, big events, or just a nice game you played this month*
+* You can save named notes to document milestones, big events, or just a nice game you played this month
 * There is also a readme.txt file (just like this one, except you get to write it!)*
 * You can easily export entire `data` dir in a `.zip` archive for backups
 
