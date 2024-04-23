@@ -12,8 +12,9 @@ import (
 )
 
 type EntryList struct {
-	Title   string
-	Entries []Entry
+	Title       string
+	Description string
+	Entries     []Entry
 }
 
 type Entry struct {
@@ -21,6 +22,8 @@ type Entry struct {
 	Content string
 	Link    string
 }
+
+type formatEntries func([]string) []Entry
 
 // NotFound returns a user-friendly 404 error page
 func NotFound(w http.ResponseWriter, r *http.Request) {
@@ -70,27 +73,15 @@ func PostToday(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, r.Header.Get("Referer"), 302)
 }
 
-// GetDays renders HTML list of previous days' entries
-func GetDays(w http.ResponseWriter, r *http.Request) {
-	day, err := ListFiles("day")
+// GetEntries is a generic HTML renderer for a list
+func GetEntries(w http.ResponseWriter, r *http.Request, title string, description string, dir string, format formatEntries) {
+	filesList, err := ListFiles(dir)
 	if err != nil {
-		slog.Error("error reading file list", "directory", "day", "error", err)
+		slog.Error("error reading file list", "directory", dir, "error", err)
 		InternalError(w, r)
 		return
 	}
-	var daysFormatted []Entry
-	for i := range day {
-		v := day[len(day)-1-i] // This is suboptimal, but reverse order is better here
-		dayString := v
-		t, err := time.Parse(time.DateOnly, v)
-		if err == nil {
-			dayString = t.Format("02 Jan 2006")
-		}
-		if v == time.Now().Format(time.DateOnly) {
-			dayString = "Today"
-		}
-		daysFormatted = append(daysFormatted, Entry{Title: dayString, Link: "day/" + v})
-	}
+	var filesFormatted = format(filesList)
 
 	files := []string{"./pages/base.html", "./pages/list.html"}
 	ts, err := template.ParseFiles(files...)
@@ -100,12 +91,44 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = ts.ExecuteTemplate(w, "base", EntryList{Title: "Previous days", Entries: daysFormatted})
+	err = ts.ExecuteTemplate(w, "base", EntryList{Title: title, Description: description, Entries: filesFormatted})
 	if err != nil {
 		slog.Error("error executing template", "error", err)
 		InternalError(w, r)
 		return
 	}
+}
+
+// GetDays renders HTML list of previous days' entries
+func GetDays(w http.ResponseWriter, r *http.Request) {
+	GetEntries(w, r, "Previous days", "", "day", func(files []string) []Entry {
+		var filesFormatted []Entry
+		for i := range files {
+			v := files[len(files)-1-i] // This is suboptimal, but reverse order is better here
+			dayString := v
+			t, err := time.Parse(time.DateOnly, v)
+			if err == nil {
+				dayString = t.Format("02 Jan 2006")
+			}
+			if v == time.Now().Format(time.DateOnly) {
+				dayString = "Today"
+			}
+			filesFormatted = append(filesFormatted, Entry{Title: dayString, Link: "day/" + v})
+		}
+		return filesFormatted
+	})
+}
+
+// GetNotes renders HTML list of all notes
+func GetNotes(w http.ResponseWriter, r *http.Request) {
+	GetEntries(w, r, "Notes", "/notes/<name> for a new note", "notes", func(files []string) []Entry {
+		var filesFormatted []Entry
+		for _, v := range files {
+			titleString := strings.Replace(v, "-", " ", -1) // FIXME: what if I need a hyphen?
+			filesFormatted = append(filesFormatted, Entry{Title: titleString, Link: "notes/" + v})
+		}
+		return filesFormatted
+	})
 }
 
 // GetDay renders HTML page for a specific day entry
@@ -141,36 +164,6 @@ func GetDay(w http.ResponseWriter, r *http.Request) {
 
 	err = ts.ExecuteTemplate(w, "base", Entry{Content: string(day), Title: dayString})
 	if err != nil {
-		InternalError(w, r)
-		return
-	}
-}
-
-// GetNotes renders HTML list of all notes
-func GetNotes(w http.ResponseWriter, r *http.Request) {
-	notes, err := ListFiles("notes")
-	if err != nil {
-		slog.Error("error reading file list", "directory", "notes", "error", err)
-		InternalError(w, r)
-		return
-	}
-	var notesFormatted []Entry
-	for _, v := range notes {
-		titleString := strings.Replace(v, "-", " ", -1) // FIXME: what if I need a hyphen?
-		notesFormatted = append(notesFormatted, Entry{Title: titleString, Link: "notes/" + v})
-	}
-
-	files := []string{"./pages/base.html", "./pages/list.html"}
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		slog.Error("error parsing template files", "error", err)
-		InternalError(w, r)
-		return
-	}
-
-	err = ts.ExecuteTemplate(w, "base", EntryList{Title: "Notes", Entries: notesFormatted})
-	if err != nil {
-		slog.Error("error executing template", "error", err)
 		InternalError(w, r)
 		return
 	}

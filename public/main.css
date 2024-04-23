@@ -1,7 +1,6 @@
 body {
     color: #454545;
     background-color: #f5f0e1;
-    font-size: 16px;
     margin: 2em auto;
     max-width: 640px;
     padding: 1em;
@@ -12,9 +11,12 @@ body {
     display: flex;
     flex-direction: column;
 }
-h2 { margin-bottom:12px; }
 a, a:visited { color: #f85552; }
 a:hover, a:visited:hover { color: #e66868; }
+
+h2 { margin-bottom:12px; }
+.list-title { margin-bottom: 0}
+.list-desc { margin-top: 0 }
 
 textarea, input {
     background: #f5f2ee;
