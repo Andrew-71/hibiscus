@@ -32,7 +32,15 @@ func ReadFile(filename string) ([]byte, error) {
 
 // SaveFile Writes request's contents to a file
 func SaveFile(filename string, contents []byte) error {
+	contents = bytes.TrimSpace(contents)
 	filename = "data/" + filename + ".txt"
+	if len(contents) == 0 { // Delete empty files
+		err := os.Remove(filename)
+		slog.Error("error deleting empty file",
+			"error", err,
+			"file", filename)
+		return err
+	}
 	f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
 	if err != nil {
 		slog.Error("error opening/making file",
@@ -40,7 +48,7 @@ func SaveFile(filename string, contents []byte) error {
 			"file", filename)
 		return err
 	}
-	if _, err := f.Write(bytes.TrimSpace(contents)); err != nil {
+	if _, err := f.Write(contents); err != nil {
 		slog.Error("error writing to file",
 			"error", err,
 			"file", filename)

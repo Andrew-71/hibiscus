@@ -131,6 +131,37 @@ func GetNotes(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func GetEntry(w http.ResponseWriter, r *http.Request, title string, filename string, editable bool) {
+	entry, err := ReadFile(filename)
+	if err != nil {
+		if editable && errors.Is(err, os.ErrNotExist) {
+			entry = []byte("")
+		} else {
+			slog.Error("error reading entry file", "error", err, "file", filename)
+			InternalError(w, r)
+			return
+		}
+	}
+
+	files := []string{"./pages/base.html"}
+	if editable {
+		files = append(files, "./pages/edit.html")
+	} else {
+		files = append(files, "./pages/entry.html")
+	}
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		InternalError(w, r)
+		return
+	}
+
+	err = ts.ExecuteTemplate(w, "base", Entry{Title: title, Content: string(entry)})
+	if err != nil {
+		InternalError(w, r)
+		return
+	}
+}
+
 // GetDay renders HTML page for a specific day entry
 func GetDay(w http.ResponseWriter, r *http.Request) {
 	dayString := chi.URLParam(r, "day")
@@ -139,34 +170,18 @@ func GetDay(w http.ResponseWriter, r *http.Request) {
 		HandleWrite(w.Write([]byte("day not specified")))
 		return
 	}
-	if dayString == time.Now().Format(time.DateOnly) { // today can still be edited
+	if dayString == time.Now().Format(time.DateOnly) { // Today can still be edited
 		http.Redirect(w, r, "/", 302)
 		return
 	}
-	day, err := ReadFile("day/" + dayString)
-	if err != nil {
-		slog.Error("error reading day's file", "error", err, "day", dayString)
-		InternalError(w, r)
-		return
-	}
 
-	files := []string{"./pages/base.html", "./pages/entry.html"}
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		InternalError(w, r)
-		return
-	}
-
+	title := dayString
 	t, err := time.Parse(time.DateOnly, dayString)
 	if err == nil { // This is low priority so silently fail
-		dayString = t.Format("02 Jan 2006")
+		title = t.Format("02 Jan 2006")
 	}
 
-	err = ts.ExecuteTemplate(w, "base", Entry{Content: string(day), Title: dayString})
-	if err != nil {
-		InternalError(w, r)
-		return
-	}
+	GetEntry(w, r, title, "day/"+dayString, false)
 }
 
 // GetNote renders HTML page for a note
@@ -177,29 +192,8 @@ func GetNote(w http.ResponseWriter, r *http.Request) {
 		HandleWrite(w.Write([]byte("note not specified")))
 		return
 	}
-	note, err := ReadFile("notes/" + noteString)
-	if err != nil {
-		if errors.Is(err, os.ErrNotExist) {
-			note = []byte("")
-		} else {
-			slog.Error("error reading note's file", "error", err)
-			InternalError(w, r)
-			return
-		}
-	}
 
-	files := []string{"./pages/base.html", "./pages/edit.html"}
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		InternalError(w, r)
-		return
-	}
-
-	err = ts.ExecuteTemplate(w, "base", Entry{Title: noteString, Content: string(note)})
-	if err != nil {
-		InternalError(w, r)
-		return
-	}
+	GetEntry(w, r, noteString, "notes/"+noteString, true)
 }
 
 // PostNote saves a note form and redirects back to GET

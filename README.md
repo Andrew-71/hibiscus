@@ -57,7 +57,7 @@ tg_chat=chatid
 
 ### Docker deployment:
 Due to project's simplicity ~~and me rarely using them~~ there are no image tags, I just use `latest` and push to it.
-The [package](https://git.a71.su/Andrew71/hibiscus/packages) provided in this repository is for ` linux/amd64` architecture,
+The [package](https://git.a71.su/Andrew71/hibiscus/packages) provided in this repository is for `linux/amd64` architecture,
 and there is a [Dockerfile](./Dockerfile) in case you want to compile for something rarer (like a Pi). Below is `compose.yml` that I personally use:
 ```yaml
 version: "3.8"
