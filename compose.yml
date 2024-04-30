@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  hibiscus:
+    image: git.a71.su/andrew71/hibiscus:latest
+    container_name: hibiscus
+    restart: unless-stopped
+    ports:
+      - "7101:7101"
+    volumes:
+      - ./path-to-config:/config
+      - ./path-to-data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro

@@ -58,19 +58,8 @@ tg_chat=chatid
 ### Docker deployment:
 Due to project's simplicity ~~and me rarely using them~~ there are no image tags, I just use `latest` and push to it.
 The [package](https://git.a71.su/Andrew71/hibiscus/packages) provided in this repository is for `linux/amd64` architecture,
-and there is a [Dockerfile](./Dockerfile) in case you want to compile for something rarer (like a Pi). Below is `compose.yml` that I personally use:
-```yaml
-version: "3.8"
-services:
-  hibiscus:
-    image: git.a71.su/andrew71/hibiscus:latest
-    restart: unless-stopped
-    ports:
-      - "7101:7101"
-    volumes:
-      - path-to-config-dir/config:/config
-      - path-to-data-dir/data:/data
-```
+and there is a [Dockerfile](./Dockerfile) in case you want to compile for something rarer (like a Pi).
+This repo contains the [compose.yml](./compose.yml) that I personally use.
 
 ### Executable flags
 If you for some reason decide to run plain executable instead of docker, it supports following flags:

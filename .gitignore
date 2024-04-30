@@ -17,11 +17,12 @@
 # Go workspace file
 go.work
 
+# GoLand files
+.idea/
+
 # Executable
 hibiscus-txt
 
-.idea/
-
-# Because currently it's used in "prod"
+# Testing data
 data/
 config/log.txt
