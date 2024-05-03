@@ -15,16 +15,16 @@ import (
 var ConfigFile = "config/config.txt"
 
 type Config struct {
-	Username  string         `config:"username"`
-	Password  string         `config:"password"`
-	Port      int            `config:"port"`
-	Timezone  *time.Location `config:"timezone"`
-	Language  string         `config:"language"`
-	LogToFile bool           `config:"log_to_file"`
-	Scram     bool           `config:"enable_scram"`
+	Username  string         `config:"username" type:"string"`
+	Password  string         `config:"password" type:"string"`
+	Port      int            `config:"port" type:"int"`
+	Timezone  *time.Location `config:"timezone" type:"location"`
+	Language  string         `config:"language" type:"string"`
+	LogToFile bool           `config:"log_to_file" type:"bool"`
+	Scram     bool           `config:"enable_scram" type:"bool"`
 
-	TelegramToken string `config:"tg_token"`
-	TelegramChat  string `config:"tg_chat"`
+	TelegramToken string `config:"tg_token" type:"string"`
+	TelegramChat  string `config:"tg_chat" type:"string"`
 }
 
 func (c *Config) Save() error {
@@ -64,60 +64,63 @@ func (c *Config) Reload() error {
 	}
 	defer file.Close()
 
+	options := map[string]string{}
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		entry := strings.Split(strings.Replace(scanner.Text(), " ", "", -1), "=")
 		if len(entry) != 2 {
 			continue
 		}
-		key := entry[0]
-		value := entry[1]
-		if key == "username" {
-			c.Username = value
-		} else if key == "password" {
-			c.Password = value
-		} else if key == "port" {
-			numVal, err := strconv.Atoi(value)
-			if err == nil {
-				c.Port = numVal
-			}
-		} else if key == "timezone" {
-			loc, err := time.LoadLocation(value)
-			if err != nil {
-				c.Timezone = time.Local
-			} else {
-				c.Timezone = loc
-			}
-		} else if key == "language" {
-			c.Language = value
-		} else if key == "tg_token" {
-			c.TelegramToken = value
-		} else if key == "tg_chat" {
-			c.TelegramChat = value
-		} else if key == "enable_scram" {
-			if value == "true" {
-				c.Scram = true
-			} else {
-				c.Scram = false
-			}
-		} else if key == "log_to_file" {
-			if value == "true" {
-				c.LogToFile = true
-			} else {
-				c.LogToFile = false
-			}
-		}
+		options[entry[0]] = entry[1]
 	}
 	if err := scanner.Err(); err != nil {
 		return err
 	}
 
-	return LoadLanguage(c.Language) // (Load selected language
+	timezone := "Local" // Timezone is handled separately because reflection
+	refStruct := reflect.ValueOf(*c)
+	refElem := reflect.ValueOf(&c).Elem()
+	typeOfS := refStruct.Type()
+	for i := 0; i < refStruct.NumField(); i++ {
+		fieldElem := reflect.Indirect(refElem).Field(i)
+		key := typeOfS.Field(i).Tag.Get("config")
+		if v, ok := options[key]; ok && fieldElem.CanSet() {
+			switch typeOfS.Field(i).Tag.Get("type") {
+			case "int":
+				{
+					numVal, err := strconv.Atoi(v)
+					if err == nil {
+						fieldElem.SetInt(int64(numVal))
+					}
+				}
+			case "bool":
+				{
+					if v == "true" {
+						fieldElem.SetBool(true)
+					} else {
+						fieldElem.SetBool(false)
+					}
+				}
+			case "location":
+				timezone = v
+			default:
+				fieldElem.SetString(v)
+			}
+		}
+	}
+	loc, err := time.LoadLocation(timezone)
+	if err != nil {
+		c.Timezone = time.Local
+	} else {
+		c.Timezone = loc
+	}
+
+	return LoadLanguage(c.Language) // Load selected language
 }
 
 // ConfigInit loads config on startup
 func ConfigInit() Config {
-	cfg := Config{Port: 7101, Username: "admin", Password: "admin", Timezone: time.Local, Language: "en"} // Default values are declared here, I guess
+	cfg := Config{Port: 7101, Username: "admin", Password: "admin", Timezone: time.Local, Language: "en"} // Some defaults are declared here
 	err := cfg.Reload()
 	if err != nil {
 		log.Fatal(err)
