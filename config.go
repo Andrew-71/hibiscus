@@ -19,6 +19,7 @@ type Config struct {
 	Password  string         `config:"password"`
 	Port      int            `config:"port"`
 	Timezone  *time.Location `config:"timezone"`
+	Language  string         `config:"language"`
 	LogToFile bool           `config:"log_to_file"`
 	Scram     bool           `config:"enable_scram"`
 
@@ -87,6 +88,8 @@ func (c *Config) Reload() error {
 			} else {
 				c.Timezone = loc
 			}
+		} else if key == "language" {
+			c.Language = value
 		} else if key == "tg_token" {
 			c.TelegramToken = value
 		} else if key == "tg_chat" {
@@ -109,12 +112,12 @@ func (c *Config) Reload() error {
 		return err
 	}
 
-	return nil
+	return LoadLanguage(c.Language) // (Load selected language
 }
 
 // ConfigInit loads config on startup
 func ConfigInit() Config {
-	cfg := Config{Port: 7101, Username: "admin", Password: "admin", Timezone: time.Local} // Default values are declared here, I guess
+	cfg := Config{Port: 7101, Username: "admin", Password: "admin", Timezone: time.Local, Language: "en"} // Default values are declared here, I guess
 	err := cfg.Reload()
 	if err != nil {
 		log.Fatal(err)

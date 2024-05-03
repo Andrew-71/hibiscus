@@ -1,0 +1,15 @@
+{
+  "lang": "ru",
+
+  "title.today": "Сегодняшний день",
+  "title.days": "Предыдущие дни",
+  "title.notes": "Заметки",
+
+  "link.today": "сегодня",
+  "link.days": "раньше",
+  "link.notes": "заметки",
+
+  "description.notes": "/notes/<название> для новой заметки",
+  "misc.date": "Сегодня",
+  "button.save": "Сохранить"
+}

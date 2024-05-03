@@ -25,6 +25,11 @@ type Entry struct {
 
 type formatEntries func([]string) []Entry
 
+var templateFuncs = map[string]interface{}{"translatableText": TranslatableText}
+var editTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/edit.html"))
+var viewTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/entry.html"))
+var listTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/list.html"))
+
 // NotFound returns a user-friendly 404 error page
 func NotFound(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(404)
@@ -50,15 +55,9 @@ func GetToday(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	files := []string{"./pages/base.html", "./pages/edit.html"}
-	ts, err := template.ParseFiles(files...)
+	err = editTemplate.ExecuteTemplate(w, "base", Entry{Title: TranslatableText("title.today"), Content: string(day)})
 	if err != nil {
-		InternalError(w, r)
-		return
-	}
-
-	err = ts.ExecuteTemplate(w, "base", Entry{Title: "Your day so far", Content: string(day)})
-	if err != nil {
+		slog.Error("error executing template", "error", err)
 		InternalError(w, r)
 		return
 	}
@@ -83,15 +82,7 @@ func GetEntries(w http.ResponseWriter, r *http.Request, title string, descriptio
 	}
 	var filesFormatted = format(filesList)
 
-	files := []string{"./pages/base.html", "./pages/list.html"}
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		slog.Error("error parsing template files", "error", err)
-		InternalError(w, r)
-		return
-	}
-
-	err = ts.ExecuteTemplate(w, "base", EntryList{Title: title, Description: description, Entries: filesFormatted})
+	err = listTemplate.ExecuteTemplate(w, "base", EntryList{Title: title, Description: description, Entries: filesFormatted})
 	if err != nil {
 		slog.Error("error executing template", "error", err)
 		InternalError(w, r)
@@ -101,7 +92,7 @@ func GetEntries(w http.ResponseWriter, r *http.Request, title string, descriptio
 
 // GetDays renders HTML list of previous days' entries
 func GetDays(w http.ResponseWriter, r *http.Request) {
-	GetEntries(w, r, "Previous days", "", "day", func(files []string) []Entry {
+	GetEntries(w, r, TranslatableText("title.days"), "", "day", func(files []string) []Entry {
 		var filesFormatted []Entry
 		for i := range files {
 			v := files[len(files)-1-i] // This is suboptimal, but reverse order is better here
@@ -111,7 +102,10 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 				dayString = t.Format("02 Jan 2006")
 			}
 			if v == time.Now().Format(time.DateOnly) {
-				dayString = "Today"
+				// Fancy text for today
+				// This looks bad, but strings.Title is deprecated, and I'm not importing a golang.org/x package for this...
+				dayString = TranslatableText("link.today")
+				dayString = strings.ToTitle(string([]rune(dayString)[0])) + string([]rune(dayString)[1:])
 			}
 			filesFormatted = append(filesFormatted, Entry{Title: dayString, Link: "day/" + v})
 		}
@@ -121,7 +115,7 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 
 // GetNotes renders HTML list of all notes
 func GetNotes(w http.ResponseWriter, r *http.Request) {
-	GetEntries(w, r, "Notes", "/notes/<name> for a new note", "notes", func(files []string) []Entry {
+	GetEntries(w, r, TranslatableText("title.notes"), TranslatableText("description.notes"), "notes", func(files []string) []Entry {
 		var filesFormatted []Entry
 		for _, v := range files {
 			titleString := strings.Replace(v, "-", " ", -1) // FIXME: what if I need a hyphen?
@@ -149,13 +143,12 @@ func GetEntry(w http.ResponseWriter, r *http.Request, title string, filename str
 	} else {
 		files = append(files, "./pages/entry.html")
 	}
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		InternalError(w, r)
-		return
-	}
 
-	err = ts.ExecuteTemplate(w, "base", Entry{Title: title, Content: string(entry)})
+	if editable {
+		err = editTemplate.ExecuteTemplate(w, "base", Entry{Title: title, Content: string(entry)})
+	} else {
+		err = viewTemplate.ExecuteTemplate(w, "base", Entry{Title: title, Content: string(entry)})
+	}
 	if err != nil {
 		InternalError(w, r)
 		return

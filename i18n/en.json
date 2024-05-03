@@ -1,0 +1,15 @@
+{
+  "lang": "en",
+
+  "title.today": "Your day so far",
+  "title.days": "Previous days",
+  "title.notes": "Notes",
+
+  "link.today": "today",
+  "link.days": "previous days",
+  "link.notes": "notes",
+
+  "description.notes": "/notes/<name> for a new note",
+  "misc.date": "Today is",
+  "button.save": "Save"
+}
