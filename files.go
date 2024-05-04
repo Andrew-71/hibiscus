@@ -41,6 +41,11 @@ func SaveFile(filename string, contents []byte) error {
 			"file", filename)
 		return err
 	}
+	err := os.MkdirAll(path.Dir(filename), 0755) // Create dir in case it doesn't exist yet to avoid errors
+	if err != nil {
+		slog.Error("error creating directory", "error", err, "file", filename)
+		return err
+	}
 	f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
 	if err != nil {
 		slog.Error("error opening/making file",
