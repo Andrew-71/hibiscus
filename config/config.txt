@@ -4,4 +4,5 @@ port=7101
 timezone=Local
 language=en
 log_to_file=false
+log_file=config/log.txt
 enable_scram=false

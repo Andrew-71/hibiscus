@@ -43,7 +43,7 @@ func NoteLoginFail(username string, password string, r *http.Request) {
 
 // BasicAuth is a middleware that handles authentication & authorization for the app.
 // It uses BasicAuth because I doubt there is a need for something sophisticated in a small hobby project
-// Originally taken from https://www.alexedwards.net/blog/basic-authentication-in-go (13.03.2024)
+// Originally taken from Alex Edwards's https://www.alexedwards.net/blog/basic-authentication-in-go, MIT Licensed. (13.03.2024)
 func BasicAuth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		username, password, ok := r.BasicAuth()
@@ -81,7 +81,7 @@ func Scram() {
 // NotifyTelegram attempts to send a message to admin through telegram
 func NotifyTelegram(msg string) {
 	if Cfg.TelegramChat == "" || Cfg.TelegramToken == "" {
-		slog.Warn("ignoring telegram request due to lack of credentials")
+		slog.Debug("ignoring telegram request due to lack of credentials")
 		return
 	}
 	client := &http.Client{}

@@ -9,6 +9,7 @@ import (
 
 var Translations = map[string]string{}
 
+// LoadLanguage loads a json file for selected language into the Translations map
 func LoadLanguage(language string) error {
 	filename := "i18n/" + language + ".json"
 
@@ -28,6 +29,7 @@ func LoadLanguage(language string) error {
 	return err
 }
 
+// TranslatableText attempts to match an id to a string in current language
 func TranslatableText(id string) string {
 	if v, ok := Translations[id]; !ok {
 		return id

@@ -8,16 +8,15 @@ import (
 	"os"
 )
 
-var LogFile = "config/log.txt"
 var DebugMode = false
 
-// LogInit makes slog output to both stdout and a file if needed
+// LogInit makes slog output to both stdout and a file if needed, and enables debug mode if selected
 func LogInit() {
 	var w io.Writer
 	if Cfg.LogToFile {
-		f, err := os.OpenFile(LogFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+		f, err := os.OpenFile(Cfg.LogFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 		if err != nil {
-			slog.Error("error opening log file, logging to stdout", "path", LogFile, "error", err)
+			slog.Error("error opening log file, logging to stdout", "path", Cfg.LogFile, "error", err)
 			return
 		}
 		// No defer f.Close() because that breaks the MultiWriter

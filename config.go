@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"log/slog"
 	"os"
 	"reflect"
 	"strconv"
@@ -21,6 +22,7 @@ type Config struct {
 	Timezone  *time.Location `config:"timezone" type:"location"`
 	Language  string         `config:"language" type:"string"`
 	LogToFile bool           `config:"log_to_file" type:"bool"`
+	LogFile   string         `config:"log_file" type:"string"`
 	Scram     bool           `config:"enable_scram" type:"bool"`
 
 	TelegramToken string `config:"tg_token" type:"string"`
@@ -114,13 +116,22 @@ func (c *Config) Reload() error {
 	} else {
 		c.Timezone = loc
 	}
+	slog.Debug("reloaded config", "config", c)
 
 	return LoadLanguage(c.Language) // Load selected language
 }
 
 // ConfigInit loads config on startup
+// Some defaults are declared here
 func ConfigInit() Config {
-	cfg := Config{Port: 7101, Username: "admin", Password: "admin", Timezone: time.Local, Language: "en"} // Some defaults are declared here
+	cfg := Config{
+		Port:     7101,
+		Username: "admin",
+		Password: "admin",
+		Timezone: time.Local,
+		Language: "en",
+		LogFile:  "config/log.txt",
+	}
 	err := cfg.Reload()
 	if err != nil {
 		log.Fatal(err)

@@ -40,7 +40,7 @@ config
 
 ### Config options:
 Below are defaults of config.txt. The settings are defined in newline separated key=value pairs.
-Please don't include the bash-style "comments" in your config, 
+Please don't include the bash-style "comments" in your actual config, 
 they are provided purely for demonstration only and **will break the config if present**.
 ```
 username=admin  # Your username
@@ -48,7 +48,8 @@ password=admin  # Your password
 port=7101  # What port to run on (probably leave on 7101 if using docker)
 timezone=Local  # IANA Time zone database identifier ("UTC", Local", "Europe/Moscow" etc.), Defaults to Local if can't parse.
 language=en  # ISO-639 language code (currently supported - en, ru)
-log_to_file=false  # Whether to write logs to a file (located in <config-dir>/log.txt)
+log_to_file=false  # Whether to write logs to a file
+log_file=config/log.txt  # Where to store the log file if it is enabled
 enable_scram=false  # Whether the app should shut down if there are 3 or more failed login attempts within 100 seconds
 
 # Not present by default, set only if you want to be notified of any failed login attempts over telegram
