@@ -18,11 +18,8 @@ func Export(filename string) error {
 		slog.Error("error creating export archive", "error", err)
 		return err
 	}
-	defer file.Close()
 
 	w := zip.NewWriter(file)
-	defer w.Close()
-
 	walker := func(path string, info os.FileInfo, err error) error {
 		if path == filename || filepath.Ext(path) == ".zip" { //Ignore export file itself and .zip archives
 			return nil
@@ -38,7 +35,6 @@ func Export(filename string) error {
 		if err != nil {
 			return err
 		}
-		defer file.Close()
 
 		f, err := w.Create(path)
 		if err != nil {
@@ -50,7 +46,7 @@ func Export(filename string) error {
 			return err
 		}
 
-		return nil
+		return file.Close()
 	}
 	err = filepath.Walk("data/", walker)
 	if err != nil {
@@ -58,13 +54,18 @@ func Export(filename string) error {
 		return err
 	}
 
-	return nil
+	err = file.Close()
+	if err != nil {
+		return err
+	}
+	return w.Close()
 }
 
 // GetExport returns a .zip archive with contents of the data folder
 func GetExport(w http.ResponseWriter, r *http.Request) {
 	err := Export(ExportPath)
 	if err != nil {
+		slog.Error("error getting export archive", "error", err)
 		http.Error(w, "could not export", http.StatusInternalServerError)
 		return
 	}

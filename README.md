@@ -8,14 +8,11 @@ As a result, I can't guarantee that it's either secure or stable.
 ## Features:
 * Each day, you get a text file. You have until 23:59 of that very day to finalise it.
 * You can save named notes to document milestones, big events, or just a nice game you played this month
-* There is also a readme.txt file (just like this one, except you get to write it!)*
 * You can easily export entire `data` dir in a `.zip` archive for backups
 
 * Everything is plain(text) and simple. No databases, encryption, OAuth, or anything fancy. Even the password is plainte- *wait is this a feature?*
 * Docker support (in fact, that's probably the best way to run this)
 * Optional Telegram notifications for failed login attempts
-
-*only available through API, subject to change and removal
 
 ## Technical details
 You can read a relevant entry in my blog [here](https://a71.su/notes/hibiscus/). 

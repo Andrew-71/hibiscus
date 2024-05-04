@@ -64,7 +64,6 @@ func (c *Config) Reload() error {
 	if err != nil {
 		return err
 	}
-	defer file.Close()
 
 	options := map[string]string{}
 	scanner := bufio.NewScanner(file)
@@ -76,6 +75,10 @@ func (c *Config) Reload() error {
 		options[entry[0]] = entry[1]
 	}
 	if err := scanner.Err(); err != nil {
+		return err
+	}
+	err = file.Close()
+	if err != nil {
 		return err
 	}
 
