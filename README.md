@@ -73,4 +73,6 @@ If you for some reason decide to run plain executable instead of docker, it supp
     override password
 -port int
     override port
+-debug
+    show debug log
 ```

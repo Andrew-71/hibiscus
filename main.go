@@ -3,7 +3,7 @@ package main
 var Cfg = ConfigInit()
 
 func main() {
-	LogInit()
 	FlagInit()
+	LogInit()
 	Serve()
 }

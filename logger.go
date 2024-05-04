@@ -9,6 +9,7 @@ import (
 )
 
 var LogFile = "config/log.txt"
+var DebugMode = false
 
 // LogInit makes slog output to both stdout and a file if needed
 func LogInit() {
@@ -26,6 +27,10 @@ func LogInit() {
 	}
 
 	// Make slog and chi use intended format
-	slog.SetDefault(slog.New(slog.NewTextHandler(w, nil)))
+	var opts *slog.HandlerOptions
+	if DebugMode {
+		opts = &slog.HandlerOptions{Level: slog.LevelDebug}
+	}
+	slog.SetDefault(slog.New(slog.NewTextHandler(w, opts)))
 	middleware.DefaultLogger = middleware.RequestLogger(&middleware.DefaultLogFormatter{Logger: log.Default(), NoColor: true})
 }

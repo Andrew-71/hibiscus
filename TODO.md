@@ -8,6 +8,6 @@ List of things to add to this project
 * API revamp
 * Check export function for improvements
 * Customise log file
-* More slog.Debug and a debug flag?
+* More slog.Debug
 * Consider less clunky auth method
 * *Go* dependency-less? <-- this is a terrible idea

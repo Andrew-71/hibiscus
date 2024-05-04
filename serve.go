@@ -44,5 +44,6 @@ func Serve() {
 	r.Handle("/public/*", http.StripPrefix("/public/", fs))
 
 	slog.Info("🌺 Website working", "port", Cfg.Port)
+	slog.Debug("Debug mode enabled")
 	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(Cfg.Port), r))
 }
