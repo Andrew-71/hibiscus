@@ -18,8 +18,9 @@ COPY --from=build-stage /hibiscus /hibiscus
 # Copy files
 COPY public public/
 COPY pages pages/
-VOLUME data
-VOLUME config
+COPY i18n i18n/
+VOLUME /data
+VOLUME /config
 
 EXPOSE 7101
 ENTRYPOINT ["/hibiscus"]

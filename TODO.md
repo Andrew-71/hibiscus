@@ -7,7 +7,6 @@ List of things to add to this project
 * Github/Codeberg/whatever mirror for when `faye` (my server) is offline
 * API revamp
 * Check export function for improvements
-* Customise log file
 * More slog.Debug
 * Consider less clunky auth method
 * *Go* dependency-less? <-- this is a terrible idea
