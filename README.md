@@ -17,7 +17,8 @@ As a result, I can't guarantee that it's either secure or stable.
 ## Technical details
 You can read a relevant entry in my blog [here](https://a71.su/notes/hibiscus/). 
 It provides some useful information and context for why this app exists in the first place.
-There is also [TODO.md](./TODO.md) file that shows what I will (or *may*) change in the future.
+There is also a [TODO.md](./TODO.md) file that shows what I will (or *may*) change in the future.
+This repository is [mirrored to GitHub](https://github.com/Andrew-71/hibiscus) in case my server goes down.
 
 ### Data format:
 ```
