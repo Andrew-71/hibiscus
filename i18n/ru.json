@@ -6,10 +6,12 @@
   "title.notes": "Заметки",
 
   "link.today": "сегодня",
+  "link.tomorrow": "завтра",
   "link.days": "раньше",
   "link.notes": "заметки",
 
   "description.notes": "/notes/<название> для новой заметки",
-  "misc.date": "Сегодня",
+  "time.date": "Сегодня",
+  "time.grace": "льготный период",
   "button.save": "Сохранить"
 }

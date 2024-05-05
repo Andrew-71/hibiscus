@@ -1,7 +1,7 @@
 {{define "header"}}
 <header>
     <h1>🌺 Hibiscus.txt</h1>
-    <p>{{translatableText "misc.date"}} <span id="today-date">a place</span></p>
+    <p>{{translatableText "time.date"}} <span id="today-date">a place</span> <span id="grace" hidden>({{ translatableText "time.grace" }})</span></p>
 </header>
 {{end}}
 
@@ -11,10 +11,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="/public/manifest.json" />
     <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
     <link rel="stylesheet" href="/public/main.css">
     <script src="/public/date.js"></script>
-    <title>Hibiscus</title>
+    <title>Hibiscus.txt</title>
 </head>
 <body>
     {{template "header" .}}
@@ -22,7 +23,11 @@
         {{template "main" .}}
     </main>
     {{template "footer" .}}
-    <script defer>updateDate();beginDateUpdater()</script>
+    <script defer>
+        const langName="{{ translatableText "lang" }}";
+        const graceActive={{ graceActive }};
+        updateDate();beginDateUpdater()
+    </script>
 </body>
 </html>
 {{end}}

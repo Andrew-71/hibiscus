@@ -13,20 +13,23 @@ import (
 func Serve() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger, middleware.CleanPath, middleware.StripSlashes)
-	r.Use(BasicAuth) // Is this good enough? Sure hope so
 	r.NotFound(NotFound)
 
 	// Routes ==========
-	r.Get("/", GetToday)
-	r.Post("/", PostToday)
-	r.Get("/day", GetDays)
-	r.Get("/day/{day}", GetDay)
-	r.Get("/notes", GetNotes)
-	r.Get("/notes/{note}", GetNote)
-	r.Post("/notes/{note}", PostNote)
+	userRouter := chi.NewRouter()
+	userRouter.Use(BasicAuth)
+	userRouter.Get("/", GetToday)
+	userRouter.Post("/", PostToday)
+	userRouter.Get("/day", GetDays)
+	userRouter.Get("/day/{day}", GetDay)
+	userRouter.Get("/notes", GetNotes)
+	userRouter.Get("/notes/{note}", GetNote)
+	userRouter.Post("/notes/{note}", PostNote)
+	r.Mount("/", userRouter)
 
 	// API =============
 	apiRouter := chi.NewRouter()
+	apiRouter.Use(BasicAuth)
 	apiRouter.Get("/readme", func(w http.ResponseWriter, r *http.Request) { GetFile("readme", w) })
 	apiRouter.Post("/readme", func(w http.ResponseWriter, r *http.Request) { PostFile("readme", w, r) })
 	apiRouter.Get("/day", func(w http.ResponseWriter, r *http.Request) { GetFileList("day", w) })

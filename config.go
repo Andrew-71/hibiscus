@@ -20,6 +20,7 @@ type Config struct {
 	Password  string         `config:"password" type:"string"`
 	Port      int            `config:"port" type:"int"`
 	Timezone  *time.Location `config:"timezone" type:"location"`
+	GraceTime time.Duration  `config:"grace_period" type:"duration"`
 	Language  string         `config:"language" type:"string"`
 	LogToFile bool           `config:"log_to_file" type:"bool"`
 	LogFile   string         `config:"log_file" type:"string"`
@@ -108,6 +109,13 @@ func (c *Config) Reload() error {
 				}
 			case "location":
 				timezone = v
+			case "duration":
+				{
+					numVal, err := time.ParseDuration(v)
+					if err == nil {
+						fieldElem.SetInt(int64(numVal))
+					}
+				}
 			default:
 				fieldElem.SetString(v)
 			}
@@ -128,12 +136,13 @@ func (c *Config) Reload() error {
 // Some defaults are declared here
 func ConfigInit() Config {
 	cfg := Config{
-		Port:     7101,
-		Username: "admin",
-		Password: "admin",
-		Timezone: time.Local,
-		Language: "en",
-		LogFile:  "config/log.txt",
+		Port:      7101,
+		Username:  "admin",
+		Password:  "admin",
+		Timezone:  time.Local,
+		Language:  "en",
+		LogFile:   "config/log.txt",
+		GraceTime: 0,
 	}
 	err := cfg.Reload()
 	if err != nil {

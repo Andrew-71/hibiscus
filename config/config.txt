@@ -2,6 +2,7 @@ username=admin
 password=admin
 port=7101
 timezone=Local
+grace_period=0s
 language=en
 log_to_file=false
 log_file=config/log.txt

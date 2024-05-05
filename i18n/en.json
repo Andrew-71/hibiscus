@@ -6,10 +6,12 @@
   "title.notes": "Notes",
 
   "link.today": "today",
+  "link.tomorrow": "tomorrow",
   "link.days": "previous days",
   "link.notes": "notes",
 
   "description.notes": "/notes/<name> for a new note",
-  "misc.date": "Today is",
+  "time.date": "Today is",
+  "time.grace": "grace period active",
   "button.save": "Save"
 }

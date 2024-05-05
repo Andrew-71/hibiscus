@@ -1,0 +1,22 @@
+{
+  "short_name": "Hibiscus",
+  "name": "Hibiscus.txt",
+  "description": "A plaintext diary",
+  "icons": [
+    {
+      "src": "/public/TODO.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "/public/favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "16x16"
+    }
+  ],
+  "start_url": "/",
+  "display": "minimal-ui",
+  "scope": "/",
+  "background_color": "#f5f0e1",
+  "theme_color": "#f85552"
+}

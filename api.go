@@ -8,7 +8,6 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
-	"time"
 )
 
 // HandleWrite checks for error in ResponseWriter.Write output
@@ -78,12 +77,12 @@ func GetDayApi(w http.ResponseWriter, r *http.Request) {
 
 // GetTodayApi runs GetFile with today's date as filename
 func GetTodayApi(w http.ResponseWriter, _ *http.Request) {
-	GetFile("day/"+time.Now().Format(time.DateOnly), w)
+	GetFile("day/"+TodayDate(), w)
 }
 
 // PostTodayApi runs PostFile with today's date as filename
 func PostTodayApi(w http.ResponseWriter, r *http.Request) {
-	PostFile("day/"+time.Now().Format(time.DateOnly), w, r)
+	PostFile("day/"+TodayDate(), w, r)
 }
 
 // GetNoteApi returns contents of a note specified in URL

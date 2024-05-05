@@ -75,12 +75,29 @@ func ListFiles(directory string) ([]string, error) {
 	return filenames, nil
 }
 
+// GraceActive returns whether the grace period (Cfg.GraceTime) is active
+func GraceActive() bool {
+	return (60*time.Now().In(Cfg.Timezone).Hour() + time.Now().In(Cfg.Timezone).Minute()) <= int(Cfg.GraceTime.Minutes())
+}
+
+// TodayDate returns today's formatted date. It accounts for Config.GraceTime
+func TodayDate() string {
+	dateFormatted := time.Now().In(Cfg.Timezone).Format(time.DateOnly)
+	if GraceActive() {
+		slog.Debug("grace period active",
+			"time", 60*time.Now().In(Cfg.Timezone).Hour()+time.Now().In(Cfg.Timezone).Minute(),
+			"grace", Cfg.GraceTime.Minutes())
+		dateFormatted = time.Now().In(Cfg.Timezone).AddDate(0, 0, -1).Format(time.DateOnly)
+	}
+	return dateFormatted
+}
+
 // ReadToday runs ReadFile with today's date as filename
 func ReadToday() ([]byte, error) {
-	return ReadFile("day/" + time.Now().In(Cfg.Timezone).Format(time.DateOnly))
+	return ReadFile("day/" + TodayDate())
 }
 
 // SaveToday runs SaveFile with today's date as filename
 func SaveToday(contents []byte) error {
-	return SaveFile("day/"+time.Now().In(Cfg.Timezone).Format(time.DateOnly), contents)
+	return SaveFile("day/"+TodayDate(), contents)
 }

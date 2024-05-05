@@ -25,7 +25,7 @@ type Entry struct {
 
 type formatEntries func([]string) []Entry
 
-var templateFuncs = map[string]interface{}{"translatableText": TranslatableText}
+var templateFuncs = map[string]interface{}{"translatableText": TranslatableText, "graceActive": GraceActive}
 var editTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/edit.html"))
 var viewTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/entry.html"))
 var listTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/list.html"))
@@ -101,10 +101,15 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 			if err == nil {
 				dayString = t.Format("02 Jan 2006")
 			}
-			if v == time.Now().Format(time.DateOnly) {
-				// Fancy text for today
-				// This looks bad, but strings.Title is deprecated, and I'm not importing a golang.org/x package for this...
+
+			// Fancy text for today and tomorrow
+			// This looks bad, but strings.Title is deprecated, and I'm not importing a golang.org/x package for this...
+			// ( chances we ever run into tomorrow are really low)
+			if v == TodayDate() {
 				dayString = TranslatableText("link.today")
+				dayString = strings.ToTitle(string([]rune(dayString)[0])) + string([]rune(dayString)[1:])
+			} else if GraceActive() && v > TodayDate() {
+				dayString = TranslatableText("link.tomorrow")
 				dayString = strings.ToTitle(string([]rune(dayString)[0])) + string([]rune(dayString)[1:])
 			}
 			filesFormatted = append(filesFormatted, Entry{Title: dayString, Link: "day/" + v})
@@ -163,7 +168,7 @@ func GetDay(w http.ResponseWriter, r *http.Request) {
 		HandleWrite(w.Write([]byte("day not specified")))
 		return
 	}
-	if dayString == time.Now().Format(time.DateOnly) { // Today can still be edited
+	if dayString == TodayDate() { // Today can still be edited
 		http.Redirect(w, r, "/", 302)
 		return
 	}
