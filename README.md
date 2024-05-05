@@ -8,16 +8,18 @@ As a result, I can't guarantee that it's either secure or stable.
 ## Features:
 * Each day, you get a new text file. You have until the end of that very day to finalise it.
 * You can save named notes to document milestones, big events, or just a nice game you played this month
-* You can easily export entire `data` dir in a `.zip` archive for backups
+* You can easily export the files in a `.zip` archive for backups
 
 * Everything is plain(text) and simple. No databases, encryption, OAuth, or anything fancy. Even the password is plainte- *wait is this a feature?*
 * Docker support (in fact, that's probably the best way to run this)
 * Optional Telegram notifications for failed login attempts
 
 ## Technical details
+Though Hibiscus.txt isn't versioned, [CHANGELOG.md](./CHANGELOG.md) can provide a good overview of changes.
+And there is a [TODO.md](./TODO.md) file that shows what I will (or *may*) work on in the future.
+
 You can read a relevant entry in my blog [here](https://a71.su/notes/hibiscus/). 
 It provides some useful information and context for why this app exists in the first place.
-There is also a [TODO.md](./TODO.md) file that shows what I will (or *may*) change in the future.
 This repository is [mirrored to GitHub](https://github.com/Andrew-71/hibiscus) in case my server goes down.
 
 ### Data format:

@@ -17,6 +17,7 @@ This file keeps track of changes in more human-readable fashion
   * Known issue: making notes is impossible in the PWA, since you can't navigate to arbitrary page. 
   I might leave it as a WONTFIX or try to find a workaround
 * Date is now shown in local language if possible (in case you add your own or use Russian)
+* Added API reference to README
 * Bug fixes
   * "Today" redirect from days list no longer uses UTC
   * Date JS script no longer uses UTC
