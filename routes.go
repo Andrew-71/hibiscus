@@ -25,7 +25,7 @@ type Entry struct {
 
 type formatEntries func([]string) []Entry
 
-var templateFuncs = map[string]interface{}{"translatableText": TranslatableText, "graceActive": GraceActive}
+var templateFuncs = map[string]interface{}{"translatableText": TranslatableText}
 var editTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/edit.html"))
 var viewTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/entry.html"))
 var listTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/list.html"))

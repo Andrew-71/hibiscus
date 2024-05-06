@@ -8,29 +8,27 @@ function formatDate(date) {
     return dateFormat.format(date)
 }
 
-// Set today's date
-function updateDate() {
-    let timeField = document.getElementById("today-date")
-    if (graceActive) {
-        let graceField = document.getElementById("grace")
-        graceField.hidden = false
-    }
-    timeField.innerText = formatDate(Date.now())
-
+async function graceActive() {
+    const response = await fetch("/api/grace");
+    const active = await response.text();
+    return active === "true"
 }
 
-// Start interval to update today's date every hour at 00:00
-function callEveryHour() {
-    setInterval(updateDate, 1000 * 60 * 60);
+// Set today's date and grace status
+function updateTime() {
+    document.getElementById("today-date").innerText = formatDate(Date.now());
+    graceActive().then(v => document.getElementById("grace").hidden = !v)
+}
+
+// Start interval to update time at start of every minute
+function callEveryMinute() {
+    setInterval(updateTime, 1000 * 60);
 }
 
 // Begin above interval
-function beginDateUpdater() {
-    let nextDate = new Date();
-    nextDate.setHours(nextDate.getHours() + 1);
-    nextDate.setMinutes(0);
-    nextDate.setSeconds(0);
-
-    const difference = nextDate - new Date();
-    setTimeout(callEveryHour, difference);
+function beginTimeUpdater() {
+    const difference = (60 - new Date().getSeconds()) * 1000;
+    setTimeout(callEveryMinute, difference);
+    setTimeout(updateTime, difference);
+    updateTime();
 }

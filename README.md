@@ -96,4 +96,6 @@ GET  /export       - get .zip archive of entire data directory
 
 GET  /readme       - get file contents for readme.txt in data dir's root
 POST /readme       - save request body into readme.txt
+
+GET  /grace        - "true" if grace period is active, otherwise "false"
 ```

@@ -26,3 +26,4 @@ hibiscus-txt
 # Testing data
 data/
 config/log.txt
+config/dev-config.txt

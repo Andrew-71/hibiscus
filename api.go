@@ -106,3 +106,13 @@ func PostNoteApi(w http.ResponseWriter, r *http.Request) {
 	}
 	PostFile("notes/"+noteString, w, r)
 }
+
+// GraceActiveApi returns "true" if grace period is active, and "false" otherwise
+func GraceActiveApi(w http.ResponseWriter, r *http.Request) {
+	value := "false"
+	if GraceActive() {
+		value = "true"
+	}
+	HandleWrite(w.Write([]byte(value)))
+	w.WriteHeader(http.StatusOK)
+}

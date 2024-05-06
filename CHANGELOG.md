@@ -1,7 +1,16 @@
 # Changelog
 This file keeps track of changes in more human-readable fashion
 
-# 5 May 2024
+## 6 May 2024
+* Grace period is now non-inclusive (so `4h` means the switch will happen right at `4:00`, not `4:01`)
+* Added API method to check if grace period is active
+* Made changes to date display on frontend
+  * The date is now updated every minute, instead of every hour.
+  * Now using the API to dynamically update the grace indicator
+  * I kinda dislike this change, since it complicates the structure a *bit*.
+  But I think it's fine.
+
+## 5 May 2024
 * Added this changelog
 * Added grace period (as per suggestions)
   * Set in config like `grace_period=3h26m` (via Go's `time.ParseDuration`)

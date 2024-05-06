@@ -40,6 +40,7 @@ func Serve() {
 	apiRouter.Get("/today", GetTodayApi)
 	apiRouter.Post("/today", PostTodayApi)
 	apiRouter.Get("/export", GetExport)
+	apiRouter.Get("/grace", GraceActiveApi)
 	r.Mount("/api", apiRouter)
 
 	// Static files

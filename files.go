@@ -77,16 +77,20 @@ func ListFiles(directory string) ([]string, error) {
 
 // GraceActive returns whether the grace period (Cfg.GraceTime) is active
 func GraceActive() bool {
-	return (60*time.Now().In(Cfg.Timezone).Hour() + time.Now().In(Cfg.Timezone).Minute()) <= int(Cfg.GraceTime.Minutes())
+	t := time.Now().In(Cfg.Timezone)
+	active := (60*t.Hour() + t.Minute()) < int(Cfg.GraceTime.Minutes())
+	if active {
+		slog.Debug("grace period active",
+			"time", 60*t.Hour()+t.Minute(),
+			"grace", Cfg.GraceTime.Minutes())
+	}
+	return active
 }
 
 // TodayDate returns today's formatted date. It accounts for Config.GraceTime
 func TodayDate() string {
 	dateFormatted := time.Now().In(Cfg.Timezone).Format(time.DateOnly)
 	if GraceActive() {
-		slog.Debug("grace period active",
-			"time", 60*time.Now().In(Cfg.Timezone).Hour()+time.Now().In(Cfg.Timezone).Minute(),
-			"grace", Cfg.GraceTime.Minutes())
 		dateFormatted = time.Now().In(Cfg.Timezone).AddDate(0, 0, -1).Format(time.DateOnly)
 	}
 	return dateFormatted
