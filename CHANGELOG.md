@@ -1,6 +1,20 @@
 # Changelog
 This file keeps track of changes in more human-readable fashion
 
+## 7 May 2024 - v0.1.0
+* Began move towards [semantic versioning](https://semver.org/)
+  * Current version is now 0.1.0
+  * Added `version` api method
+  * Versioned docker images may be provided in the future
+  * Added version to footer
+* Added info page
+  * Accessed by clicking version number in footer
+  * Allows you to edit readme.txt
+  * Provides UI link for `export` api method
+  * Can be expanded with other functionality in the future (see [TODO](./TODO.md))
+* Bug fixes
+  * Fixed export function failing
+
 ## 6 May 2024
 * Grace period is now non-inclusive (so `4h` means the switch will happen right at `4:00`, not `4:01`)
 * Added API method to check if grace period is active

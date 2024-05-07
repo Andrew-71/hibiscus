@@ -4,14 +4,21 @@
   "title.today": "Your day so far",
   "title.days": "Previous days",
   "title.notes": "Notes",
+  "title.info": "Info",
 
   "link.today": "today",
   "link.tomorrow": "tomorrow",
   "link.days": "previous days",
   "link.notes": "notes",
+  "link.info": "app information",
 
   "description.notes": "/notes/<name> for a new note",
   "time.date": "Today is",
   "time.grace": "grace period active",
-  "button.save": "Save"
+  "button.save": "Save",
+
+  "info.version": "Version",
+  "info.version.link": "source and changelog",
+  "info.export": "Export data",
+  "info.readme": "Edit readme.txt"
 }

@@ -15,8 +15,7 @@ As a result, I can't guarantee that it's either secure or stable.
 * Optional Telegram notifications for failed login attempts
 
 ## Technical details
-Though Hibiscus.txt isn't versioned, [CHANGELOG.md](./CHANGELOG.md) can provide a good overview of changes.
-And there is a [TODO.md](./TODO.md) file that shows what I will (or *may*) work on in the future.
+[CHANGELOG.md](./CHANGELOG.md) provides a good overview of updates, and [TODO.md](./TODO.md) file shows what I will (or *may*) work on in the future.
 
 You can read a relevant entry in my blog [here](https://a71.su/notes/hibiscus/). 
 It provides some useful information and context for why this app exists in the first place.
@@ -65,6 +64,8 @@ The [package](https://git.a71.su/Andrew71/hibiscus/packages) provided in this re
 and there is a [Dockerfile](./Dockerfile) in case you want to compile for something rarer (like a Pi).
 This repo contains the [compose.yml](./compose.yml) that I personally use.
 
+**Note**: versioned images may be provided in the future, possibly via dockerhub
+
 ### Executable flags
 If you for some reason decide to run plain executable instead of docker, it supports following flags:
 ```
@@ -91,11 +92,10 @@ GET  /day/<name>   - get file contents for a specific day
 GET  /notes        - get JSON list of all named notes
 GET  /notes/<name> - get file contents for a specific note
 POST /notes/<name> - save request body into a named note
-
-GET  /export       - get .zip archive of entire data directory
-
 GET  /readme       - get file contents for readme.txt in data dir's root
 POST /readme       - save request body into readme.txt
 
+GET  /export       - get .zip archive of entire data directory
 GET  /grace        - "true" if grace period is active, otherwise "false"
+GET  /version      - get app's version
 ```

@@ -33,6 +33,7 @@
 
 {{define "footer"}}
 <footer>
-    <p><a href="/">{{ translatableText "link.today" }}</a> | <a href="/day">{{ translatableText "link.days" }}</a> | <a href="/notes">{{ translatableText "link.notes" }}</a></p>
+    <p><a href="/">{{ translatableText "link.today" }}</a> | <a href="/day">{{ translatableText "link.days" }}</a> | <a href="/notes">{{ translatableText "link.notes" }}</a>
+    <span style="float:right;"><a class="no-accent" href="/info" title="{{ translatableText "link.info" }}">{{ hibiscusVersion }}</a></span></p>
 </footer>
 {{end}}

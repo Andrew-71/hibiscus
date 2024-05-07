@@ -13,6 +13,8 @@ body {
 }
 a, a:visited { color: #f85552; }
 a:hover, a:visited:hover { color: #e66868; }
+a.no-accent, a.no-accent:visited { color: #454545; }
+a.no-accent:hover, a.no-accent:visited:hover { color: #656565; }
 
 h2 { margin-bottom:12px; }
 .list-title { margin-bottom: 0}
@@ -65,4 +67,6 @@ header > h1, header > p {
         color: #f5f0e1;
         background-color: #383030;
     }
+    a.no-accent, a.no-accent:visited { color: #f5f0e1; }
+    a.no-accent:hover, a.no-accent:visited:hover { color: #a9a8a4; }
 }

@@ -4,14 +4,21 @@
   "title.today": "Сегодняшний день",
   "title.days": "Предыдущие дни",
   "title.notes": "Заметки",
+  "title.info": "Информация",
 
   "link.today": "сегодня",
   "link.tomorrow": "завтра",
   "link.days": "раньше",
   "link.notes": "заметки",
+  "link.info": "системная информация",
 
   "description.notes": "/notes/<название> для новой заметки",
   "time.date": "Сегодня",
   "time.grace": "льготный период",
-  "button.save": "Сохранить"
+  "button.save": "Сохранить",
+
+  "info.version": "Версия",
+  "info.version.link": "исходный код",
+  "info.export": "Экспорт данных",
+  "info.readme": "Редактировать readme.txt"
 }

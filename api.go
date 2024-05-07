@@ -116,3 +116,9 @@ func GraceActiveApi(w http.ResponseWriter, r *http.Request) {
 	HandleWrite(w.Write([]byte(value)))
 	w.WriteHeader(http.StatusOK)
 }
+
+// GetVersionApi returns current app version
+func GetVersionApi(w http.ResponseWriter, r *http.Request) {
+	HandleWrite(w.Write([]byte(Info.Version)))
+	w.WriteHeader(http.StatusOK)
+}

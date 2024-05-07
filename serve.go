@@ -25,6 +25,9 @@ func Serve() {
 	userRouter.Get("/notes", GetNotes)
 	userRouter.Get("/notes/{note}", GetNote)
 	userRouter.Post("/notes/{note}", PostNote)
+	userRouter.Get("/info", GetInfo)
+	userRouter.Get("/readme", GetReadme)
+	userRouter.Post("/readme", PostReadme)
 	r.Mount("/", userRouter)
 
 	// API =============
@@ -41,6 +44,7 @@ func Serve() {
 	apiRouter.Post("/today", PostTodayApi)
 	apiRouter.Get("/export", GetExport)
 	apiRouter.Get("/grace", GraceActiveApi)
+	apiRouter.Get("/version", GetVersionApi)
 	r.Mount("/api", apiRouter)
 
 	// Static files

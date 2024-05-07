@@ -25,7 +25,9 @@ type Entry struct {
 
 type formatEntries func([]string) []Entry
 
-var templateFuncs = map[string]interface{}{"translatableText": TranslatableText}
+var templateFuncs = map[string]interface{}{
+	"translatableText": TranslatableText,
+	"hibiscusVersion":  func() string { return "v" + Info.Version }}
 var editTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/edit.html"))
 var viewTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/entry.html"))
 var listTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/list.html"))
@@ -104,7 +106,7 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 
 			// Fancy text for today and tomorrow
 			// This looks bad, but strings.Title is deprecated, and I'm not importing a golang.org/x package for this...
-			// ( chances we ever run into tomorrow are really low)
+			// (chances we ever run into tomorrow are really low)
 			if v == TodayDate() {
 				dayString = TranslatableText("link.today")
 				dayString = strings.ToTitle(string([]rune(dayString)[0])) + string([]rune(dayString)[1:])
@@ -130,6 +132,7 @@ func GetNotes(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// GetEntry handles showing a single file, editable or otherwise
 func GetEntry(w http.ResponseWriter, r *http.Request, title string, filename string, editable bool) {
 	entry, err := ReadFile(filename)
 	if err != nil {
@@ -205,6 +208,20 @@ func PostNote(w http.ResponseWriter, r *http.Request) {
 	err := SaveFile("notes/"+noteString, []byte(r.FormValue("text")))
 	if err != nil {
 		slog.Error("error saving a note", "note", noteString, "error", err)
+	}
+	http.Redirect(w, r, r.Header.Get("Referer"), 302)
+}
+
+// GetReadme calls GetEntry for readme.txt
+func GetReadme(w http.ResponseWriter, r *http.Request) {
+	GetEntry(w, r, "readme", "readme", true)
+}
+
+// PostReadme saves contents of readme.txt file
+func PostReadme(w http.ResponseWriter, r *http.Request) {
+	err := SaveFile("readme", []byte(r.FormValue("text")))
+	if err != nil {
+		slog.Error("error saving readme", "error", err)
 	}
 	http.Redirect(w, r, r.Header.Get("Referer"), 302)
 }
