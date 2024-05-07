@@ -54,11 +54,11 @@ func Export(filename string) error {
 		return err
 	}
 
-	err = file.Close()
+	err = w.Close()
 	if err != nil {
 		return err
 	}
-	return w.Close()
+	return file.Close()
 }
 
 // GetExport returns a .zip archive with contents of the data folder
