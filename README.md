@@ -98,4 +98,5 @@ POST /readme       - save request body into readme.txt
 GET  /export       - get .zip archive of entire data directory
 GET  /grace        - "true" if grace period is active, otherwise "false"
 GET  /version      - get app's version
+GET  /reload       - reload app config
 ```

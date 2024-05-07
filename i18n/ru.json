@@ -20,5 +20,6 @@
   "info.version": "Версия",
   "info.version.link": "исходный код",
   "info.export": "Экспорт данных",
-  "info.readme": "Редактировать readme.txt"
+  "info.readme": "Редактировать readme.txt",
+  "info.reload": "Перезагрузить конфиг"
 }

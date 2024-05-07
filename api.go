@@ -122,3 +122,17 @@ func GetVersionApi(w http.ResponseWriter, r *http.Request) {
 	HandleWrite(w.Write([]byte(Info.Version)))
 	w.WriteHeader(http.StatusOK)
 }
+
+// ConfigReloadApi reloads the config
+func ConfigReloadApi(w http.ResponseWriter, r *http.Request) {
+	err := Cfg.Reload()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		HandleWrite(w.Write([]byte(err.Error())))
+	}
+	if r.Referer() != "" {
+		http.Redirect(w, r, r.Header.Get("Referer"), 302)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+}

@@ -1,6 +1,11 @@
 # Changelog
 This file keeps track of changes in more human-readable fashion
 
+## v0.2.0
+* Added config reload
+  * Can be reloaded in info page
+  * Can be reloaded with new `reload` api method (be aware of the redirect if referer is present)
+
 ## 7 May 2024 - v0.1.0
 * Began move towards [semantic versioning](https://semver.org/)
   * Current version is now 0.1.0

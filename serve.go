@@ -45,6 +45,7 @@ func Serve() {
 	apiRouter.Get("/export", GetExport)
 	apiRouter.Get("/grace", GraceActiveApi)
 	apiRouter.Get("/version", GetVersionApi)
+	apiRouter.Get("/reload", ConfigReloadApi)
 	r.Mount("/api", apiRouter)
 
 	// Static files
