@@ -8,14 +8,14 @@ import (
 
 var infoTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/info.html"))
 
-type HibiscusInfo struct {
+type AppInfo struct {
 	Version    string
 	SourceLink string
 }
 
 // Info contains app information
-var Info = HibiscusInfo{
-	Version:    "0.3.0",
+var Info = AppInfo{
+	Version:    "0.4.0",
 	SourceLink: "https://git.a71.su/Andrew71/hibiscus",
 }
 

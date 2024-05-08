@@ -1,6 +1,6 @@
 {{define "header"}}
 <header>
-    <h1>🌺 Hibiscus.txt</h1>
+    <h1>{{ config.Title }}</h1>
     <p>{{translatableText "time.date"}} <span id="today-date">a place</span> <span id="grace" hidden>({{ translatableText "time.grace" }})</span></p>
 </header>
 {{end}}
@@ -14,7 +14,7 @@
     <link rel="manifest" href="/public/manifest.json" />
     <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
     <link rel="stylesheet" href="/public/main.css">
-    <link rel="stylesheet" href="/public/themes/{{ hibiscusTheme }}.css">
+    <link rel="stylesheet" href="/public/themes/{{ config.Theme }}.css">
     <script src="/public/date.js"></script>
     <title>Hibiscus.txt</title>
 </head>
@@ -35,6 +35,6 @@
 {{define "footer"}}
 <footer>
     <p><a href="/">{{ translatableText "link.today" }}</a> | <a href="/day">{{ translatableText "link.days" }}</a> | <a href="/notes">{{ translatableText "link.notes" }}</a>
-    <span style="float:right;"><a class="no-accent" href="/info" title="{{ translatableText "link.info" }}">{{ hibiscusVersion }}</a></span></p>
+    <span style="float:right;"><a class="no-accent" href="/info" title="{{ translatableText "link.info" }}">v{{ info.Version }}</a></span></p>
 </footer>
 {{end}}

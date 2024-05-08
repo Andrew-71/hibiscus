@@ -1,0 +1,26 @@
+/* Tell me a secret. */
+:root {
+    /* Light theme */
+    --text-light: #3c3836;
+    --bg-light: #e6dffa; /* d4c7fb*/
+
+    --clickable-light: #9975f5;
+    --clickable-hover-light: #765bef;
+    --clickable-label-light: #e2d8ff;
+    --text-hover-light: #665c54;
+
+    --textarea-bg-light: #f3ecff;
+    --textarea-border-light: #282828;
+
+    /* Dark theme */
+    --text-dark: #e6dffa;
+    --bg-dark: #25252a;
+
+    --clickable-dark: #9975f5;
+    --clickable-hover-dark: #765bef;
+    --clickable-label-dark: #e2d8ff;
+    --text-hover-dark: #a5a5b9;
+
+    --textarea-bg-dark: #27272f;
+    --textarea-border-dark: #3c3836;
+}

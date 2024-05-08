@@ -16,13 +16,14 @@ import (
 var ConfigFile = "config/config.txt"
 
 type Config struct {
-	Username  string         `config:"username" type:"string"`
-	Password  string         `config:"password" type:"string"`
-	Port      int            `config:"port" type:"int"`
-	Timezone  *time.Location `config:"timezone" type:"location"`
+	Username  string         `config:"username" type:"string" mandatory:"true"`
+	Password  string         `config:"password" type:"string" mandatory:"true"`
+	Port      int            `config:"port" type:"int" mandatory:"true"`
+	Timezone  *time.Location `config:"timezone" type:"location" mandatory:"true"`
 	GraceTime time.Duration  `config:"grace_period" type:"duration"`
-	Language  string         `config:"language" type:"string"`
+	Language  string         `config:"language" type:"string" mandatory:"true"`
 	Theme     string         `config:"theme" type:"string"`
+	Title     string         `config:"title" type:"string"`
 	LogToFile bool           `config:"log_to_file" type:"bool"`
 	LogFile   string         `config:"log_file" type:"string"`
 	Scram     bool           `config:"enable_scram" type:"bool"`
@@ -31,15 +32,35 @@ type Config struct {
 	TelegramChat  string `config:"tg_chat" type:"string"`
 }
 
+var DefaultConfig = Config{
+	Username:  "admin",
+	Password:  "admin",
+	Port:      7101,
+	Timezone:  time.Local,
+	GraceTime: 0,
+	Language:  "en",
+	Theme:     "default",
+	Title:     "🌺 Hibiscus.txt",
+	LogToFile: false,
+	LogFile:   "config/log.txt",
+	Scram:     false,
+
+	TelegramToken: "",
+	TelegramChat:  "",
+}
+
+// Save puts modified and mandatory config options into the config.txt file
 func (c *Config) Save() error {
 	output := ""
 
 	v := reflect.ValueOf(*c)
+	vDefault := reflect.ValueOf(DefaultConfig)
 	typeOfS := v.Type()
 	for i := 0; i < v.NumField(); i++ {
 		key := typeOfS.Field(i).Tag.Get("config")
 		value := v.Field(i).Interface()
-		if value != "" {
+		mandatory := typeOfS.Field(i).Tag.Get("mandatory")
+		if (mandatory == "true") || (value != vDefault.Field(i).Interface()) { // Only save non-default values
 			output += fmt.Sprintf("%s=%v\n", key, value)
 		}
 	}
@@ -70,7 +91,7 @@ func (c *Config) Reload() error {
 	options := map[string]string{}
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		entry := strings.Split(strings.Replace(scanner.Text(), " ", "", -1), "=")
+		entry := strings.Split(strings.Trim(scanner.Text(), " \t"), "=")
 		if len(entry) != 2 {
 			continue
 		}
@@ -134,18 +155,8 @@ func (c *Config) Reload() error {
 }
 
 // ConfigInit loads config on startup
-// Some defaults are declared here
 func ConfigInit() Config {
-	cfg := Config{
-		Port:      7101,
-		Username:  "admin",
-		Password:  "admin",
-		Timezone:  time.Local,
-		Language:  "en",
-		Theme:     "default",
-		LogFile:   "config/log.txt",
-		GraceTime: 0,
-	}
+	cfg := DefaultConfig
 	err := cfg.Reload()
 	if err != nil {
 		log.Fatal(err)

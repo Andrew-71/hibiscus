@@ -7,7 +7,6 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
-	"path"
 	"strings"
 	"time"
 )
@@ -28,8 +27,9 @@ type formatEntries func([]string) []Entry
 
 var templateFuncs = map[string]interface{}{
 	"translatableText": TranslatableText,
-	"hibiscusVersion":  func() string { return "v" + Info.Version },
-	"hibiscusTheme":    func() string { return path.Clean(Cfg.Theme) }}
+	"info":             func() AppInfo { return Info },
+	"config":           func() Config { return Cfg },
+}
 var editTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/edit.html"))
 var viewTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/entry.html"))
 var listTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/list.html"))
@@ -216,7 +216,7 @@ func PostNote(w http.ResponseWriter, r *http.Request) {
 
 // GetReadme calls GetEntry for readme.txt
 func GetReadme(w http.ResponseWriter, r *http.Request) {
-	GetEntry(w, r, "readme", "readme", true)
+	GetEntry(w, r, "readme.txt", "readme", true)
 }
 
 // PostReadme saves contents of readme.txt file

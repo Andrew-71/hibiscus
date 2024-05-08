@@ -1,6 +1,16 @@
 # Changelog
 This file keeps track of changes in more human-readable fashion
 
+## v0.4.0
+* Customisation changes
+  * Added `title` option to config
+    * Controls the text in the header, "🌺 Hibiscus.txt" by default
+  * Added a nice `lavender` theme :)
+  * No longer ensuring config.Theme ends up inside `/public`, unsure what to do in that regard
+* Technical changes to config
+  * Now only *some* default values are saved to file when creating initial config.txt
+  * Spaces in config options are now supported (basically just for `title`)
+
 ## v0.3.0
 * Added themes
   * Picked theme is set by `theme` key in config. Default is ...`default`
