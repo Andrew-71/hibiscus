@@ -1,0 +1,26 @@
+/* Based on https://github.com/morhetz/gruvbox, MIT licensed colorscheme for vim */
+:root {
+    /* Light theme */
+    --text-light: #3c3836;
+    --bg-light: #fbf1c7;
+
+    --clickable-light: #cc241d;
+    --clickable-hover-light: #9d0006;
+    --clickable-label-light: #f9f5d7;
+    --text-hover-light: #665c54;
+
+    --textarea-bg-light: #f9f5d7;
+    --textarea-border-light: #282828;
+
+    /* Dark theme */
+    --text-dark: #ebdbb2;
+    --bg-dark: #282828;
+
+    --clickable-dark: #cc241d;
+    --clickable-hover-dark: #fb4934;
+    --clickable-label-dark: #fbf1c7;
+    --text-hover-dark: #fbf1c7;
+
+    --textarea-bg-dark: #32302f;
+    --textarea-border-dark: #3c3836;
+}

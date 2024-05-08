@@ -1,0 +1,26 @@
+/* High contrast theme. It ain't pretty, but it passes WCAG AA and mostly even AAA */
+:root {
+    /* Light theme */
+    --text-light: #000000;
+    --bg-light: #FFFFFF;
+
+    --clickable-light: #CC0000;
+    --clickable-hover-light: #CC3333;
+    --clickable-label-light: #FFFFFF;
+    --text-hover-light: #666666;
+
+    --textarea-bg-light: #FFFFFF;
+    --textarea-border-light: #000000;
+
+    /* Dark theme */
+    --text-dark: #FFFFFF;
+    --bg-dark: #000000;
+
+    --clickable-dark: #FF3333;
+    --clickable-hover-dark: #FF6666;
+    --clickable-label-dark: #000000;
+    --text-hover-dark: #e7e7e7;
+
+    --textarea-bg-dark: #000000;
+    --textarea-border-dark: #666666;
+}

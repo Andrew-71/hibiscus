@@ -1,6 +1,33 @@
+/* Default theme */
+:root {
+    /* Light theme */
+    --text-light: #454545;
+    --bg-light: #f5f0e1;
+
+    --clickable-light: #f85552;
+    --clickable-hover-light: #e66868;
+    --clickable-label-light: #f5f2ee;
+    --text-hover-light: #656565;
+
+    --textarea-bg-light: #f5f2ee;
+    --textarea-border-light: #454545;
+
+    /* Dark theme */
+    --text-dark: #f5f0e1;
+    --bg-dark: #2c2825;
+
+    --clickable-dark: #f85552;
+    --clickable-hover-dark: #e66868;
+    --clickable-label-dark: #f5f2ee;
+    --text-hover-dark: #656565;
+
+    --textarea-bg-dark: #383030;
+    --textarea-border-dark: #454545;
+}
+
 body {
-    color: #454545;
-    background-color: #f5f0e1;
+    color: var(--text-light);
+    background-color: var(--bg-light);
     margin: 2em auto;
     max-width: 640px;
     padding: 1em;
@@ -11,33 +38,33 @@ body {
     display: flex;
     flex-direction: column;
 }
-a, a:visited { color: #f85552; }
-a:hover, a:visited:hover { color: #e66868; }
-a.no-accent, a.no-accent:visited { color: #454545; }
-a.no-accent:hover, a.no-accent:visited:hover { color: #656565; }
+a, a:visited { color: var(--clickable-light); }
+a:hover, a:visited:hover { color: var(--clickable-hover-light); }
+a.no-accent, a.no-accent:visited { color: var(--text-light); }
+a.no-accent:hover, a.no-accent:visited:hover { color: var(--text-hover-light); }
 
 h2 { margin-bottom:12px; }
 .list-title { margin-bottom: 0}
 .list-desc { margin-top: 0 }
 
 textarea, input {
-    background: #f5f2ee;
+    background: var(--textarea-bg-light);
     max-width: 640px;
     width: 100%;
     display: block;
     resize: vertical;
     outline: 0;
     box-shadow: none;
-    border: 0.0625em solid #454545;
+    border: 0.0625em solid var(--textarea-border-light);
     margin-bottom: 1em;
     font-size: 18px;
 }
 input { height: 2.5em; }
 
 button {
-    background-color: #f85552;
+    background-color: var(--clickable-light);
     border: none;
-    color: #f5f2ee;
+    color: var(--clickable-label-light);
     padding: 10px;
     text-align: center;
     text-decoration: none;
@@ -49,7 +76,7 @@ button {
     max-width: 640px;
     width: 100%;
 }
-button:hover { background-color: #e66868; }
+button:hover { background-color: var(--clickable-hover-light); }
 
 footer { margin-top: auto; }
 header > h1, header > p {
@@ -60,13 +87,23 @@ header > h1, header > p {
 /* Dark theme */
 @media (prefers-color-scheme: dark) {
     body {
-        color: #f5f0e1;
-        background-color: #2c2825;
+        color: var(--text-dark);
+        background-color: var(--bg-dark);
     }
     textarea, input {
-        color: #f5f0e1;
-        background-color: #383030;
+        color: var(--text-dark);
+        background-color: var(--textarea-bg-dark);
+        border-color: var(--textarea-border-dark)
     }
-    a.no-accent, a.no-accent:visited { color: #f5f0e1; }
-    a.no-accent:hover, a.no-accent:visited:hover { color: #a9a8a4; }
+
+    a, a:visited { color: var(--clickable-dark); }
+    a:hover, a:visited:hover { color: var(--clickable-hover-dark); }
+    a.no-accent, a.no-accent:visited { color: var(--text-dark); }
+    a.no-accent:hover, a.no-accent:visited:hover { color: var(--text-hover-dark); }
+
+    button {
+        background-color: var(--clickable-dark);
+        color: var(--clickable-label-dark);
+    }
+    button:hover { background-color: var(--clickable-hover-dark); }
 }

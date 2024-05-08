@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"path"
 	"strings"
 	"time"
 )
@@ -27,7 +28,8 @@ type formatEntries func([]string) []Entry
 
 var templateFuncs = map[string]interface{}{
 	"translatableText": TranslatableText,
-	"hibiscusVersion":  func() string { return "v" + Info.Version }}
+	"hibiscusVersion":  func() string { return "v" + Info.Version },
+	"hibiscusTheme":    func() string { return path.Clean(Cfg.Theme) }}
 var editTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/edit.html"))
 var viewTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/entry.html"))
 var listTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/list.html"))

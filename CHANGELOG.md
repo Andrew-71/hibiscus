@@ -1,6 +1,12 @@
 # Changelog
 This file keeps track of changes in more human-readable fashion
 
+## v0.3.0
+* Added themes
+  * Picked theme is set by `theme` key in config. Default is ...`default`
+  * Themes are defined in `/public/themes/<name>.css` and modify colours (or, theoretically, do more)
+  * Current pre-made themes are `default`, `gruvbox` and `high-contrast`
+
 ## v0.2.0
 * Added config reload
   * Can be reloaded in info page

@@ -22,6 +22,7 @@ type Config struct {
 	Timezone  *time.Location `config:"timezone" type:"location"`
 	GraceTime time.Duration  `config:"grace_period" type:"duration"`
 	Language  string         `config:"language" type:"string"`
+	Theme     string         `config:"theme" type:"string"`
 	LogToFile bool           `config:"log_to_file" type:"bool"`
 	LogFile   string         `config:"log_file" type:"string"`
 	Scram     bool           `config:"enable_scram" type:"bool"`
@@ -141,6 +142,7 @@ func ConfigInit() Config {
 		Password:  "admin",
 		Timezone:  time.Local,
 		Language:  "en",
+		Theme:     "default",
 		LogFile:   "config/log.txt",
 		GraceTime: 0,
 	}
