@@ -32,3 +32,17 @@ function beginTimeUpdater() {
     setTimeout(updateTime, difference);
     updateTime();
 }
+
+// This does NOT properly sanitize, and assumes a well-meaning user
+function sanitize(title) {
+    return title
+        .trim()
+        .replace(/ +/g, '-')
+        .replace(/[!*'();:@&=+$,\/?#\[\]]/g, '')
+}
+
+// Open a new note
+function newNote(text_prompt) {
+    name = sanitize(prompt(text_prompt + ':'))
+    window.location.replace('/notes/' + name)
+}

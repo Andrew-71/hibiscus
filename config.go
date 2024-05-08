@@ -76,6 +76,8 @@ func (c *Config) Save() error {
 }
 
 func (c *Config) Reload() error {
+	*c = DefaultConfig // Reset config
+
 	if _, err := os.Stat(ConfigFile); errors.Is(err, os.ErrNotExist) {
 		err := c.Save()
 		if err != nil {
@@ -156,7 +158,7 @@ func (c *Config) Reload() error {
 
 // ConfigInit loads config on startup
 func ConfigInit() Config {
-	cfg := DefaultConfig
+	cfg := Config{}
 	err := cfg.Reload()
 	if err != nil {
 		log.Fatal(err)

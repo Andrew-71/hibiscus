@@ -1,6 +1,14 @@
 # Changelog
 This file keeps track of changes in more human-readable fashion
 
+## v0.5.0
+* Added a JS prompt to create new note
+  * "Sanitization" for this method is basic and assumes a well-meaning user
+  * Old instructions appear if JS is disabled
+* Bug fixes
+  * Non-latin note names are now rendered correctly
+  * Config reload now sets removed values to defaults
+
 ## v0.4.0
 * Customisation changes
   * Added `title` option to config

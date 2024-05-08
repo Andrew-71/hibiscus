@@ -12,10 +12,12 @@
   "link.notes": "notes",
   "link.info": "app information",
 
-  "description.notes": "/notes/<name> for a new note",
   "time.date": "Today is",
   "time.grace": "grace period active",
   "button.save": "Save",
+  "button.notes": "New note",
+  "prompt.notes": "Note name",
+  "noscript.notes": "/notes/<name>",
 
   "info.version": "Version",
   "info.version.link": "source and changelog",

@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"log/slog"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -13,7 +14,7 @@ import (
 
 type EntryList struct {
 	Title       string
-	Description string
+	Description template.HTML
 	Entries     []Entry
 }
 
@@ -77,7 +78,7 @@ func PostToday(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetEntries is a generic HTML renderer for a list
-func GetEntries(w http.ResponseWriter, r *http.Request, title string, description string, dir string, format formatEntries) {
+func GetEntries(w http.ResponseWriter, r *http.Request, title string, description template.HTML, dir string, format formatEntries) {
 	filesList, err := ListFiles(dir)
 	if err != nil {
 		slog.Error("error reading file list", "directory", dir, "error", err)
@@ -124,7 +125,11 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 
 // GetNotes renders HTML list of all notes
 func GetNotes(w http.ResponseWriter, r *http.Request) {
-	GetEntries(w, r, TranslatableText("title.notes"), TranslatableText("description.notes"), "notes", func(files []string) []Entry {
+	// This is suboptimal, but will do...
+	description := template.HTML(
+		"<a href=\"#\" onclick='newNote(\"" + TranslatableText("prompt.notes") + "\")'>" + TranslatableText("button.notes") + "</a>" +
+			" <noscript>(" + template.HTMLEscapeString(TranslatableText("noscript.notes")) + ")</noscript>")
+	GetEntries(w, r, TranslatableText("title.notes"), description, "notes", func(files []string) []Entry {
 		var filesFormatted []Entry
 		for _, v := range files {
 			titleString := strings.Replace(v, "-", " ", -1) // FIXME: what if I need a hyphen?
@@ -194,6 +199,10 @@ func GetNote(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		HandleWrite(w.Write([]byte("note not specified")))
 		return
+	}
+	// Handle non-latin note names
+	if decodedNote, err := url.QueryUnescape(noteString); err == nil {
+		noteString = decodedNote
 	}
 
 	GetEntry(w, r, noteString, "notes/"+noteString, true)

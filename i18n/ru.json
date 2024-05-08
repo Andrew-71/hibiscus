@@ -12,10 +12,12 @@
   "link.notes": "заметки",
   "link.info": "системная информация",
 
-  "description.notes": "/notes/<название> для новой заметки",
   "time.date": "Сегодня",
   "time.grace": "льготный период",
   "button.save": "Сохранить",
+  "button.notes": "Новая заметка",
+  "prompt.notes": "Название заметки",
+  "noscript.notes": "/notes/<название>",
 
   "info.version": "Версия",
   "info.version.link": "исходный код",
