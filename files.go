@@ -11,14 +11,16 @@ import (
 	"time"
 )
 
+// DataFile modifies file path to ensure it's a .txt inside the data folder
+func DataFile(filename string) string {
+	return "data/" + path.Clean(filename) + ".txt"
+}
+
 // ReadFile returns raw contents of a file
 func ReadFile(filename string) ([]byte, error) {
-	filename = "data/" + path.Clean(filename) + ".txt" // Does this sanitize the path?
-
 	if _, err := os.Stat(filename); errors.Is(err, os.ErrNotExist) {
 		return nil, err
 	}
-
 	fileContents, err := os.ReadFile(filename)
 	if err != nil {
 		slog.Error("error reading file",
@@ -26,14 +28,12 @@ func ReadFile(filename string) ([]byte, error) {
 			"file", filename)
 		return nil, err
 	}
-
 	return fileContents, nil
 }
 
-// SaveFile Writes request's contents to a file
+// SaveFile Writes contents to a file
 func SaveFile(filename string, contents []byte) error {
 	contents = bytes.TrimSpace(contents)
-	filename = "data/" + filename + ".txt"
 	if len(contents) == 0 { // Delete empty files
 		err := os.Remove(filename)
 		slog.Error("error deleting empty file",
@@ -63,8 +63,9 @@ func SaveFile(filename string, contents []byte) error {
 }
 
 // ListFiles returns slice of filenames in a directory without extensions or path
+// NOTE: What if I ever want to list non-text files or those outside data directory?
 func ListFiles(directory string) ([]string, error) {
-	filenames, err := filepath.Glob("data/" + directory + "/*.txt")
+	filenames, err := filepath.Glob("data/" + path.Clean(directory) + "/*.txt")
 	if err != nil {
 		return nil, err
 	}
@@ -93,15 +94,16 @@ func TodayDate() string {
 	if GraceActive() {
 		dateFormatted = time.Now().In(Cfg.Timezone).AddDate(0, 0, -1).Format(time.DateOnly)
 	}
+	slog.Debug("today", "time", time.Now().In(Cfg.Timezone).Format(time.DateTime))
 	return dateFormatted
 }
 
 // ReadToday runs ReadFile with today's date as filename
 func ReadToday() ([]byte, error) {
-	return ReadFile("day/" + TodayDate())
+	return ReadFile(DataFile("day/" + TodayDate()))
 }
 
 // SaveToday runs SaveFile with today's date as filename
 func SaveToday(contents []byte) error {
-	return SaveFile("day/"+TodayDate(), contents)
+	return SaveFile(DataFile("day/"+TodayDate()), contents)
 }

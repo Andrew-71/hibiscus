@@ -72,17 +72,17 @@ func GetDayApi(w http.ResponseWriter, r *http.Request) {
 		HandleWrite(w.Write([]byte("day not specified")))
 		return
 	}
-	GetFile("day/"+dayString, w)
+	GetFile(DataFile("day/"+dayString), w)
 }
 
 // GetTodayApi runs GetFile with today's date as filename
 func GetTodayApi(w http.ResponseWriter, _ *http.Request) {
-	GetFile("day/"+TodayDate(), w)
+	GetFile(DataFile("day/"+TodayDate()), w)
 }
 
 // PostTodayApi runs PostFile with today's date as filename
 func PostTodayApi(w http.ResponseWriter, r *http.Request) {
-	PostFile("day/"+TodayDate(), w, r)
+	PostFile(DataFile("day/"+TodayDate()), w, r)
 }
 
 // GetNoteApi returns contents of a note specified in URL
@@ -93,7 +93,7 @@ func GetNoteApi(w http.ResponseWriter, r *http.Request) {
 		HandleWrite(w.Write([]byte("note not specified")))
 		return
 	}
-	GetFile("notes/"+noteString, w)
+	GetFile(DataFile("notes/"+noteString), w)
 }
 
 // PostNoteApi writes request's body contents to a note specified in URL
@@ -104,7 +104,7 @@ func PostNoteApi(w http.ResponseWriter, r *http.Request) {
 		HandleWrite(w.Write([]byte("note not specified")))
 		return
 	}
-	PostFile("notes/"+noteString, w, r)
+	PostFile(DataFile("notes/"+noteString), w, r)
 }
 
 // GraceActiveApi returns "true" if grace period is active, and "false" otherwise

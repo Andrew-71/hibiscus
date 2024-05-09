@@ -49,10 +49,9 @@ var DefaultConfig = Config{
 	TelegramChat:  "",
 }
 
-// Save puts modified and mandatory config options into the config.txt file
-func (c *Config) Save() error {
+// String returns text version of modified and mandatory config options
+func (c *Config) String() string {
 	output := ""
-
 	v := reflect.ValueOf(*c)
 	vDefault := reflect.ValueOf(DefaultConfig)
 	typeOfS := v.Type()
@@ -64,22 +63,14 @@ func (c *Config) Save() error {
 			output += fmt.Sprintf("%s=%v\n", key, value)
 		}
 	}
-
-	f, err := os.OpenFile(ConfigFile, os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		return err
-	}
-	if _, err := f.Write([]byte(output)); err != nil {
-		return err
-	}
-	return nil
+	return output
 }
 
 func (c *Config) Reload() error {
 	*c = DefaultConfig // Reset config
 
 	if _, err := os.Stat(ConfigFile); errors.Is(err, os.ErrNotExist) {
-		err := c.Save()
+		err := c.Save([]byte(c.String()))
 		if err != nil {
 			return err
 		}
@@ -154,6 +145,16 @@ func (c *Config) Reload() error {
 	slog.Debug("reloaded config", "config", c)
 
 	return LoadLanguage(c.Language) // Load selected language
+}
+
+// Read gets raw contents from ConfigFile
+func (c *Config) Read() ([]byte, error) {
+	return ReadFile(ConfigFile)
+}
+
+// Save writes to ConfigFile
+func (c *Config) Save(contents []byte) error {
+	return SaveFile(ConfigFile, contents)
 }
 
 // ConfigInit loads config on startup

@@ -1,6 +1,13 @@
 # Changelog
 This file keeps track of changes in more human-readable fashion
 
+## v0.6.0
+* Replaced config reload with edit in info (api method still available, config reloads on save)
+* Bug fixes
+  * Filenames are now sanitized when writing files
+  * "Tomorrow" in days list is now also displayed if Timezone is changed and grace period is off
+  * Frontend date display now uses configured timezone
+
 ## v0.5.0
 * Added a JS prompt to create new note
   * "Sanitization" for this method is basic and assumes a well-meaning user

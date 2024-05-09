@@ -28,6 +28,8 @@ func Serve() {
 	userRouter.Get("/info", GetInfo)
 	userRouter.Get("/readme", GetReadme)
 	userRouter.Post("/readme", PostReadme)
+	userRouter.Get("/config", GetConfig)
+	userRouter.Post("/config", PostConfig)
 	r.Mount("/", userRouter)
 
 	// API =============

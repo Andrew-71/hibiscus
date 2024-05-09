@@ -113,7 +113,7 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 			if v == TodayDate() {
 				dayString = TranslatableText("link.today")
 				dayString = strings.ToTitle(string([]rune(dayString)[0])) + string([]rune(dayString)[1:])
-			} else if GraceActive() && v > TodayDate() {
+			} else if v > TodayDate() {
 				dayString = TranslatableText("link.tomorrow")
 				dayString = strings.ToTitle(string([]rune(dayString)[0])) + string([]rune(dayString)[1:])
 			}
@@ -189,7 +189,7 @@ func GetDay(w http.ResponseWriter, r *http.Request) {
 		title = t.Format("02 Jan 2006")
 	}
 
-	GetEntry(w, r, title, "day/"+dayString, false)
+	GetEntry(w, r, title, DataFile("day/"+dayString), false)
 }
 
 // GetNote renders HTML page for a note
@@ -205,7 +205,7 @@ func GetNote(w http.ResponseWriter, r *http.Request) {
 		noteString = decodedNote
 	}
 
-	GetEntry(w, r, noteString, "notes/"+noteString, true)
+	GetEntry(w, r, noteString, DataFile("notes/"+noteString), true)
 }
 
 // PostNote saves a note form and redirects back to GET
@@ -216,7 +216,7 @@ func PostNote(w http.ResponseWriter, r *http.Request) {
 		HandleWrite(w.Write([]byte("note not specified")))
 		return
 	}
-	err := SaveFile("notes/"+noteString, []byte(r.FormValue("text")))
+	err := SaveFile(DataFile("notes/"+noteString), []byte(r.FormValue("text")))
 	if err != nil {
 		slog.Error("error saving a note", "note", noteString, "error", err)
 	}
@@ -225,14 +225,32 @@ func PostNote(w http.ResponseWriter, r *http.Request) {
 
 // GetReadme calls GetEntry for readme.txt
 func GetReadme(w http.ResponseWriter, r *http.Request) {
-	GetEntry(w, r, "readme.txt", "readme", true)
+	GetEntry(w, r, "readme.txt", DataFile("readme"), true)
 }
 
 // PostReadme saves contents of readme.txt file
 func PostReadme(w http.ResponseWriter, r *http.Request) {
-	err := SaveFile("readme", []byte(r.FormValue("text")))
+	err := SaveFile(DataFile("readme"), []byte(r.FormValue("text")))
 	if err != nil {
 		slog.Error("error saving readme", "error", err)
+	}
+	http.Redirect(w, r, r.Header.Get("Referer"), 302)
+}
+
+// GetConfig calls GetEntry for Cfg
+func GetConfig(w http.ResponseWriter, r *http.Request) {
+	GetEntry(w, r, "config.txt", ConfigFile, true)
+}
+
+// PostConfig saves new Cfg
+func PostConfig(w http.ResponseWriter, r *http.Request) {
+	err := SaveFile(ConfigFile, []byte(r.FormValue("text")))
+	if err != nil {
+		slog.Error("error saving config", "error", err)
+	}
+	err = Cfg.Reload()
+	if err != nil {
+		slog.Error("error reloading config", "error", err)
 	}
 	http.Redirect(w, r, r.Header.Get("Referer"), 302)
 }

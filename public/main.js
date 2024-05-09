@@ -3,7 +3,8 @@ function formatDate(date) {
     let dateFormat = new Intl.DateTimeFormat([langName, "en"], {
         year: 'numeric',
         month: 'short',
-        day: 'numeric'
+        day: 'numeric',
+        timeZone: timeZone
     })
     return dateFormat.format(date)
 }

@@ -3,22 +3,13 @@ List of things to add to this project
 
 ## v1.0.0
 * a logo so I can enable PWA (and look cool)
-* Themes
-  * Theme in config [X]
-  * Themes
-    * Default [X]
-    * Gruvbox [X]
-    * High contrast [ ]
-    * Seasons?
-  * Check for bugs
 * Versioned containers via `ghcr.io` or `dockerhub`, 
 with automatic CI/CD build on release
-* Test test test !!!!
+* ...QA? And polishing.
 
 ## Brainstorming
 Don't expect any of this, these are ideas floating inside my head
 * Further info page functionality
-  * Edit config
   * Statistics e.g. mb taken, number of day pages/notes
   * Test telegram link
 * Multi-user support through several username-pass keys

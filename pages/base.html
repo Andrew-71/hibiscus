@@ -25,7 +25,8 @@
     </main>
     {{template "footer" .}}
     <script defer>
-        const langName="{{ translatableText "lang" }}";
+        const langName="{{ config.Language }}";
+        const timeZone="{{ config.Timezone }}";
         beginTimeUpdater()
     </script>
 </body>

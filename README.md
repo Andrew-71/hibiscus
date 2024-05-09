@@ -52,6 +52,7 @@ timezone=Local  # IANA Time zone database identifier ("UTC", Local", "Europe/Mos
 grace_period=0s  # Time after a new day begins, but before the switch to next day's file. e.g. 2h30m - files will change at 2:30am
 language=en  # ISO-639 language code (pre-installed - en, ru)
 theme=default  # Picked theme (pre-installed - default, gruvbox, high-contrast)
+title=🌺 Hibiscus.txt  # The text in the header
 log_to_file=false  # Whether to write logs to a file
 log_file=config/log.txt  # Where to store the log file if it is enabled
 enable_scram=false  # Whether the app should shut down if there are 3 or more failed login attempts within 100 seconds

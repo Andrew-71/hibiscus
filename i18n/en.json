@@ -23,5 +23,5 @@
   "info.version.link": "source and changelog",
   "info.export": "Export data",
   "info.readme": "Edit readme.txt",
-  "info.reload": "Reload config"
+  "info.config": "Edit config"
 }
