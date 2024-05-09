@@ -1,11 +1,12 @@
 // Format time in "Jan 02, 2006" format
 function formatDate(date) {
-    let dateFormat = new Intl.DateTimeFormat([langName, "en"], {
+    let options = {
         year: 'numeric',
         month: 'short',
-        day: 'numeric',
-        timeZone: timeZone
-    })
+        day: 'numeric'
+    }
+    if (timeZone !== "Local") { options.timeZone = timeZone }
+    let dateFormat = new Intl.DateTimeFormat([langName, "en"], options)
     return dateFormat.format(date)
 }
 
