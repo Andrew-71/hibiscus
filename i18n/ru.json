@@ -16,6 +16,7 @@
   "button.notes": "Новая заметка",
   "prompt.notes": "Название заметки",
   "noscript.notes": "/notes/<название>",
+  "prompt.days": "Вниз",
 
   "info.version": "Версия",
   "info.version.link": "исходный код",

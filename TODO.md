@@ -1,6 +1,8 @@
 # TODO
 List of things to add to this project
 
+* Forward/backward buttons for days
+
 ## v1.0.0
 * a logo so I can enable PWA (and look cool)
 * Versioned containers via `ghcr.io` or `dockerhub`, 

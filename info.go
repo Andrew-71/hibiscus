@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-var infoTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/info.html"))
+var infoTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFS(Pages, "pages/base.html", "pages/info.html"))
 
 type AppInfo struct {
 	Version    string
@@ -15,7 +15,7 @@ type AppInfo struct {
 
 // Info contains app information
 var Info = AppInfo{
-	Version:    "0.6.1",
+	Version:    "1.0.0",
 	SourceLink: "https://git.a71.su/Andrew71/hibiscus",
 }
 

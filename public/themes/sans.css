@@ -1,0 +1,30 @@
+/* Sans Undertale */
+:root {
+    /* Light theme */
+    --text-light: #3c3836;
+    --bg-light: #e2e7e8;
+
+    --clickable-light: #41acda;
+    --clickable-hover-light: #2d8db4;
+    --clickable-label-light: #e2e8e2;
+    --text-hover-light: #665c54;
+
+    --textarea-bg-light: #f3f3f3;
+    --textarea-border-light: #3c3836;
+
+    /* Dark theme */
+    --text-dark: #e2e7e8;
+    --bg-dark: #25282a;
+
+    --clickable-dark: #41acda;
+    --clickable-hover-dark: #2d8db4;
+    --clickable-label-dark: #e2e8e2;
+    --text-hover-dark: #cdd2d3;
+
+    --textarea-bg-dark: #2d3234;
+    --textarea-border-dark: #3c3836;
+}
+
+body, textarea, input, button {
+    font-family: "Comic Sans MS", sans-serif;
+}

@@ -1,6 +1,20 @@
 # Changelog
 This file keeps track of changes in more human-readable fashion
 
+## v1.0.0
+This release includes several **breaking** changes
+* Made a new favicon
+* English is now used as a fallback language, making incomplete translations somewhat usable
+* Added a link to the bottom of the page in day list, for when you need to get to footer but been using the app for months...
+* `pages`, `public` and `i18n` directories now use embed.FS
+  * Running plain executable is now a somewhat valid option.
+  * A problem with this is that languages and themes are now harder to add. I will think about what to do about that, maybe some kind of `custom.css` file.
+  I might also be open to GitHub pull requests adding **some** languages (German and French could be nice starting points, I have friends studying them)
+* Added a new "sans" theme
+  * Light blue accent colour
+  * Comic Sans MS for *everything*
+  * sorry
+
 ## v0.6.0
 * Replaced config reload with edit in info (api method still available, config reloads on save)
 * Bug fixes

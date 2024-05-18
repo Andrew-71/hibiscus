@@ -16,6 +16,7 @@
   "button.notes": "New note",
   "prompt.notes": "Note name",
   "noscript.notes": "/notes/<name>",
+  "prompt.days": "To the bottom",
 
   "info.version": "Version",
   "info.version.link": "source and changelog",

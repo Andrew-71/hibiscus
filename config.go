@@ -144,7 +144,7 @@ func (c *Config) Reload() error {
 	}
 	slog.Debug("reloaded config", "config", c)
 
-	return LoadLanguage(c.Language) // Load selected language
+	return SetLanguage(c.Language) // Load selected language
 }
 
 // Read gets raw contents from ConfigFile

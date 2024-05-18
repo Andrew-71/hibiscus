@@ -51,8 +51,8 @@ func Serve() {
 	r.Mount("/api", apiRouter)
 
 	// Static files
-	fs := http.FileServer(http.Dir("public"))
-	r.Handle("/public/*", http.StripPrefix("/public/", fs))
+	fs := http.FileServer(http.FS(Public))
+	r.Handle("/public/*", fs)
 
 	slog.Info("🌺 Website working", "port", Cfg.Port)
 	slog.Debug("Debug mode enabled")

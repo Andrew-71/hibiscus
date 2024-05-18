@@ -15,10 +15,7 @@ WORKDIR /
 # Bring over the executable
 COPY --from=build-stage /hibiscus /hibiscus
 
-# Copy files
-COPY public public/
-COPY pages pages/
-COPY i18n i18n/
+# Data dirs
 VOLUME /data
 VOLUME /config
 

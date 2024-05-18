@@ -4,7 +4,7 @@
   "description": "A plaintext diary",
   "icons": [
     {
-      "src": "/public/TODO.png",
+      "src": "/public/favicon-512.png",
       "type": "image/png",
       "sizes": "512x512"
     },

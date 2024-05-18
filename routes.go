@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"errors"
 	"github.com/go-chi/chi/v5"
 	"html/template"
@@ -26,25 +27,40 @@ type Entry struct {
 
 type formatEntries func([]string) []Entry
 
+//go:embed public
+var Public embed.FS
+
+//go:embed pages
+var Pages embed.FS
+
+// EmbeddedFile returns a file in Pages while "handling" potential errors
+func EmbeddedFile(name string) []byte {
+	data, err := Pages.ReadFile(name)
+	if err != nil {
+		slog.Error("Error embedded file", "err", err)
+	}
+	return data
+}
+
 var templateFuncs = map[string]interface{}{
 	"translatableText": TranslatableText,
 	"info":             func() AppInfo { return Info },
 	"config":           func() Config { return Cfg },
 }
-var editTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/edit.html"))
-var viewTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/entry.html"))
-var listTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFiles("./pages/base.html", "./pages/list.html"))
+var editTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFS(Pages, "pages/base.html", "pages/edit.html"))
+var viewTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFS(Pages, "pages/base.html", "pages/entry.html"))
+var listTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFS(Pages, "pages/base.html", "pages/list.html"))
 
 // NotFound returns a user-friendly 404 error page
 func NotFound(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(404)
-	http.ServeFile(w, r, "./pages/error/404.html")
+	HandleWrite(w.Write(EmbeddedFile("pages/error/404.html")))
 }
 
 // InternalError returns a user-friendly 500 error page
 func InternalError(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(500)
-	http.ServeFile(w, r, "./pages/error/500.html")
+	HandleWrite(w.Write(EmbeddedFile("pages/error/500.html")))
 }
 
 // GetToday renders HTML page for today's entry
@@ -97,7 +113,9 @@ func GetEntries(w http.ResponseWriter, r *http.Request, title string, descriptio
 
 // GetDays renders HTML list of previous days' entries
 func GetDays(w http.ResponseWriter, r *http.Request) {
-	GetEntries(w, r, TranslatableText("title.days"), "", "day", func(files []string) []Entry {
+	description := template.HTML(
+		"<a href=\"#footer\">" + TranslatableText("prompt.days") + "</a>")
+	GetEntries(w, r, TranslatableText("title.days"), description, "day", func(files []string) []Entry {
 		var filesFormatted []Entry
 		for i := range files {
 			v := files[len(files)-1-i] // This is suboptimal, but reverse order is better here
@@ -150,13 +168,6 @@ func GetEntry(w http.ResponseWriter, r *http.Request, title string, filename str
 			InternalError(w, r)
 			return
 		}
-	}
-
-	files := []string{"./pages/base.html"}
-	if editable {
-		files = append(files, "./pages/edit.html")
-	} else {
-		files = append(files, "./pages/entry.html")
 	}
 
 	if editable {
