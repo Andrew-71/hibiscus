@@ -3,6 +3,11 @@
 FROM golang:1.22 AS build-stage
 WORKDIR /app
 
+# Copy embeded dirs
+COPY public public/
+COPY pages pages/
+COPY i18n i18n/
+
 # Setup and compile Go
 COPY go.mod go.sum ./
 RUN go mod download
