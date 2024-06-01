@@ -15,7 +15,7 @@
     }
   ],
   "start_url": "/",
-  "display": "minimal-ui",
+  "display": "fullscreen",
   "scope": "/",
   "background_color": "#f5f0e1",
   "theme_color": "#f85552"

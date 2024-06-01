@@ -28,11 +28,10 @@
 body {
     color: var(--text-light);
     background-color: var(--bg-light);
-    margin: 2em auto;
+    margin: auto auto;
     max-width: 640px;
     padding: 1em;
     line-height: 1.4;
-    text-align: justify;
     font-family: serif;
     min-height: 85vh;
     display: flex;

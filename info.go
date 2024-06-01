@@ -15,7 +15,7 @@ type AppInfo struct {
 
 // Info contains app information
 var Info = AppInfo{
-	Version:    "1.0.0",
+	Version:    "1.1.0",
 	SourceLink: "https://git.a71.su/Andrew71/hibiscus",
 }
 

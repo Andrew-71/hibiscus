@@ -1,6 +1,10 @@
 # Changelog
 This file keeps track of changes in more human-readable fashion
 
+## v1.1.0
+* You can now specify the Telegram *topic* to send notification to via `tg_topic` config key (By Rithas K.!)
+* The Telegram message is now partially translated
+* Fixed CSS `margin` and `text-align` inherited from my website
 ## v1.0.0
 This release includes several **breaking** changes
 * Made a new favicon
