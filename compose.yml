@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   hibiscus:
-    image: git.a71.su/andrew71/hibiscus:latest
+    image: ghcr.io/andrew-71/hibiscus:latest
     container_name: hibiscus
     restart: unless-stopped
     ports:

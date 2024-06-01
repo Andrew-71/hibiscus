@@ -3,12 +3,6 @@ List of things to add to this project
 
 * Forward/backward buttons for days
 
-## v1.0.0
-* a logo so I can enable PWA (and look cool)
-* Versioned containers via `ghcr.io`, 
-with automatic CI/CD build on release. NOT DockerHub due to their anti-Russian actions.
-* ...QA? And polishing.
-
 ## Brainstorming
 Don't expect any of this, these are ideas floating inside my head
 * Further info page functionality

@@ -65,12 +65,10 @@ tg_topic=message_thread_id
 ```
 
 ### Docker deployment:
-Due to project's simplicity ~~and me rarely using them~~ there are no image tags, I just use `latest` and push to it.
-The [package](https://git.a71.su/Andrew71/hibiscus/packages) provided in this repository is for `linux/amd64` architecture,
-and there is a [Dockerfile](./Dockerfile) in case you want to compile for something rarer (like a Pi).
+The Docker images are hosted via GitHub over at `ghcr.io/andrew-71/hibiscus:<tag>`, 
+built from the [Dockerfile](./Dockerfile).
 This repo contains the [compose.yml](./compose.yml) that I personally use.
-
-**Note**: versioned images may be provided in the future, possibly via `ghcr.io`.
+*Note: an outdated personally hosted [package](https://git.a71.su/Andrew71/hibiscus/packages) will be provided for some time.*
 
 ### Executable flags
 If you for some reason decide to run plain executable instead of docker, it supports following flags:

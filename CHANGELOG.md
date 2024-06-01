@@ -1,6 +1,8 @@
 # Changelog
 This file keeps track of changes in more human-readable fashion
 
+## v1.1.1
+This release is mostly a technicality, with a move over to GitHub (`ghcr.io/andrew-71/hibiscus`) for packages due to DockerHub's anti-Russian actions making old "CI/CD" impossible.
 ## v1.1.0
 * You can now specify the Telegram *topic* to send notification to via `tg_topic` config key (By Rithas K.!)
 * The Telegram message is now partially translated
