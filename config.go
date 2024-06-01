@@ -30,6 +30,7 @@ type Config struct {
 
 	TelegramToken string `config:"tg_token" type:"string"`
 	TelegramChat  string `config:"tg_chat" type:"string"`
+	TelegramTopic string `config:"tg_topic" type:"string"`
 }
 
 var DefaultConfig = Config{

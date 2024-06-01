@@ -85,7 +85,12 @@ func NotifyTelegram(msg string) {
 		return
 	}
 	client := &http.Client{}
-	var data = strings.NewReader("chat_id=" + Cfg.TelegramChat + "&text=" + msg)
+	var data *strings.Reader
+	if Cfg.TelegramToken != "" {
+		data = strings.NewReader("chat_id=" + Cfg.TelegramChat + "&message_thread_id=" + Cfg.TelegramTopic + "&text=" + msg)
+	} else {
+		data = strings.NewReader("chat_id=" + Cfg.TelegramChat + "&text=" + msg)
+	}
 	req, err := http.NewRequest("POST", "https://api.telegram.org/bot"+Cfg.TelegramToken+"/sendMessage", data)
 	if err != nil {
 		slog.Error("failed telegram request", "error", err)
