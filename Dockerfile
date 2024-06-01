@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM golang:1.22 AS build-stage
+FROM golang:1.22-alpine AS build-stage
 WORKDIR /app
 
 # Copy embeded dirs
@@ -14,7 +14,7 @@ RUN go mod download
 COPY *.go ./
 RUN CGO_ENABLED=0 GOOS=linux go build -o /hibiscus
 
-FROM alpine:3.19.1 AS deploy-stage
+FROM alpine:3.20 AS deploy-stage
 WORKDIR /
 
 # Bring over the executable
