@@ -22,5 +22,7 @@
   "info.version.link": "source and changelog",
   "info.export": "Export data",
   "info.readme": "Edit readme.txt",
-  "info.config": "Edit config"
+  "info.config": "Edit config",
+
+  "info.telegram_notification": "Failed auth attempt in Hibiscus.txt"
 }

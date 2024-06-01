@@ -5,8 +5,8 @@ List of things to add to this project
 
 ## v1.0.0
 * a logo so I can enable PWA (and look cool)
-* Versioned containers via `ghcr.io` or `dockerhub`, 
-with automatic CI/CD build on release
+* Versioned containers via `ghcr.io`, 
+with automatic CI/CD build on release. NOT DockerHub due to their anti-Russian actions.
 * ...QA? And polishing.
 
 ## Brainstorming

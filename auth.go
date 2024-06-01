@@ -22,17 +22,15 @@ var failedLogins []failedLogin
 // NoteLoginFail attempts to log and counteract bruteforce/spam attacks
 func NoteLoginFail(username string, password string, r *http.Request) {
 	slog.Warn("failed auth", "username", username, "password", password, "address", r.RemoteAddr)
-	NotifyTelegram(fmt.Sprintf("Failed auth attempt in hibiscus:\nusername=%s\npassword=%s\nremote=%s", username, password, r.RemoteAddr))
+	NotifyTelegram(fmt.Sprintf(TranslatableText("info.telegram_notification")+":\nusername=%s\npassword=%s\nremote=%s", username, password, r.RemoteAddr))
 
 	attempt := failedLogin{username, password, time.Now()}
 	updatedLogins := []failedLogin{attempt}
-
 	for _, attempt := range failedLogins {
 		if 100 > time.Now().Sub(attempt.Timestamp).Abs().Seconds() {
 			updatedLogins = append(updatedLogins, attempt)
 		}
 	}
-
 	failedLogins = updatedLogins
 
 	// At least 3 failed attempts in last 100 seconds -> likely bruteforce
@@ -78,7 +76,7 @@ func Scram() {
 	os.Exit(0) // TODO: should this be 0 or 1?
 }
 
-// NotifyTelegram attempts to send a message to admin through telegram
+// NotifyTelegram attempts to send a message to admin through Telegram
 func NotifyTelegram(msg string) {
 	if Cfg.TelegramChat == "" || Cfg.TelegramToken == "" {
 		slog.Debug("ignoring telegram request due to lack of credentials")

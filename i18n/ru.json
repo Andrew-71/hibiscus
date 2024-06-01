@@ -22,5 +22,7 @@
   "info.version.link": "исходный код",
   "info.export": "Экспорт данных",
   "info.readme": "Редактировать readme.txt",
-  "info.config": "Редактировать конфиг"
+  "info.config": "Редактировать конфиг",
+
+  "info.telegram_notification": "Неверная попытка авторизации в Hibiscus.txt"
 }

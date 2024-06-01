@@ -57,9 +57,11 @@ log_to_file=false  # Whether to write logs to a file
 log_file=config/log.txt  # Where to store the log file if it is enabled
 enable_scram=false  # Whether the app should shut down if there are 3 or more failed login attempts within 100 seconds
 
-# Not present by default, set only if you want to be notified of any failed login attempts over telegram
-tg_token=tgtoken
-tg_chat=chatid
+# Not present by default, set only if you want to be notified of any failed login attempts over Telegram
+# Values correspond to API flags, see https://core.telegram.org/bots/api#sendmessage
+tg_token=your_telegram_token
+tg_chat=chat_id
+tg_topic=message_thread_id
 ```
 
 ### Docker deployment:
@@ -68,7 +70,7 @@ The [package](https://git.a71.su/Andrew71/hibiscus/packages) provided in this re
 and there is a [Dockerfile](./Dockerfile) in case you want to compile for something rarer (like a Pi).
 This repo contains the [compose.yml](./compose.yml) that I personally use.
 
-**Note**: versioned images may be provided in the future, possibly via dockerhub
+**Note**: versioned images may be provided in the future, possibly via `ghcr.io`.
 
 ### Executable flags
 If you for some reason decide to run plain executable instead of docker, it supports following flags:
