@@ -12,6 +12,7 @@ import (
 // Serve starts the app's web server
 func Serve() {
 	r := chi.NewRouter()
+	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger, middleware.CleanPath, middleware.StripSlashes)
 	r.NotFound(NotFound)
 
