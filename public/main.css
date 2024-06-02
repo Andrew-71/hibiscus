@@ -25,10 +25,7 @@
     --textarea-border-dark: #454545;
 }
 
-* {
-    box-sizing: border-box;
-}
-
+* { box-sizing: border-box; }
 body {
     color: var(--text-light);
     background-color: var(--bg-light);

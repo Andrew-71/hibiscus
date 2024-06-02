@@ -48,6 +48,7 @@ var DefaultConfig = Config{
 
 	TelegramToken: "",
 	TelegramChat:  "",
+	TelegramTopic: "",
 }
 
 // String returns text version of modified and mandatory config options

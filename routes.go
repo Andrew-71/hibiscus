@@ -27,17 +27,21 @@ type Entry struct {
 
 type formatEntries func([]string) []Entry
 
+// Public contains the static files e.g. CSS, JS
+//
 //go:embed public
 var Public embed.FS
 
+// Pages contains the HTML templates used by the app
+//
 //go:embed pages
 var Pages embed.FS
 
-// EmbeddedFile returns a file in Pages while "handling" potential errors
-func EmbeddedFile(name string) []byte {
+// EmbeddedPage returns contents of a file in Pages while "handling" potential errors
+func EmbeddedPage(name string) []byte {
 	data, err := Pages.ReadFile(name)
 	if err != nil {
-		slog.Error("Error embedded file", "err", err)
+		slog.Error("error reading embedded file", "err", err)
 	}
 	return data
 }
@@ -54,13 +58,13 @@ var listTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFS(P
 // NotFound returns a user-friendly 404 error page
 func NotFound(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(404)
-	HandleWrite(w.Write(EmbeddedFile("pages/error/404.html")))
+	HandleWrite(w.Write(EmbeddedPage("pages/error/404.html")))
 }
 
 // InternalError returns a user-friendly 500 error page
 func InternalError(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(500)
-	HandleWrite(w.Write(EmbeddedFile("pages/error/500.html")))
+	HandleWrite(w.Write(EmbeddedPage("pages/error/500.html")))
 }
 
 // GetToday renders HTML page for today's entry
