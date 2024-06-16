@@ -11,7 +11,7 @@ import (
 
 var ExportPath = "data/export.zip"
 
-// Export saves a .zip archive of the data folder to the passed filename
+// Export saves a .zip archive of the data folder to a file.
 func Export(filename string) error {
 	file, err := os.Create(filename)
 	if err != nil {
@@ -61,7 +61,8 @@ func Export(filename string) error {
 	return file.Close()
 }
 
-// GetExport returns a .zip archive with contents of the data folder
+// GetExport returns a .zip archive with contents of the data folder.
+// As a side effect, it creates the file in there.
 func GetExport(w http.ResponseWriter, r *http.Request) {
 	err := Export(ExportPath)
 	if err != nil {

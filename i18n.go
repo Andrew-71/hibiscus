@@ -10,7 +10,7 @@ import (
 var I18n embed.FS
 var Translations = map[string]string{}
 
-// SetLanguage loads a json file for selected language into the Translations map, with english language as a fallback
+// SetLanguage loads a json file for selected language into the Translations map, with English language as a fallback.
 func SetLanguage(language string) error {
 	loadLanguage := func(language string) error {
 		filename := "i18n/" + language + ".json"
@@ -23,14 +23,15 @@ func SetLanguage(language string) error {
 		}
 		return json.Unmarshal(fileContents, &Translations)
 	}
-	err := loadLanguage("en") // Load english as fallback language
+	Translations = map[string]string{} // Clear the map to avoid previous language remaining
+	err := loadLanguage("en")          // Load English as fallback
 	if err != nil {
 		return err
 	}
 	return loadLanguage(language)
 }
 
-// TranslatableText attempts to match an id to a string in current language
+// TranslatableText attempts to match an id to a string in current language.
 func TranslatableText(id string) string {
 	if v, ok := Translations[id]; !ok {
 		return id

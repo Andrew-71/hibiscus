@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"log/slog"
+	"net/http"
 	"os"
 	"reflect"
 	"strconv"
@@ -51,7 +52,7 @@ var DefaultConfig = Config{
 	TelegramTopic: "",
 }
 
-// String returns text version of modified and mandatory config options
+// String returns string representation of modified and mandatory config options.
 func (c *Config) String() string {
 	output := ""
 	v := reflect.ValueOf(*c)
@@ -68,11 +69,13 @@ func (c *Config) String() string {
 	return output
 }
 
+// Reload resets, then loads config from the ConfigFile.
+// It creates the file with mandatory options if it is missing.
 func (c *Config) Reload() error {
 	*c = DefaultConfig // Reset config
 
 	if _, err := os.Stat(ConfigFile); errors.Is(err, os.ErrNotExist) {
-		err := c.Save([]byte(c.String()))
+		err := c.Save()
 		if err != nil {
 			return err
 		}
@@ -149,17 +152,40 @@ func (c *Config) Reload() error {
 	return SetLanguage(c.Language) // Load selected language
 }
 
-// Read gets raw contents from ConfigFile
+// Read gets raw contents from ConfigFile.
 func (c *Config) Read() ([]byte, error) {
 	return ReadFile(ConfigFile)
 }
 
-// Save writes to ConfigFile
-func (c *Config) Save(contents []byte) error {
-	return SaveFile(ConfigFile, contents)
+// Save writes config's contents to the ConfigFile.
+func (c *Config) Save() error {
+	return SaveFile(ConfigFile, []byte(c.String()))
 }
 
-// ConfigInit loads config on startup
+// PostConfig calls PostEntry for config file, then reloads the config.
+func PostConfig(w http.ResponseWriter, r *http.Request) {
+	PostEntry(ConfigFile, w, r)
+	err := Cfg.Reload()
+	if err != nil {
+		slog.Error("error reloading config", "error", err)
+	}
+}
+
+// ConfigReloadApi reloads the config. It then redirects back if Referer field is present.
+func ConfigReloadApi(w http.ResponseWriter, r *http.Request) {
+	err := Cfg.Reload()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		HandleWrite(w.Write([]byte(err.Error())))
+	}
+	if r.Referer() != "" {
+		http.Redirect(w, r, r.Header.Get("Referer"), 302)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+}
+
+// ConfigInit loads config on startup.
 func ConfigInit() Config {
 	cfg := Config{}
 	err := cfg.Reload()

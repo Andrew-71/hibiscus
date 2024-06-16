@@ -24,5 +24,6 @@
   "info.readme": "Edit readme.txt",
   "info.config": "Edit config",
 
-  "info.telegram_notification": "Failed auth attempt in Hibiscus.txt"
+  "info.telegram.auth_fail": "Failed auth attempt in Hibiscus.txt",
+  "info.telegram.scram": "Hibiscus SCRAM triggered, shutting down"
 }

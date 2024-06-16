@@ -10,7 +10,7 @@ import (
 
 var DebugMode = false
 
-// LogInit makes slog output to both stdout and a file if needed, and enables debug mode if selected
+// LogInit makes slog output to both os.Stdout and a file if needed, and sets slog.LevelDebug if enabled.
 func LogInit() {
 	var w io.Writer
 	if Cfg.LogToFile {

@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-// Serve starts the app's web server
+// Serve starts the app's web server.
 func Serve() {
 	r := chi.NewRouter()
 	r.Use(middleware.RealIP)
@@ -19,32 +19,34 @@ func Serve() {
 	// Routes ==========
 	userRouter := chi.NewRouter()
 	userRouter.Use(BasicAuth)
-	userRouter.Get("/", GetToday)
-	userRouter.Post("/", PostToday)
+	userRouter.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		GetEntry(w, r, TranslatableText("title.today"), DataFile("day/"+TodayDate()), true)
+	})
+	userRouter.Post("/", func(w http.ResponseWriter, r *http.Request) { PostEntry(DataFile("day/"+TodayDate()), w, r) })
 	userRouter.Get("/day", GetDays)
 	userRouter.Get("/day/{day}", GetDay)
 	userRouter.Get("/notes", GetNotes)
 	userRouter.Get("/notes/{note}", GetNote)
 	userRouter.Post("/notes/{note}", PostNote)
 	userRouter.Get("/info", GetInfo)
-	userRouter.Get("/readme", GetReadme)
-	userRouter.Post("/readme", PostReadme)
-	userRouter.Get("/config", GetConfig)
+	userRouter.Get("/readme", func(w http.ResponseWriter, r *http.Request) { GetEntry(w, r, "readme.txt", DataFile("readme"), true) })
+	userRouter.Post("/readme", func(w http.ResponseWriter, r *http.Request) { PostEntry(DataFile("readme"), w, r) })
+	userRouter.Get("/config", func(w http.ResponseWriter, r *http.Request) { GetEntry(w, r, "config.txt", ConfigFile, true) })
 	userRouter.Post("/config", PostConfig)
 	r.Mount("/", userRouter)
 
 	// API =============
 	apiRouter := chi.NewRouter()
 	apiRouter.Use(BasicAuth)
-	apiRouter.Get("/readme", func(w http.ResponseWriter, r *http.Request) { GetFile("readme", w) })
-	apiRouter.Post("/readme", func(w http.ResponseWriter, r *http.Request) { PostFile("readme", w, r) })
+	apiRouter.Get("/readme", func(w http.ResponseWriter, r *http.Request) { GetFileApi("readme", w) })
+	apiRouter.Post("/readme", func(w http.ResponseWriter, r *http.Request) { PostFileApi("readme", w, r) })
 	apiRouter.Get("/day", func(w http.ResponseWriter, r *http.Request) { GetFileList("day", w) })
 	apiRouter.Get("/day/{day}", GetDayApi)
 	apiRouter.Get("/notes", func(w http.ResponseWriter, r *http.Request) { GetFileList("notes", w) })
 	apiRouter.Get("/notes/{note}", GetNoteApi)
 	apiRouter.Post("/notes/{note}", PostNoteApi)
-	apiRouter.Get("/today", GetTodayApi)
-	apiRouter.Post("/today", PostTodayApi)
+	apiRouter.Get("/today", func(w http.ResponseWriter, r *http.Request) { GetFileApi(DataFile("day/"+TodayDate()), w) })
+	apiRouter.Post("/today", func(w http.ResponseWriter, r *http.Request) { PostEntry(DataFile("day/"+TodayDate()), w, r) })
 	apiRouter.Get("/export", GetExport)
 	apiRouter.Get("/grace", GraceActiveApi)
 	apiRouter.Get("/version", GetVersionApi)

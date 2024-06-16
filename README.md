@@ -11,7 +11,7 @@ As a result, I can't guarantee that it's either secure or stable.
 * You can easily export the files in a `.zip` archive for backups
 
 * Everything is plain(text) and simple. No databases, encryption, OAuth, or anything fancy. Even the password is plainte- *wait is this a feature?*
-* Docker support (in fact, that's probably the best way to run this)
+* [Docker support](#docker-deployment) (in fact, that's probably the best way to run this)
 * Optional Telegram notifications for failed login attempts
 
 ## Technical details
@@ -19,7 +19,7 @@ As a result, I can't guarantee that it's either secure or stable.
 
 You can read a relevant entry in my blog [here](https://a71.su/notes/hibiscus/). 
 It provides some useful information and context for why this app exists in the first place.
-This repository is [mirrored to GitHub](https://github.com/Andrew-71/hibiscus) in case my server goes down.
+This repository is [self-hosted by me](https://git.a71.su/Andrew71/hibiscus), but [mirrored to GitHub](https://github.com/Andrew-71/hibiscus) in case my server goes down.
 
 ### Data format:
 ```
@@ -49,7 +49,7 @@ username=admin  # Your username
 password=admin  # Your password
 port=7101  # What port to run on (probably leave on 7101 if using docker)
 timezone=Local  # IANA Time zone database identifier ("UTC", Local", "Europe/Moscow" etc.), Defaults to Local if can't parse.
-grace_period=0s  # Time after a new day begins, but before the switch to next day's file. e.g. 2h30m - files will change at 2:30am
+grace_period=0s  # Time after a new day begins, but before the switch to next day's file. e.g. 3h26m - files will change at 3:26am
 language=en  # ISO-639 language code (available - en, ru)
 theme=default  # Picked theme (available - default, high-contrast, lavender, gruvbox, sans)
 title=🌺 Hibiscus.txt  # The text in the header
@@ -68,10 +68,10 @@ tg_topic=message_thread_id
 The Docker images are hosted via GitHub over at `ghcr.io/andrew-71/hibiscus:<tag>`, 
 built from the [Dockerfile](./Dockerfile).
 This repo contains the [compose.yml](./compose.yml) that I personally use.
-*Note: an outdated personally hosted [package](https://git.a71.su/Andrew71/hibiscus/packages) will be provided for some time.*
+*Note: an extremely outdated self-hosted [package](https://git.a71.su/Andrew71/hibiscus/packages) will be provided for some time.*
 
 ### Executable flags
-If you for some reason decide to run plain executable instead of docker, it supports following flags:
+If you decide to use plain executable instead of docker, it supports the following flags:
 ```
 -config string
     override config file location
@@ -86,7 +86,7 @@ If you for some reason decide to run plain executable instead of docker, it supp
 ```
 
 ### API methods
-You can access the API at `/api/<method>`. They are protected by same HTTP Basic Auth as "normal" site.
+You can access the API at `/api/<method>`. It is protected by same HTTP Basic Auth as "normal" routes.
 ```
 GET  /today        - get file contents for today
 POST /today        - save request body into today's file

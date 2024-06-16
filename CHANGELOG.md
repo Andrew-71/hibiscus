@@ -1,17 +1,24 @@
 # Changelog
-This file keeps track of changes in more human-readable fashion
+This file keeps track of changes in a human-readable fashion
 
+## v1.1.3
+This release mostly consists of backend improvements
+* List items no longer replace hyphens with spaces for consistency
+* Telegram message for SCRAM is now translatable
+* Ensured HTML escape in list descriptions
+* Refactored many methods, improved comments
 ## v1.1.2
-This version contains changes from pull request #2 by Rithas K.
-* Real IPs are now logged
-* Textarea has been fixed Safari
-* Done some minor behind-the-scenes housekeeping 
+This release contains a few bug fixes
+* Real IPs are now logged (By Rithas K.)
+* CSS now has `box-sizing: border-box` to fix textarea in some cases (By Rithas K.)
+* Done some minor code housekeeping 
 ## v1.1.1
-This release is mostly a technicality, with a move over to GitHub (`ghcr.io/andrew-71/hibiscus`) for packages due to DockerHub's anti-Russian actions making old "CI/CD" impossible.
+This release is mostly a technicality, with a move over to GitHub (`ghcr.io/andrew-71/hibiscus`) for packages due to DockerHub's prior anti-Russian actions making old "CI/CD" unsustainable.
 ## v1.1.0
-* You can now specify the Telegram *topic* to send notification to via `tg_topic` config key (By Rithas K.!)
+* You can now specify the Telegram *topic* to send notification to via `tg_topic` config key (By Rithas K.)
 * The Telegram message is now partially translated
 * Fixed CSS `margin` and `text-align` inherited from my website
+
 ## v1.0.0
 This release includes several **breaking** changes
 * Made a new favicon

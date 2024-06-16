@@ -24,5 +24,6 @@
   "info.readme": "Редактировать readme.txt",
   "info.config": "Редактировать конфиг",
 
-  "info.telegram_notification": "Неверная попытка авторизации в Hibiscus.txt"
+  "info.telegram_notification": "Неверная попытка авторизации в Hibiscus.txt",
+  "info.telegram.scram": "Активирована функция SCRAM в Hibiscus.txt, сервер выключается"
 }

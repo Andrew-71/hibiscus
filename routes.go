@@ -27,17 +27,17 @@ type Entry struct {
 
 type formatEntries func([]string) []Entry
 
-// Public contains the static files e.g. CSS, JS
+// Public contains the static files e.g. CSS, JS.
 //
 //go:embed public
 var Public embed.FS
 
-// Pages contains the HTML templates used by the app
+// Pages contains the HTML templates used by the app.
 //
 //go:embed pages
 var Pages embed.FS
 
-// EmbeddedPage returns contents of a file in Pages while "handling" potential errors
+// EmbeddedPage returns contents of a file in Pages while "handling" potential errors.
 func EmbeddedPage(name string) []byte {
 	data, err := Pages.ReadFile(name)
 	if err != nil {
@@ -55,49 +55,19 @@ var editTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFS(P
 var viewTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFS(Pages, "pages/base.html", "pages/entry.html"))
 var listTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFS(Pages, "pages/base.html", "pages/list.html"))
 
-// NotFound returns a user-friendly 404 error page
+// NotFound returns a user-friendly 404 error page.
 func NotFound(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(404)
 	HandleWrite(w.Write(EmbeddedPage("pages/error/404.html")))
 }
 
-// InternalError returns a user-friendly 500 error page
+// InternalError returns a user-friendly 500 error page.
 func InternalError(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(500)
 	HandleWrite(w.Write(EmbeddedPage("pages/error/500.html")))
 }
 
-// GetToday renders HTML page for today's entry
-func GetToday(w http.ResponseWriter, r *http.Request) {
-	day, err := ReadToday()
-	if err != nil {
-		if errors.Is(err, os.ErrNotExist) {
-			day = []byte("")
-		} else {
-			slog.Error("error reading today's file", "error", err)
-			InternalError(w, r)
-			return
-		}
-	}
-
-	err = editTemplate.ExecuteTemplate(w, "base", Entry{Title: TranslatableText("title.today"), Content: string(day)})
-	if err != nil {
-		slog.Error("error executing template", "error", err)
-		InternalError(w, r)
-		return
-	}
-}
-
-// PostToday saves today's entry from form and redirects back to GET
-func PostToday(w http.ResponseWriter, r *http.Request) {
-	err := SaveToday([]byte(r.FormValue("text")))
-	if err != nil {
-		slog.Error("error saving today's file", "error", err)
-	}
-	http.Redirect(w, r, r.Header.Get("Referer"), 302)
-}
-
-// GetEntries is a generic HTML renderer for a list
+// GetEntries handles showing a list.
 func GetEntries(w http.ResponseWriter, r *http.Request, title string, description template.HTML, dir string, format formatEntries) {
 	filesList, err := ListFiles(dir)
 	if err != nil {
@@ -115,10 +85,10 @@ func GetEntries(w http.ResponseWriter, r *http.Request, title string, descriptio
 	}
 }
 
-// GetDays renders HTML list of previous days' entries
+// GetDays calls GetEntries for previous days' entries.
 func GetDays(w http.ResponseWriter, r *http.Request) {
 	description := template.HTML(
-		"<a href=\"#footer\">" + TranslatableText("prompt.days") + "</a>")
+		"<a href=\"#footer\">" + template.HTMLEscapeString(TranslatableText("prompt.days")) + "</a>")
 	GetEntries(w, r, TranslatableText("title.days"), description, "day", func(files []string) []Entry {
 		var filesFormatted []Entry
 		for i := range files {
@@ -145,23 +115,23 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// GetNotes renders HTML list of all notes
+// GetNotes calls GetEntries for all notes.
 func GetNotes(w http.ResponseWriter, r *http.Request) {
 	// This is suboptimal, but will do...
 	description := template.HTML(
-		"<a href=\"#\" onclick='newNote(\"" + TranslatableText("prompt.notes") + "\")'>" + TranslatableText("button.notes") + "</a>" +
+		"<a href=\"#\" onclick='newNote(\"" + template.HTMLEscapeString(TranslatableText("prompt.notes")) + "\")'>" + template.HTMLEscapeString(TranslatableText("button.notes")) + "</a>" +
 			" <noscript>(" + template.HTMLEscapeString(TranslatableText("noscript.notes")) + ")</noscript>")
 	GetEntries(w, r, TranslatableText("title.notes"), description, "notes", func(files []string) []Entry {
 		var filesFormatted []Entry
 		for _, v := range files {
-			titleString := strings.Replace(v, "-", " ", -1) // FIXME: what if I need a hyphen?
-			filesFormatted = append(filesFormatted, Entry{Title: titleString, Link: "notes/" + v})
+			// titleString := strings.Replace(v, "-", " ", -1) // This would be cool, but what if I need a hyphen?
+			filesFormatted = append(filesFormatted, Entry{Title: v, Link: "notes/" + v})
 		}
 		return filesFormatted
 	})
 }
 
-// GetEntry handles showing a single file, editable or otherwise
+// GetEntry handles showing a single file, editable or otherwise.
 func GetEntry(w http.ResponseWriter, r *http.Request, title string, filename string, editable bool) {
 	entry, err := ReadFile(filename)
 	if err != nil {
@@ -185,7 +155,19 @@ func GetEntry(w http.ResponseWriter, r *http.Request, title string, filename str
 	}
 }
 
-// GetDay renders HTML page for a specific day entry
+// PostEntry saves value of "text" HTML form component to a file and redirects back to Referer if present.
+func PostEntry(filename string, w http.ResponseWriter, r *http.Request) {
+	err := SaveFile(filename, []byte(r.FormValue("text")))
+	if err != nil {
+		slog.Error("error saving file", "error", err, "file", filename)
+	}
+	if r.Referer() != "" {
+		http.Redirect(w, r, r.Header.Get("Referer"), 302)
+		return
+	}
+}
+
+// GetDay calls GetEntry for a day entry.
 func GetDay(w http.ResponseWriter, r *http.Request) {
 	dayString := chi.URLParam(r, "day")
 	if dayString == "" {
@@ -207,7 +189,7 @@ func GetDay(w http.ResponseWriter, r *http.Request) {
 	GetEntry(w, r, title, DataFile("day/"+dayString), false)
 }
 
-// GetNote renders HTML page for a note
+// GetNote calls GetEntry for a note.
 func GetNote(w http.ResponseWriter, r *http.Request) {
 	noteString := chi.URLParam(r, "note")
 	if noteString == "" {
@@ -223,7 +205,7 @@ func GetNote(w http.ResponseWriter, r *http.Request) {
 	GetEntry(w, r, noteString, DataFile("notes/"+noteString), true)
 }
 
-// PostNote saves a note form and redirects back to GET
+// PostNote calls PostEntry for a note.
 func PostNote(w http.ResponseWriter, r *http.Request) {
 	noteString := chi.URLParam(r, "note")
 	if noteString == "" {
@@ -231,41 +213,5 @@ func PostNote(w http.ResponseWriter, r *http.Request) {
 		HandleWrite(w.Write([]byte("note not specified")))
 		return
 	}
-	err := SaveFile(DataFile("notes/"+noteString), []byte(r.FormValue("text")))
-	if err != nil {
-		slog.Error("error saving a note", "note", noteString, "error", err)
-	}
-	http.Redirect(w, r, r.Header.Get("Referer"), 302)
-}
-
-// GetReadme calls GetEntry for readme.txt
-func GetReadme(w http.ResponseWriter, r *http.Request) {
-	GetEntry(w, r, "readme.txt", DataFile("readme"), true)
-}
-
-// PostReadme saves contents of readme.txt file
-func PostReadme(w http.ResponseWriter, r *http.Request) {
-	err := SaveFile(DataFile("readme"), []byte(r.FormValue("text")))
-	if err != nil {
-		slog.Error("error saving readme", "error", err)
-	}
-	http.Redirect(w, r, r.Header.Get("Referer"), 302)
-}
-
-// GetConfig calls GetEntry for Cfg
-func GetConfig(w http.ResponseWriter, r *http.Request) {
-	GetEntry(w, r, "config.txt", ConfigFile, true)
-}
-
-// PostConfig saves new Cfg
-func PostConfig(w http.ResponseWriter, r *http.Request) {
-	err := SaveFile(ConfigFile, []byte(r.FormValue("text")))
-	if err != nil {
-		slog.Error("error saving config", "error", err)
-	}
-	err = Cfg.Reload()
-	if err != nil {
-		slog.Error("error reloading config", "error", err)
-	}
-	http.Redirect(w, r, r.Header.Get("Referer"), 302)
+	PostEntry(DataFile("notes/"+noteString), w, r)
 }

@@ -19,10 +19,10 @@ type failedLogin struct {
 
 var failedLogins []failedLogin
 
-// NoteLoginFail attempts to log and counteract bruteforce/spam attacks
+// NoteLoginFail attempts to log and counteract bruteforce attacks.
 func NoteLoginFail(username string, password string, r *http.Request) {
 	slog.Warn("failed auth", "username", username, "password", password, "address", r.RemoteAddr)
-	NotifyTelegram(fmt.Sprintf(TranslatableText("info.telegram_notification")+":\nusername=%s\npassword=%s\nremote=%s", username, password, r.RemoteAddr))
+	NotifyTelegram(fmt.Sprintf(TranslatableText("info.telegram.auth_fail")+":\nusername=%s\npassword=%s\nremote=%s", username, password, r.RemoteAddr))
 
 	attempt := failedLogin{username, password, time.Now()}
 	updatedLogins := []failedLogin{attempt}
@@ -40,8 +40,8 @@ func NoteLoginFail(username string, password string, r *http.Request) {
 }
 
 // BasicAuth is a middleware that handles authentication & authorization for the app.
-// It uses BasicAuth because I doubt there is a need for something sophisticated in a small hobby project
-// Originally taken from Alex Edwards's https://www.alexedwards.net/blog/basic-authentication-in-go, MIT Licensed. (13.03.2024)
+// It uses BasicAuth because I doubt there is a need for something sophisticated in a small hobby project.
+// Originally taken from Alex Edwards's https://www.alexedwards.net/blog/basic-authentication-in-go, MIT Licensed (13.03.2024).
 func BasicAuth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		username, password, ok := r.BasicAuth()
@@ -69,14 +69,14 @@ func BasicAuth(next http.Handler) http.Handler {
 	})
 }
 
-// Scram shuts down the service, useful in case of suspected attack
+// Scram shuts down the service, useful in case of suspected attack.
 func Scram() {
 	slog.Warn("SCRAM triggered, shutting down")
-	NotifyTelegram("Hibiscus SCRAM triggered, shutting down")
-	os.Exit(0) // TODO: should this be 0 or 1?
+	NotifyTelegram(TranslatableText("info.telegram.scram"))
+	os.Exit(0)
 }
 
-// NotifyTelegram attempts to send a message to admin through Telegram
+// NotifyTelegram attempts to send a message to admin through Telegram.
 func NotifyTelegram(msg string) {
 	if Cfg.TelegramChat == "" || Cfg.TelegramToken == "" {
 		slog.Debug("ignoring telegram request due to lack of credentials")
