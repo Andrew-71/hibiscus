@@ -1,6 +1,7 @@
 # TODO
 List of things to add to this project
 
+* Auth improvement so it DOESN'T ASK ME FOR PASSWORD EVERY DAY UGH XD
 * Forward/backward buttons for days
 
 ## Brainstorming

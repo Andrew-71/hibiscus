@@ -39,11 +39,11 @@ config
 Deleting notes is done by clearing contents and clicking "Save" - the app deletes empty files when saving.
 
 ### Config options:
-Below are available configuration options and their defaults. 
-The settings are defined as newline separated key=value pairs in config.txt.
-If you do not provide an option in your config, it will be using the default.
+Below are the available configuration options and their defaults. 
+The settings are defined as newline separated `key=value` pairs in the config file.
+If you do not provide an option, the default will be used.
 Please don't include the bash-style "comments" in your actual config, 
-they are provided purely for demonstration only and **will break the config if present**.
+they are provided purely for demonstration and **will break the config if present**.
 ```
 username=admin  # Your username
 password=admin  # Your password
