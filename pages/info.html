@@ -1,4 +1,4 @@
-{{define "main"}}
+{{ define "main" }}
 <h2>{{ translatableText "title.info" }}</h2>
 <ul>
     <li>{{ translatableText "info.version" }} - {{ info.Version }} (<a href="{{ .SourceLink }}">{{ translatableText "info.version.link" }}</a>)</li>
@@ -6,4 +6,4 @@
     <li><a href="/readme">{{ translatableText "info.readme" }}</a></li>
     <li><a href="/api/export" download="hibiscus">{{ translatableText "info.export" }}</a></li>
 </ul>
-{{end}}
+{{ end }}

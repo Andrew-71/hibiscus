@@ -1,9 +1,9 @@
-{{define "main"}}
-<h2 class="list-title">{{.Title}}</h2>
-<p class="list-desc">{{.Description}}</p>
+{{ define "main" }}
+<h2 class="list-title">{{ .Title }}</h2>
+<p class="list-desc">{{ .Description }}</p>
 <ul>
-    {{range .Entries}}
+    {{ range .Entries }}
     <li><a href="/{{.Link}}">{{.Title}}</a></li>
-    {{end}}
+    {{ end }}
 </ul>
 {{end}}

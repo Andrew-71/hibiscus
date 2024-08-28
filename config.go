@@ -41,7 +41,7 @@ var DefaultConfig = Config{
 	Timezone:  time.Local,
 	GraceTime: 0,
 	Language:  "en",
-	Theme:     "default",
+	Theme:     "",
 	Title:     "🌺 Hibiscus.txt",
 	LogToFile: false,
 	LogFile:   "config/log.txt",

@@ -1,6 +1,11 @@
 # Changelog
 This file keeps track of changes in a human-readable fashion
 
+## v1.1.4
+* Fixed HTML `lang` tag
+* Theme CSS link is now only present if non-default is set
+* Improved template consistency (backend)
+
 ## v1.1.3
 This release mostly consists of backend improvements
 * List items no longer replace hyphens with spaces for consistency
