@@ -1,3 +1,4 @@
+{{- define "404" -}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,8 +11,9 @@
 <body>
 <main>
     <h1>Error 404 - Not Found</h1>
-    <p>The page you were looking for doesn't exist or was moved</p>
-    <h3><a href="/">Go home?</a></h3>
+    <p>{{ translatableText "error.404" }}</p>
+    <p><a href="/">{{ translatableText "error.prompt" }}</a></p>
 </main>
 </body>
 </html>
+{{ end }}

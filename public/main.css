@@ -1,12 +1,12 @@
 /* Default theme */
 :root {
     /* Light theme */
-    --text-light: #454545;
-    --bg-light: #f5f0e1;
+    --text-light: #2b2a2a;
+    --bg-light: #f4edd7;
 
     --clickable-light: #f85552;
     --clickable-hover-light: #e66868;
-    --clickable-label-light: #f5f2ee;
+    --clickable-label-light: #f4edd7;
     --text-hover-light: #656565;
 
     --textarea-bg-light: #f5f2ee;
@@ -14,12 +14,12 @@
 
     /* Dark theme */
     --text-dark: #f5f0e1;
-    --bg-dark: #2c2825;
+    --bg-dark: #1b1916;
 
     --clickable-dark: #f85552;
     --clickable-hover-dark: #e66868;
     --clickable-label-dark: #f5f2ee;
-    --text-hover-dark: #656565;
+    --text-hover-dark: #a9a8a4;
 
     --textarea-bg-dark: #383030;
     --textarea-border-dark: #454545;
@@ -29,21 +29,29 @@
 body {
     color: var(--text-light);
     background-color: var(--bg-light);
+    font-size: 18px;
     margin: auto auto;
     max-width: 640px;
-    padding: 1em;
+    padding: 15px;
     line-height: 1.4;
     font-family: serif;
     min-height: 85vh;
     display: flex;
     flex-direction: column;
 }
+h1,h2,h3,h4,h5,h6 { line-height: 1.2 }
+
 a, a:visited { color: var(--clickable-light); }
 a:hover, a:visited:hover { color: var(--clickable-hover-light); }
 a.no-accent, a.no-accent:visited { color: var(--text-light); }
 a.no-accent:hover, a.no-accent:visited:hover { color: var(--text-hover-light); }
 
-h2 { margin-bottom:12px; }
+ul:not(li ul),  ol:not(li ol){
+    margin-left: 0;
+    padding-left: 0;
+    list-style-position: inside;
+}
+
 .list-title { margin-bottom: 0}
 .list-desc { margin-top: 0 }
 
@@ -55,7 +63,7 @@ textarea, input {
     resize: vertical;
     outline: 0;
     box-shadow: none;
-    border: 0.0625em solid var(--textarea-border-light);
+    border: 2px solid var(--textarea-border-light);
     margin-bottom: 1em;
     font-size: 18px;
 }

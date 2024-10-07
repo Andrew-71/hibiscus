@@ -1,30 +1,45 @@
 # Changelog
 This file keeps track of changes in a human-readable fashion
 
+## Upcoming
+These changes were not yet released
+
+* Brought default CSS up to date with my personal website
+* Error pages are now translated
+
 ## v1.1.4
+
 * Fixed HTML `lang` tag
 * Theme CSS link is now only present if non-default is set
 * Improved template consistency (backend)
 
 ## v1.1.3
+
 This release mostly consists of backend improvements
 * List items no longer replace hyphens with spaces for consistency
 * Telegram message for SCRAM is now translatable
 * Ensured HTML escape in list descriptions
 * Refactored many methods, improved comments
+
 ## v1.1.2
+
 This release contains a few bug fixes
 * Real IPs are now logged (By Rithas K.)
 * CSS now has `box-sizing: border-box` to fix textarea in some cases (By Rithas K.)
 * Done some minor code housekeeping 
+
 ## v1.1.1
+
 This release is mostly a technicality, with a move over to GitHub (`ghcr.io/andrew-71/hibiscus`) for packages due to DockerHub's prior anti-Russian actions making old "CI/CD" unsustainable.
+
 ## v1.1.0
+
 * You can now specify the Telegram *topic* to send notification to via `tg_topic` config key (By Rithas K.)
 * The Telegram message is now partially translated
 * Fixed CSS `margin` and `text-align` inherited from my website
 
 ## v1.0.0
+
 This release includes several **breaking** changes
 * Made a new favicon
 * English is now used as a fallback language, making incomplete translations somewhat usable
@@ -38,16 +53,20 @@ This release includes several **breaking** changes
   * Comic Sans MS for *everything*
   * sorry
 
+## v0.6.1
+
+* Fixed date display when using `Local` timezone
+
 ## v0.6.0
+
 * Replaced config reload with edit in info (api method still available, config reloads on save)
 * Bug fixes
   * Filenames are now sanitized when writing files
   * "Tomorrow" in days list is now also displayed if Timezone is changed and grace period is off
   * Frontend date display now uses configured timezone
-### v0.6.1
-* Fixed date display when using `Local` timezone
 
 ## v0.5.0
+
 * Added a JS prompt to create new note
   * "Sanitization" for this method is basic and assumes a well-meaning user
   * Old instructions appear if JS is disabled
@@ -56,6 +75,7 @@ This release includes several **breaking** changes
   * Config reload now sets removed values to defaults
 
 ## v0.4.0
+
 * Customisation changes
   * Added `title` option to config
     * Controls the text in the header, "🌺 Hibiscus.txt" by default
@@ -66,17 +86,20 @@ This release includes several **breaking** changes
   * Spaces in config options are now supported (basically just for `title`)
 
 ## v0.3.0
+
 * Added themes
   * Picked theme is set by `theme` key in config. Default is ...`default`
   * Themes are defined in `/public/themes/<name>.css` and modify colours (or, theoretically, do more)
   * Current pre-made themes are `default`, `gruvbox` and `high-contrast`
 
 ## v0.2.0
+
 * Added config reload
   * Can be reloaded in info page
   * Can be reloaded with new `reload` api method (be aware of the redirect if referer is present)
 
 ## 7 May 2024 - v0.1.0
+
 * Began move towards [semantic versioning](https://semver.org/)
   * Current version is now 0.1.0
   * Added `version` api method
@@ -91,6 +114,7 @@ This release includes several **breaking** changes
   * Fixed export function failing
 
 ## 6 May 2024
+
 * Grace period is now non-inclusive (so `4h` means the switch will happen right at `4:00`, not `4:01`)
 * Added API method to check if grace period is active
 * Made changes to date display on frontend
@@ -100,6 +124,7 @@ This release includes several **breaking** changes
   But I think it's fine.
 
 ## 5 May 2024
+
 * Added this changelog
 * Added grace period (as per suggestions)
   * Set in config like `grace_period=3h26m` (via Go's `time.ParseDuration`)

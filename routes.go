@@ -55,16 +55,30 @@ var editTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFS(P
 var viewTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFS(Pages, "pages/base.html", "pages/entry.html"))
 var listTemplate = template.Must(template.New("").Funcs(templateFuncs).ParseFS(Pages, "pages/base.html", "pages/list.html"))
 
+var template404 = template.Must(template.New("404").Funcs(templateFuncs).ParseFS(Pages, "pages/error/404.html"))
 // NotFound returns a user-friendly 404 error page.
 func NotFound(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(404)
-	HandleWrite(w.Write(EmbeddedPage("pages/error/404.html")))
+
+	err := template404.Execute(w, nil)
+	if err != nil {
+		slog.Error("error rendering error 404 page", "error", err)
+		InternalError(w, r)
+		return
+	}
 }
 
+var template500 = template.Must(template.New("500").Funcs(templateFuncs).ParseFS(Pages, "pages/error/500.html"))
 // InternalError returns a user-friendly 500 error page.
 func InternalError(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(500)
-	HandleWrite(w.Write(EmbeddedPage("pages/error/500.html")))
+
+	err := template500.Execute(w, nil)
+	if err != nil {  // Well this is awkward
+		slog.Error("error rendering error 500 page", "error", err)
+		HandleWrite(w.Write([]byte("500. Something went *very* wrong.")))
+		return
+	}
 }
 
 // GetEntries handles showing a list.

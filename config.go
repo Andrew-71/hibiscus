@@ -120,13 +120,7 @@ func (c *Config) Reload() error {
 					}
 				}
 			case "bool":
-				{
-					if v == "true" {
-						fieldElem.SetBool(true)
-					} else {
-						fieldElem.SetBool(false)
-					}
-				}
+				fieldElem.SetBool(v == "true")
 			case "location":
 				timezone = v
 			case "duration":
@@ -179,7 +173,7 @@ func ConfigReloadApi(w http.ResponseWriter, r *http.Request) {
 		HandleWrite(w.Write([]byte(err.Error())))
 	}
 	if r.Referer() != "" {
-		http.Redirect(w, r, r.Header.Get("Referer"), 302)
+		http.Redirect(w, r, r.Header.Get("Referer"), http.StatusFound)
 		return
 	}
 	w.WriteHeader(http.StatusOK)

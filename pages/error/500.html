@@ -1,3 +1,4 @@
+{{- define "500" -}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,8 +11,9 @@
 <body>
 <main>
     <h1>Error 500 - Internal Server Error</h1>
-    <p>It's probably not your fault, but something broke</p>
-    <h3><a href="/">Go home?</a></h3>
+    <p>{{ translatableText "error.500" }}</p>
+    <p><a href="/">{{ translatableText "error.prompt" }}</a></p>
 </main>
 </body>
 </html>
+{{ end }}

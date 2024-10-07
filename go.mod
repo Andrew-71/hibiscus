@@ -1,4 +1,4 @@
-module hibiscus
+module hibiscus-txt
 
 go 1.22
 

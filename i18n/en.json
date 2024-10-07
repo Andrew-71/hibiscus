@@ -27,5 +27,9 @@
   "info.config": "Edit config",
 
   "info.telegram.auth_fail": "Failed auth attempt in Hibiscus.txt",
-  "info.telegram.scram": "Hibiscus SCRAM triggered, shutting down"
+  "info.telegram.scram": "Hibiscus SCRAM triggered, shutting down",
+
+  "error.404": "The page you were looking for doesn't exist",
+  "error.500": "It's probably not your fault, but something broke",
+  "error.prompt": "Go home?"
 }

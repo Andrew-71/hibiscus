@@ -1,8 +1,15 @@
 # TODO
 List of things to add to this project
 
+## Urgent (1.1.5-2.0.0)
+* `style.css` in config instead of theme (provide themes as examples in repo)
+* man page, maybe try packaging for fun
 * Auth improvement so it DOESN'T ASK ME FOR PASSWORD EVERY DAY UGH XD
+
+## Nice to have
 * Forward/backward buttons for days
+* Changelog included
+* Refactor code
 
 ## Brainstorming
 Don't expect any of this, these are ideas floating inside my head
