@@ -6,22 +6,27 @@ This project is *very* opinionated and minimal, and is designed primarily for my
 As a result, I can't guarantee that it's either secure or stable.
 
 ## Features:
+
 * Each day, you get a new text file. You have until the end of that very day to finalise it.
 * You can save named notes to document milestones, big events, or just a nice game you played this month
 * You can easily export the files in a `.zip` archive for backups
 
-* Everything is plain(text) and simple. No databases, encryption, OAuth, or anything fancy. Even the password is plainte- *wait is this a feature?*
-* [Docker support](#docker-deployment) (in fact, that's probably the best way to run this)
+* Everything is plain(text) and simple.
+No databases, encryption, OAuth, or anything fancy. Even the password is plainte- *wait is this a feature?*
+* [Docker support](#docker-deployment)
 * Optional Telegram notifications for failed login attempts
 
 ## Technical details
-[CHANGELOG.md](./CHANGELOG.md) provides a good overview of updates, and [TODO.md](./TODO.md) file shows what I will (or *may*) work on in the future.
 
-You can read a relevant entry in my blog [here](https://a71.su/notes/hibiscus/). 
+[CHANGELOG.md](./CHANGELOG.md) provides a good overview of updates, and [TODO.md](./TODO.md) file shows my plans for the future.
+
+You can read a relevant entry in my blog [here](https://a71.su/notes/hibiscus/).
 It provides some useful information and context for why this app exists in the first place.
-This repository is [self-hosted by me](https://git.a71.su/Andrew71/hibiscus), but [mirrored to GitHub](https://github.com/Andrew-71/hibiscus) in case my server goes down.
+This repository is [self-hosted by me](https://git.a71.su/Andrew71/hibiscus),
+but [mirrored to GitHub](https://github.com/Andrew-71/hibiscus).
 
 ### Data format:
+
 ```
 data
 +-- day
@@ -39,6 +44,7 @@ config
 Deleting notes is done by clearing contents and clicking "Save" - the app deletes empty files when saving.
 
 ### Config options:
+
 Below are the available configuration options and their defaults. 
 The settings are defined as newline separated `key=value` pairs in the config file.
 If you do not provide an option, the default will be used.
@@ -65,12 +71,14 @@ tg_topic=message_thread_id
 ```
 
 ### Docker deployment:
+
 The Docker images are hosted via GitHub over at `ghcr.io/andrew-71/hibiscus:<tag>`, 
 built from the [Dockerfile](./Dockerfile).
 This repo contains the [compose.yml](./compose.yml) that I personally use.
 *Note: an extremely outdated self-hosted [package](https://git.a71.su/Andrew71/hibiscus/packages) will be provided for some time.*
 
 ### Executable flags
+
 If you decide to use plain executable instead of docker, it supports the following flags:
 ```
 -config string
@@ -86,6 +94,7 @@ If you decide to use plain executable instead of docker, it supports the followi
 ```
 
 ### API methods
+
 You can access the API at `/api/<method>`. It is protected by same HTTP Basic Auth as "normal" routes.
 ```
 GET  /today        - get file contents for today

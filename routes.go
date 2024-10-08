@@ -176,7 +176,7 @@ func PostEntry(filename string, w http.ResponseWriter, r *http.Request) {
 		slog.Error("error saving file", "error", err, "file", filename)
 	}
 	if r.Referer() != "" {
-		http.Redirect(w, r, r.Header.Get("Referer"), 302)
+		http.Redirect(w, r, r.Header.Get("Referer"), http.StatusFound)
 		return
 	}
 }
@@ -190,7 +190,7 @@ func GetDay(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if dayString == TodayDate() { // Today can still be edited
-		http.Redirect(w, r, "/", 302)
+		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
 

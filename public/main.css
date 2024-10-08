@@ -4,25 +4,25 @@
     --text-light: #2b2a2a;
     --bg-light: #f4edd7;
 
-    --clickable-light: #f85552;
-    --clickable-hover-light: #e66868;
+    --clickable-light: #ed3e3b;
+    --clickable-hover-light: #e55552;
     --clickable-label-light: #f4edd7;
     --text-hover-light: #656565;
 
-    --textarea-bg-light: #f5f2ee;
-    --textarea-border-light: #454545;
+    --textarea-bg-light: #f9f5e4;
+    --textarea-border-light: #c3c3c2;
 
     /* Dark theme */
     --text-dark: #f5f0e1;
     --bg-dark: #1b1916;
 
-    --clickable-dark: #f85552;
-    --clickable-hover-dark: #e66868;
+    --clickable-dark: #ed3e3b;
+    --clickable-hover-dark: #ae3836;
     --clickable-label-dark: #f5f2ee;
     --text-hover-dark: #a9a8a4;
 
-    --textarea-bg-dark: #383030;
-    --textarea-border-dark: #454545;
+    --textarea-bg-dark: #201d1b; /* 252020 f5f0e1 */
+    --textarea-border-dark: #2c2727;
 }
 
 * { box-sizing: border-box; }

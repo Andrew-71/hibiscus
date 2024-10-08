@@ -27,7 +27,7 @@ func NoteLoginFail(username string, password string, r *http.Request) {
 	attempt := failedLogin{username, password, time.Now()}
 	updatedLogins := []failedLogin{attempt}
 	for _, attempt := range failedLogins {
-		if 100 > time.Now().Sub(attempt.Timestamp).Abs().Seconds() {
+		if 100 > time.Since(attempt.Timestamp).Seconds() {
 			updatedLogins = append(updatedLogins, attempt)
 		}
 	}

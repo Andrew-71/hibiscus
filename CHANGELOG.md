@@ -4,7 +4,7 @@ This file keeps track of changes in a human-readable fashion
 ## Upcoming
 These changes were not yet released
 
-* Brought default CSS up to date with my personal website
+* Adjusted default theme
 * Error pages are now translated
 
 ## v1.1.4
