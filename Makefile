@@ -2,7 +2,7 @@ build:
 	go build
 
 run:
-	go build & ./hibiscus-txt
+	go build && ./hibiscus-txt
 
 dev:
-	go build & ./hibiscus-txt  --config config/dev-config.txt
+	go build && ./hibiscus-txt  --config config/dev-config.txt
