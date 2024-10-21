@@ -2,6 +2,6 @@
 <form method="POST">
     <h2><label for="text">{{ .Title }}:</label></h2>
     <textarea id="text" cols="40" rows="15" name="text">{{ .Content }}</textarea>
-    <button type="submit">{{ translatableText "button.save" }}</button>
+    <button type="submit">{{ translate "button.save" }}</button>
 </form>
 {{ end }}

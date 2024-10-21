@@ -1,4 +1,4 @@
-package main
+package files
 
 import (
 	"archive/zip"
@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 )
 
-var ExportPath = "data/export.zip"
+var ExportPath = "data/export.zip"  // TODO: Move to config
 
 // Export saves a .zip archive of the data folder to a file.
 func Export(filename string) error {

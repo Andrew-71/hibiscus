@@ -1,13 +1,16 @@
-package main
+package server
 
 import (
 	"encoding/json"
 	"errors"
-	"github.com/go-chi/chi/v5"
 	"io"
 	"log/slog"
 	"net/http"
 	"os"
+
+	"git.a71.su/Andrew71/hibiscus-txt/internal/config"
+	"git.a71.su/Andrew71/hibiscus-txt/internal/files"
+	"github.com/go-chi/chi/v5"
 )
 
 // HandleWrite handles error in output of ResponseWriter.Write.
@@ -19,7 +22,7 @@ func HandleWrite(_ int, err error) {
 
 // GetFileApi returns raw contents of a file.
 func GetFileApi(filename string, w http.ResponseWriter) {
-	fileContents, err := ReadFile(filename)
+	fileContents, err := files.Read(filename)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
 			http.Error(w, "file not found", http.StatusNotFound)
@@ -39,7 +42,7 @@ func PostFileApi(filename string, w http.ResponseWriter, r *http.Request) {
 		HandleWrite(w.Write([]byte("error reading body")))
 		return
 	}
-	err = SaveFile(filename, body)
+	err = files.Save(filename, body)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		HandleWrite(w.Write([]byte("error saving file")))
@@ -51,7 +54,7 @@ func PostFileApi(filename string, w http.ResponseWriter, r *http.Request) {
 
 // GetFileList returns JSON list of filenames in a directory without extensions or path.
 func GetFileList(directory string, w http.ResponseWriter) {
-	filenames, err := ListFiles(directory)
+	filenames, err := files.List(directory)
 	if err != nil {
 		http.Error(w, "error searching for files", http.StatusInternalServerError)
 		return
@@ -72,7 +75,7 @@ func GetDayApi(w http.ResponseWriter, r *http.Request) {
 		HandleWrite(w.Write([]byte("day not specified")))
 		return
 	}
-	GetFileApi(DataFile("day/"+dayString), w)
+	GetFileApi(files.DataFile("day/"+dayString), w)
 }
 
 // GetNoteApi returns contents of a note specified in URL.
@@ -83,7 +86,7 @@ func GetNoteApi(w http.ResponseWriter, r *http.Request) {
 		HandleWrite(w.Write([]byte("note not specified")))
 		return
 	}
-	GetFileApi(DataFile("notes/"+noteString), w)
+	GetFileApi(files.DataFile("notes/"+noteString), w)
 }
 
 // PostNoteApi writes contents of Request.Body to a note specified in URL.
@@ -94,15 +97,16 @@ func PostNoteApi(w http.ResponseWriter, r *http.Request) {
 		HandleWrite(w.Write([]byte("note not specified")))
 		return
 	}
-	PostFileApi(DataFile("notes/"+noteString), w, r)
+	PostFileApi(files.DataFile("notes/"+noteString), w, r)
 }
 
 // GraceActiveApi returns "true" if grace period is active, and "false" otherwise.
 func GraceActiveApi(w http.ResponseWriter, r *http.Request) {
 	value := "false"
-	if GraceActive() {
+	if config.Cfg.Grace() {
 		value = "true"
 	}
 	HandleWrite(w.Write([]byte(value)))
 	w.WriteHeader(http.StatusOK)
 }
+

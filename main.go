@@ -1,9 +1,7 @@
 package main
 
-var Cfg = ConfigInit()
+import "git.a71.su/Andrew71/hibiscus-txt/internal/app"
 
 func main() {
-	FlagInit()
-	LogInit()
-	Serve()
+	app.Execute()
 }

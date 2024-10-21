@@ -1,4 +1,4 @@
-package main
+package lang
 
 import (
 	"embed"
@@ -6,24 +6,24 @@ import (
 	"log/slog"
 )
 
-//go:embed i18n
-var I18n embed.FS
-var Translations = map[string]string{}
+//go:embed lang
+var lang embed.FS
+var translations = map[string]string{}
 
 // SetLanguage loads a json file for selected language into the Translations map, with English language as a fallback.
 func SetLanguage(language string) error {
 	loadLanguage := func(language string) error {
-		filename := "i18n/" + language + ".json"
-		fileContents, err := I18n.ReadFile(filename)
+		filename := "lang/" + language + ".json"
+		fileContents, err := lang.ReadFile(filename)
 		if err != nil {
 			slog.Error("error reading language file",
 				"error", err,
 				"file", filename)
 			return err
 		}
-		return json.Unmarshal(fileContents, &Translations)
+		return json.Unmarshal(fileContents, &translations)
 	}
-	Translations = map[string]string{} // Clear the map to avoid previous language remaining
+	translations = map[string]string{} // Clear the map to avoid previous language remaining
 	err := loadLanguage("en")          // Load English as fallback
 	if err != nil {
 		return err
@@ -31,9 +31,9 @@ func SetLanguage(language string) error {
 	return loadLanguage(language)
 }
 
-// TranslatableText attempts to match an id to a string in current language.
-func TranslatableText(id string) string {
-	if v, ok := Translations[id]; !ok {
+// Translate attempts to match an id to a string in current language.
+func Translate(id string) string {
+	if v, ok := translations[id]; !ok {
 		return id
 	} else {
 		return v

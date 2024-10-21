@@ -1,4 +1,4 @@
-package main
+package files
 
 import (
 	"bytes"
@@ -8,7 +8,6 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
-	"time"
 )
 
 // DataFile modifies file path to ensure it's a .txt inside the data folder.
@@ -16,8 +15,8 @@ func DataFile(filename string) string {
 	return "data/" + path.Clean(filename) + ".txt"
 }
 
-// ReadFile returns contents of a file.
-func ReadFile(filename string) ([]byte, error) {
+// Read returns contents of a file.
+func Read(filename string) ([]byte, error) {
 	if _, err := os.Stat(filename); errors.Is(err, os.ErrNotExist) {
 		return nil, err
 	}
@@ -29,8 +28,8 @@ func ReadFile(filename string) ([]byte, error) {
 	return fileContents, nil
 }
 
-// SaveFile Writes contents to a file.
-func SaveFile(filename string, contents []byte) error {
+// Save Writes contents to a file.
+func Save(filename string, contents []byte) error {
 	contents = bytes.TrimSpace(contents)
 	if len(contents) == 0 { // Delete empty files
 		err := os.Remove(filename)
@@ -54,9 +53,9 @@ func SaveFile(filename string, contents []byte) error {
 	return nil
 }
 
-// ListFiles returns slice of filenames in a directory without extensions or path.
+// List returns slice of filenames in a directory without extensions or path.
 // NOTE: What if I ever want to list non-text files or those outside data directory?
-func ListFiles(directory string) ([]string, error) {
+func List(directory string) ([]string, error) {
 	filenames, err := filepath.Glob("data/" + path.Clean(directory) + "/*.txt")
 	if err != nil {
 		return nil, err
@@ -66,26 +65,4 @@ func ListFiles(directory string) ([]string, error) {
 		filenames[i] = file
 	}
 	return filenames, nil
-}
-
-// GraceActive returns whether the grace period (Cfg.GraceTime) is active. Grace period has minute precision
-func GraceActive() bool {
-	t := time.Now().In(Cfg.Timezone)
-	active := (60*t.Hour() + t.Minute()) < int(Cfg.GraceTime.Minutes())
-	if active {
-		slog.Debug("grace period active",
-			"time", 60*t.Hour()+t.Minute(),
-			"grace", Cfg.GraceTime.Minutes())
-	}
-	return active
-}
-
-// TodayDate returns today's formatted date. It accounts for Config.GraceTime.
-func TodayDate() string {
-	dateFormatted := time.Now().In(Cfg.Timezone).Format(time.DateOnly)
-	if GraceActive() {
-		dateFormatted = time.Now().In(Cfg.Timezone).AddDate(0, 0, -1).Format(time.DateOnly)
-	}
-	slog.Debug("today", "time", time.Now().In(Cfg.Timezone).Format(time.DateTime))
-	return dateFormatted
 }

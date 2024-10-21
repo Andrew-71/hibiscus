@@ -2,8 +2,10 @@
 This file keeps track of changes in a human-readable fashion
 
 ## Upcoming
-These changes were not yet released
 
+These changes are not yet released
+
+* Fully refactored app internally
 * Adjusted default theme
 * Error pages are now translated
 

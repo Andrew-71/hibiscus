@@ -1,0 +1,9 @@
+{{ define "main" }}
+<h2>{{ translate "title.info" }}</h2>
+<ul>
+    <li>{{ translate "info.version" }} - {{ info.Version }} (<a href="{{ .SourceLink }}">{{ translate "info.version.link" }}</a>)</li>
+    <li><a href="/config">{{ translate "info.config" }}</a></li>
+    <li><a href="/readme">{{ translate "info.readme" }}</a></li>
+    <li><a href="/api/export" download="hibiscus">{{ translate "info.export" }}</a></li>
+</ul>
+{{ end }}

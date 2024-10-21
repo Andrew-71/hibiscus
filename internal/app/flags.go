@@ -1,34 +1,37 @@
-package main
+package app
 
 import (
 	"flag"
 	"log"
+
+	"git.a71.su/Andrew71/hibiscus-txt/internal/config"
+	"git.a71.su/Andrew71/hibiscus-txt/internal/logging"
 )
 
 // FlagInit processes app flags.
 func FlagInit() {
-	config := flag.String("config", "", "override config file")
+	conf := flag.String("config", "", "override config file")
 	username := flag.String("user", "", "override username")
 	password := flag.String("pass", "", "override password")
 	port := flag.Int("port", 0, "override port")
 	debug := flag.Bool("debug", false, "debug logging")
 
 	flag.Parse()
-	if *config != "" {
-		ConfigFile = *config
-		err := Cfg.Reload()
+	if *conf != "" {
+		config.ConfigFile = *conf
+		err := config.Cfg.Reload()
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
 	if *username != "" {
-		Cfg.Username = *username
+		config.Cfg.Username = *username
 	}
 	if *password != "" {
-		Cfg.Password = *password
+		config.Cfg.Password = *password
 	}
 	if *port != 0 {
-		Cfg.Port = *port
+		config.Cfg.Port = *port
 	}
-	DebugMode = *debug
+	logging.DebugMode = *debug
 }

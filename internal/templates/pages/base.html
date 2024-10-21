@@ -1,13 +1,13 @@
 {{ define "header" }}
 <header>
     <h1>{{ config.Title }}</h1>
-    <p>{{ translatableText "time.date" }} <span id="today-date">a place</span> <span id="grace" hidden>({{ translatableText "time.grace" }})</span></p>
+    <p>{{ translate "time.date" }} <span id="today-date">a place</span> <span id="grace" hidden>({{ translate "time.grace" }})</span></p>
 </header>
 {{ end }}
 
 {{- define "base" -}}
 <!DOCTYPE html>
-<html lang="{{ translatableText "lang" }}">
+<html lang="{{ translate "lang" }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -35,7 +35,7 @@
 
 {{ define "footer" }}
 <footer id="footer">
-    <p><a href="/">{{ translatableText "link.today" }}</a> | <a href="/day">{{ translatableText "link.days" }}</a> | <a href="/notes">{{ translatableText "link.notes" }}</a>
-    <span style="float:right;"><a class="no-accent" href="/info" title="{{ translatableText "link.info" }}">v{{ info.Version }}</a></span></p>
+    <p><a href="/">{{ translate "link.today" }}</a> | <a href="/day">{{ translate "link.days" }}</a> | <a href="/notes">{{ translate "link.notes" }}</a>
+    <span style="float:right;"><a class="no-accent" href="/info" title="{{ translate "link.info" }}">v{{ info.Version }}</a></span></p>
 </footer>
 {{ end }}

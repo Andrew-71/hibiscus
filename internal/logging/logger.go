@@ -1,11 +1,13 @@
-package main
+package logging
 
 import (
-	"github.com/go-chi/chi/v5/middleware"
 	"io"
 	"log"
 	"log/slog"
 	"os"
+
+	"git.a71.su/Andrew71/hibiscus-txt/internal/config"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 var DebugMode = false
@@ -13,10 +15,10 @@ var DebugMode = false
 // LogInit makes slog output to both os.Stdout and a file if needed, and sets slog.LevelDebug if enabled.
 func LogInit() {
 	var w io.Writer
-	if Cfg.LogToFile {
-		f, err := os.OpenFile(Cfg.LogFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if config.Cfg.LogToFile {
+		f, err := os.OpenFile(config.Cfg.LogFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 		if err != nil {
-			slog.Error("error opening log file, logging to stdout", "path", Cfg.LogFile, "error", err)
+			slog.Error("error opening log file, logging to stdout only", "path", config.Cfg.LogFile, "error", err)
 			return
 		}
 		// No defer f.Close() because that breaks the MultiWriter

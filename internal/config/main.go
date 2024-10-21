@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"bufio"
@@ -6,14 +6,17 @@ import (
 	"fmt"
 	"log"
 	"log/slog"
-	"net/http"
 	"os"
 	"reflect"
 	"strconv"
 	"strings"
 	"time"
+
+	"git.a71.su/Andrew71/hibiscus-txt/internal/files"
+	"git.a71.su/Andrew71/hibiscus-txt/internal/lang"
 )
 
+var Cfg = ConfigInit()
 var ConfigFile = "config/config.txt"
 
 type Config struct {
@@ -143,40 +146,17 @@ func (c *Config) Reload() error {
 	}
 	slog.Debug("reloaded config", "config", c)
 
-	return SetLanguage(c.Language) // Load selected language
+	return lang.SetLanguage(c.Language) // Load selected language
 }
 
 // Read gets raw contents from ConfigFile.
 func (c *Config) Read() ([]byte, error) {
-	return ReadFile(ConfigFile)
+	return files.Read(ConfigFile)
 }
 
 // Save writes config's contents to the ConfigFile.
 func (c *Config) Save() error {
-	return SaveFile(ConfigFile, []byte(c.String()))
-}
-
-// PostConfig calls PostEntry for config file, then reloads the config.
-func PostConfig(w http.ResponseWriter, r *http.Request) {
-	PostEntry(ConfigFile, w, r)
-	err := Cfg.Reload()
-	if err != nil {
-		slog.Error("error reloading config", "error", err)
-	}
-}
-
-// ConfigReloadApi reloads the config. It then redirects back if Referer field is present.
-func ConfigReloadApi(w http.ResponseWriter, r *http.Request) {
-	err := Cfg.Reload()
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		HandleWrite(w.Write([]byte(err.Error())))
-	}
-	if r.Referer() != "" {
-		http.Redirect(w, r, r.Header.Get("Referer"), http.StatusFound)
-		return
-	}
-	w.WriteHeader(http.StatusOK)
+	return files.Save(ConfigFile, []byte(c.String()))
 }
 
 // ConfigInit loads config on startup.
