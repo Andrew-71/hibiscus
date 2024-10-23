@@ -10,6 +10,7 @@ These changes are not yet released
 Files in that directory are generated as `hibiscus_YYYY-MM-DD_HH:MM:SS.log`
 * Adjusted default theme
 * Error pages are now translated
+* API: `/api/today` POST now behaves like other file uploads
 
 ## v1.1.4
 

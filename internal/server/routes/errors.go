@@ -1,4 +1,4 @@
-package server
+package routes
 
 import (
 	"log/slog"
@@ -26,7 +26,7 @@ func InternalError(w http.ResponseWriter, r *http.Request) {
 	err := templates.Template500.Execute(w, nil)
 	if err != nil { // Well this is awkward
 		slog.Error("error rendering error 500 page", "error", err)
-		HandleWrite(w.Write([]byte("500. Something went *very* wrong.")))
+		http.Error(w, "500. Something went *very* wrong.", http.StatusInternalServerError)
 		return
 	}
 }

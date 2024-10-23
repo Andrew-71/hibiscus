@@ -1,4 +1,4 @@
-package server
+package routes
 
 import (
 	"html/template"
@@ -9,14 +9,15 @@ import (
 	"git.a71.su/Andrew71/hibiscus-txt/internal/config"
 	"git.a71.su/Andrew71/hibiscus-txt/internal/files"
 	"git.a71.su/Andrew71/hibiscus-txt/internal/lang"
+	"git.a71.su/Andrew71/hibiscus-txt/internal/server/util"
 	"github.com/go-chi/chi/v5"
 )
 
-// GetDays calls GetEntries for previous days' entries.
-func GetDays(w http.ResponseWriter, r *http.Request) {
+// getDays calls getEntries for previous days' entries.
+func getDays(w http.ResponseWriter, r *http.Request) {
 	description := template.HTML(
 		"<a href=\"#footer\">" + template.HTMLEscapeString(lang.Translate("prompt.days")) + "</a>")
-	GetEntries(w, r, lang.Translate("title.days"), description, "day", func(files []string) []Entry {
+	getEntries(w, r, lang.Translate("title.days"), description, "day", func(files []string) []Entry {
 		var filesFormatted []Entry
 		for i := range files {
 			v := files[len(files)-1-i] // This is suboptimal, but reverse order is better here
@@ -42,12 +43,12 @@ func GetDays(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// GetDay calls GetEntry for a day entry.
-func GetDay(w http.ResponseWriter, r *http.Request) {
+// getDay calls getEntry for a day entry.
+func getDay(w http.ResponseWriter, r *http.Request) {
 	dayString := chi.URLParam(r, "day")
 	if dayString == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		HandleWrite(w.Write([]byte("day not specified")))
+		util.HandleWrite(w.Write([]byte("day not specified")))
 		return
 	}
 	if dayString == config.Cfg.TodayDate() { // Today can still be edited
@@ -61,5 +62,5 @@ func GetDay(w http.ResponseWriter, r *http.Request) {
 		title = t.Format("02 Jan 2006")
 	}
 
-	GetEntry(w, r, title, files.DataFile("day/"+dayString), false)
+	getEntry(w, r, title, files.DataFile("day/"+dayString), false)
 }

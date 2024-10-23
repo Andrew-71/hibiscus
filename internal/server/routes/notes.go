@@ -1,4 +1,4 @@
-package server
+package routes
 
 import (
 	"html/template"
@@ -7,16 +7,17 @@ import (
 
 	"git.a71.su/Andrew71/hibiscus-txt/internal/files"
 	"git.a71.su/Andrew71/hibiscus-txt/internal/lang"
+	"git.a71.su/Andrew71/hibiscus-txt/internal/server/util"
 	"github.com/go-chi/chi/v5"
 )
 
-// GetNotes calls GetEntries for all notes.
-func GetNotes(w http.ResponseWriter, r *http.Request) {
+// getNotes calls getEntries for all notes.
+func getNotes(w http.ResponseWriter, r *http.Request) {
 	// This is suboptimal, but will do...
 	description := template.HTML(
 		"<a href=\"#\" onclick='newNote(\"" + template.HTMLEscapeString(lang.Translate("prompt.notes")) + "\")'>" + template.HTMLEscapeString(lang.Translate("button.notes")) + "</a>" +
 			" <noscript>(" + template.HTMLEscapeString(lang.Translate("noscript.notes")) + ")</noscript>")
-	GetEntries(w, r, lang.Translate("title.notes"), description, "notes", func(files []string) []Entry {
+	getEntries(w, r, lang.Translate("title.notes"), description, "notes", func(files []string) []Entry {
 		var filesFormatted []Entry
 		for _, v := range files {
 			// titleString := strings.Replace(v, "-", " ", -1) // This would be cool, but what if I need a hyphen?
@@ -26,12 +27,12 @@ func GetNotes(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// GetNote calls GetEntry for a note.
-func GetNote(w http.ResponseWriter, r *http.Request) {
+// getNote calls getEntry for a note.
+func getNote(w http.ResponseWriter, r *http.Request) {
 	noteString := chi.URLParam(r, "note")
 	if noteString == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		HandleWrite(w.Write([]byte("note not specified")))
+		util.HandleWrite(w.Write([]byte("note not specified")))
 		return
 	}
 	// Handle non-latin note names
@@ -39,16 +40,16 @@ func GetNote(w http.ResponseWriter, r *http.Request) {
 		noteString = decodedNote
 	}
 
-	GetEntry(w, r, noteString, files.DataFile("notes/"+noteString), true)
+	getEntry(w, r, noteString, files.DataFile("notes/"+noteString), true)
 }
 
-// PostNote calls PostEntry for a note.
-func PostNote(w http.ResponseWriter, r *http.Request) {
+// postNote calls postEntry for a note.
+func postNote(w http.ResponseWriter, r *http.Request) {
 	noteString := chi.URLParam(r, "note")
 	if noteString == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		HandleWrite(w.Write([]byte("note not specified")))
+		util.HandleWrite(w.Write([]byte("note not specified")))
 		return
 	}
-	PostEntry(files.DataFile("notes/"+noteString), w, r)
+	postEntry(files.DataFile("notes/"+noteString), w, r)
 }

@@ -37,7 +37,7 @@ type Config struct {
 	TelegramTopic string `config:"tg_topic" type:"string"`
 }
 
-var DefaultConfig = Config{
+var defaultConfig = Config{
 	Username:  "admin",
 	Password:  "admin",
 	Port:      7101,
@@ -59,7 +59,7 @@ var DefaultConfig = Config{
 func (c *Config) String() string {
 	output := ""
 	v := reflect.ValueOf(*c)
-	vDefault := reflect.ValueOf(DefaultConfig)
+	vDefault := reflect.ValueOf(defaultConfig)
 	typeOfS := v.Type()
 	for i := 0; i < v.NumField(); i++ {
 		key := typeOfS.Field(i).Tag.Get("config")
@@ -75,7 +75,7 @@ func (c *Config) String() string {
 // Reload resets, then loads config from the ConfigFile.
 // It creates the file with mandatory options if it is missing.
 func (c *Config) Reload() error {
-	*c = DefaultConfig // Reset config
+	*c = defaultConfig // Reset config
 
 	if _, err := os.Stat(ConfigFile); errors.Is(err, os.ErrNotExist) {
 		err := c.Save()

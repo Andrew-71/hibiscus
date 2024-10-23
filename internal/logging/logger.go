@@ -14,15 +14,15 @@ import (
 
 var DebugMode = false
 
-// File returns the appropriate filename for log
+// file returns the appropriate filename for log
 // (log_dir/hibiscus_YYYY-MM-DD_HH:MM:SS.log)
-func File() string {
+func file() string {
 	return config.Cfg.LogDir + "/hibiscus_" + time.Now().In(config.Cfg.Timezone).Format("2006-01-02_15:04:05") + ".log"
 }
 
 // LogInit makes slog output to both os.Stdout and a file if needed, and sets slog.LevelDebug if enabled.
 func LogInit() {
-	logFile := File()
+	logFile := file()
 	var w io.Writer = os.Stdout
 	if config.Cfg.LogToFile {
 		// Create dir in case it doesn't exist yet to avoid errors
@@ -47,5 +47,5 @@ func LogInit() {
 	}
 	slog.SetDefault(slog.New(slog.NewTextHandler(w, opts)))
 	middleware.DefaultLogger = middleware.RequestLogger(&middleware.DefaultLogFormatter{Logger: log.Default(), NoColor: true})
-	slog.Debug("Debug mode enabled")  // This string is only shown if debugging
+	slog.Debug("Debug mode enabled") // This string is only shown if debugging
 }

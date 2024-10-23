@@ -1,4 +1,4 @@
-package server
+package routes
 
 import (
 	"errors"
@@ -25,8 +25,8 @@ type Entry struct {
 
 type formatEntries func([]string) []Entry
 
-// GetEntries handles showing a list.
-func GetEntries(w http.ResponseWriter, r *http.Request, title string, description template.HTML, dir string, format formatEntries) {
+// getEntries handles showing a list.
+func getEntries(w http.ResponseWriter, r *http.Request, title string, description template.HTML, dir string, format formatEntries) {
 	filesList, err := files.List(dir)
 	if err != nil {
 		slog.Error("error reading file list", "directory", dir, "error", err)
@@ -43,8 +43,8 @@ func GetEntries(w http.ResponseWriter, r *http.Request, title string, descriptio
 	}
 }
 
-// GetEntry handles showing a single file, editable or otherwise.
-func GetEntry(w http.ResponseWriter, r *http.Request, title string, filename string, editable bool) {
+// getEntry handles showing a single file, editable or otherwise.
+func getEntry(w http.ResponseWriter, r *http.Request, title string, filename string, editable bool) {
 	entry, err := files.Read(filename)
 	if err != nil {
 		if editable && errors.Is(err, os.ErrNotExist) {
@@ -67,8 +67,8 @@ func GetEntry(w http.ResponseWriter, r *http.Request, title string, filename str
 	}
 }
 
-// PostEntry saves value of "text" HTML form component to a file and redirects back to Referer if present.
-func PostEntry(filename string, w http.ResponseWriter, r *http.Request) {
+// postEntry saves value of "text" HTML form component to a file and redirects back to Referer if present.
+func postEntry(filename string, w http.ResponseWriter, r *http.Request) {
 	err := files.Save(filename, []byte(r.FormValue("text")))
 	if err != nil {
 		slog.Error("error saving file", "error", err, "file", filename)

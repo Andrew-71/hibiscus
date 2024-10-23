@@ -19,6 +19,7 @@ func EmbeddedPage(name string) []byte {
 	data, err := pages.ReadFile(name)
 	if err != nil {
 		slog.Error("error reading embedded file", "err", err)
+		return []byte("")
 	}
 	return data
 }
