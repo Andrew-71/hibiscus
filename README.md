@@ -3,7 +3,7 @@
 Simple plaintext diary.
 
 This project is *very* opinionated and minimal, and is designed primarily for my usage. 
-As a result, I can't guarantee that it's either secure or stable.
+As a result, neither security nor stability are guaranteed.
 
 ## Features:
 

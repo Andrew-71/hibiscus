@@ -5,7 +5,9 @@ This file keeps track of changes in a human-readable fashion
 
 These changes are not yet released
 
-* Fully refactored app internally
+* Fully refactored the project internally
+* Log *directory* is now specified as opposed to *file*.
+Files in that directory are generated as `hibiscus_YYYY-MM-DD_HH:MM:SS.log`
 * Adjusted default theme
 * Error pages are now translated
 

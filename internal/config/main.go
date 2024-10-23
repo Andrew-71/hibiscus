@@ -29,7 +29,7 @@ type Config struct {
 	Theme     string         `config:"theme" type:"string"`
 	Title     string         `config:"title" type:"string"`
 	LogToFile bool           `config:"log_to_file" type:"bool"`
-	LogFile   string         `config:"log_file" type:"string"`
+	LogDir   string         `config:"log_dir" type:"string"`
 	Scram     bool           `config:"enable_scram" type:"bool"`
 
 	TelegramToken string `config:"tg_token" type:"string"`
@@ -47,7 +47,7 @@ var DefaultConfig = Config{
 	Theme:     "",
 	Title:     "🌺 Hibiscus.txt",
 	LogToFile: false,
-	LogFile:   "config/log.txt",
+	LogDir:   "logs",
 	Scram:     false,
 
 	TelegramToken: "",

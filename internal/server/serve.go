@@ -74,6 +74,5 @@ func Serve() {
 	r.Handle("/public/*", fs)
 
 	slog.Info("🌺 Website working", "port", config.Cfg.Port)
-	slog.Debug("Debug mode enabled")
 	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.Cfg.Port), r))
 }

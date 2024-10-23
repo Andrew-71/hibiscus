@@ -1,9 +1,12 @@
 # TODO
 List of things to add to this project
 
-## Urgent (1.1.5-2.0.0)
+## Priority 2.0.0
+* (pre-release) re-write README
 * `style.css` in config instead of theme (provide themes as examples in repo)
 * Auth improvement so it DOESN'T ASK ME FOR PASSWORD EVERY DAY UGH XD
+* Specify data directory in config or with flags
+* Configure more of the app with flags, possibly move to `cobra` for this
 
 ## Nice to have
 * Forward/backward buttons for days

@@ -20,6 +20,6 @@ func GetInfo(w http.ResponseWriter, r *http.Request) {
 
 // GetVersionApi returns current app version.
 func GetVersionApi(w http.ResponseWriter, r *http.Request) {
-	HandleWrite(w.Write([]byte(config.Info.Version)))
+	HandleWrite(w.Write([]byte(config.Info.Version())))
 	w.WriteHeader(http.StatusOK)
 }
